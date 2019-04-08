@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  */
 public class GameStateTest {
     @Test
-    public void addition_isCorrect() {
+    public void gameStateToJsonTest() {
         CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
         drawStack.mixStack();
@@ -50,8 +50,8 @@ public class GameStateTest {
         GameData game = new GameData(layOffStack, drawStack, playerList, "player1");
 
         Gson  gson = new Gson();
-
-        assertEquals(gson.toJson(game),"");
+        System.out.println("DEBUG: " + "TAG" + ": " + gson.toJson(game));
+        assertNotEquals(gson.toJson(game),"");
 
     }
 }
