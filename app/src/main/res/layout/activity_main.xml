@@ -14,7 +14,8 @@
         android:orientation="horizontal"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="296dp"
-        tools:layout_editor_absoluteY="0dp"/>
+        tools:layout_editor_absoluteY="0dp">
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textView"
