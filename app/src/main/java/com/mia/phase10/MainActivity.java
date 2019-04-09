@@ -19,12 +19,13 @@ public class MainActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openShufflingActivity();
+                startShufflingActivity();
             }
         });
     }
 
-    public void openShufflingActivity() {
+    public void startShufflingActivity() {
+        //CardStack.mixStack();
         Intent intent = new Intent(this, ShufflingActivity.class);
         startActivity(intent);
     }
