@@ -5,7 +5,7 @@
     android:fillAfter="true" >
 
     <translate
-        android:duration="800"
+        android:duration="600"
         android:fromXDelta="0%p"
         android:toXDelta="30%p"
         android:repeatCount="1"

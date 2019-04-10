@@ -14,13 +14,32 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class ShufflingActivity extends AppCompatActivity implements SensorEventListener{
+public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;
     private Sensor accelerometer;
     private View v;
-    private long lastUpdate;
-    float x,y,z;
 
+
+    private SensorEventListener listener=new SensorEventListener() {
+
+        @Override
+        public void onSensorChanged(SensorEvent se) {
+
+            float x,y,z;
+            x = se.values[0];
+            y = se.values[1];
+            z = se.values[2];
+
+            float acceleration = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+
+            if (acceleration >= 2) {
+                shuffle(v); }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
 
     @Override
@@ -32,19 +51,19 @@ public class ShufflingActivity extends AppCompatActivity implements SensorEventL
 
         sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        sManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
-        sManager.unregisterListener(this);
+        sManager.unregisterListener(listener);
         super.onPause();
     }
 
@@ -54,31 +73,24 @@ public class ShufflingActivity extends AppCompatActivity implements SensorEventL
                 AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shuffle);
         card.startAnimation(animShuffle);
 
-    }
-
-
-    public void onSensorChanged(SensorEvent se) {
-
-        x = se.values[0];
-        y = se.values[1];
-        z = se.values[2];
-
-        float accelerationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-
-        long actualTime = se.timestamp;
-        if (accelerationSquareRoot >= 2)
-        {
-            if (actualTime - lastUpdate < 200) {
-                return;
+        animShuffle.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                sManager.unregisterListener(listener);
             }
-            lastUpdate = actualTime;
-            shuffle(v);
 
-        }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            }
 
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
+
 
 }
