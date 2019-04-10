@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;
     private Sensor accelerometer;
     private View v;
+    private int shuffleCount;
 
 
     private SensorEventListener listener=new SensorEventListener() {
@@ -33,7 +35,8 @@ public class ShufflingActivity extends AppCompatActivity {
             float acceleration = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
 
             if (acceleration >= 2) {
-                shuffle(v); }
+                shuffle(v);
+                }
         }
 
         @Override
@@ -52,6 +55,8 @@ public class ShufflingActivity extends AppCompatActivity {
         sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+
 
     }
 
@@ -77,11 +82,16 @@ public class ShufflingActivity extends AppCompatActivity {
             @Override
             public void onAnimationStart(Animation animation) {
                 sManager.unregisterListener(listener);
+                shuffleCount++;
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+                if(shuffleCount==4){
+                    finish();
+                }
             }
 
             @Override
