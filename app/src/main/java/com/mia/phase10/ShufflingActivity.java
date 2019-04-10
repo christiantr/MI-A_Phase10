@@ -20,6 +20,7 @@ public class ShufflingActivity extends AppCompatActivity {
     private Sensor accelerometer;
     private View v;
     private int shuffleCount;
+    private ProgressBar bar;
 
 
     private SensorEventListener listener=new SensorEventListener() {
@@ -36,7 +37,8 @@ public class ShufflingActivity extends AppCompatActivity {
 
             if (acceleration >= 2) {
                 shuffle(v);
-                }
+
+            }
         }
 
         @Override
@@ -51,6 +53,7 @@ public class ShufflingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shuffling);
 
         v=new View(this);
+        bar=findViewById(R.id.progressBar);
 
         sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -88,7 +91,7 @@ public class ShufflingActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
+                bar.incrementProgressBy(25);
                 if(shuffleCount==4){
                     finish();
                 }
