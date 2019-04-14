@@ -8,7 +8,6 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-
     <Button
         android:id="@+id/openShuffling"
         android:layout_width="wrap_content"
@@ -90,7 +89,7 @@
         app:srcCompat="@drawable/playstation" />
 
     <ImageView
-        android:id="@+id/imageView18"
+        android:id="@+id/ID_stack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -100,12 +99,25 @@
         app:srcCompat="@drawable/stack" />
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/ID_discard_pile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
-        app:layout_constraintEnd_toStartOf="@+id/imageView18"
+        app:layout_constraintEnd_toStartOf="@+id/ID_stack"
         app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
         app:srcCompat="@drawable/card_b_10" />
+
+    <LinearLayout
+        android:id="@+id/ID_deck"
+        android:layout_width="332dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
+        app:layout_constraintStart_toEndOf="@+id/ID_avatar"
+        app:layout_constraintTop_toTopOf="@+id/ID_avatar" />
 
 </android.support.constraint.ConstraintLayout>
