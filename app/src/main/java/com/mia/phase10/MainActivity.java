@@ -1,5 +1,6 @@
 package com.mia.phase10;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
@@ -19,7 +20,9 @@ public class MainActivity extends AppCompatActivity implements View.OnDragListen
     private Button b;
     private ImageView card;
     private LinearLayout deck;
+    private LinearLayout discardPile;
 
+    @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +31,12 @@ public class MainActivity extends AppCompatActivity implements View.OnDragListen
         b=findViewById(R.id.openShuffling);
         card = findViewById(R.id.ID_discard_pile);
         deck = findViewById(R.id.ID_deck);
+        discardPile = findViewById(R.id.ID_discard_layout);
 
         card.setTag("DISCARD PILE");
         card.setOnLongClickListener(this);
         deck.setOnDragListener(this);
+        discardPile.setOnDragListener(this);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
