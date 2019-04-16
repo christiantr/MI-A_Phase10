@@ -27,24 +27,14 @@ public class ShufflingActivity extends AppCompatActivity {
 
         @Override
         public void onSensorChanged(SensorEvent se) {
-
-            float x,y,z;
-            x = se.values[0];
-            y = se.values[1];
-            z = se.values[2];
-
-            float acceleration = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-
-            if (acceleration >= 2) {
-                shuffle(v);
-
-            }
+            getAcceleration(se);
         }
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
     };
+
 
 
     @Override
@@ -58,8 +48,6 @@ public class ShufflingActivity extends AppCompatActivity {
         sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-
 
     }
 
@@ -75,7 +63,21 @@ public class ShufflingActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public void shuffle(View view){
+    protected void getAcceleration(SensorEvent se) {
+        float x,y,z;
+        x = se.values[0];
+        y = se.values[1];
+        z = se.values[2];
+
+        float acceleration = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+
+        if (acceleration >= 2) {
+            shuffle(v);
+
+        }
+    }
+
+    protected void shuffle(View view){
         ImageView card = findViewById(R.id.movingCard);
         Animation animShuffle =
                 AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shuffle);
