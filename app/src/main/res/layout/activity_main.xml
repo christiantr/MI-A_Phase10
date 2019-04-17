@@ -61,13 +61,6 @@
         app:layout_constraintStart_toEndOf="@+id/ID_p3"
         app:srcCompat="@drawable/playstation_p" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-
     <ImageView
         android:id="@+id/ID_avatar"
         android:layout_width="55dp"
@@ -107,30 +100,17 @@
         app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
         app:srcCompat="@drawable/card_b_10" />
 
-    <ListView
-        android:id="@+id/ID_list_view"
-        android:layout_width="332dp"
-        android:layout_height="94dp"
-        android:entries="@drawable/card_b_4"
-        android:scrollbars="horizontal|none"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_deck"
-        app:layout_constraintEnd_toEndOf="@+id/ID_deck"
-        app:layout_constraintStart_toStartOf="@+id/ID_deck"
-        app:layout_constraintTop_toTopOf="@+id/ID_deck" />
-
     <LinearLayout
         android:id="@+id/ID_deck"
-        android:layout_width="332dp"
-        android:layout_height="94dp"
+        android:layout_width="386dp"
+        android:layout_height="101dp"
         android:layout_marginStart="16dp"
         android:layout_weight="1"
-        android:background="@android:color/holo_blue_dark"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
-        app:layout_constraintStart_toEndOf="@+id/ID_avatar"
-        app:layout_constraintTop_toTopOf="@+id/ID_avatar" >
-    </LinearLayout>
+        android:background="@android:color/transparent"
+        android:gravity="center|right|left"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ID_avatar" />
 
     <LinearLayout
         android:id="@+id/ID_discard_layout"
@@ -138,8 +118,9 @@
         android:layout_height="127dp"
         android:layout_marginEnd="109dp"
         android:layout_marginBottom="105dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"></LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
