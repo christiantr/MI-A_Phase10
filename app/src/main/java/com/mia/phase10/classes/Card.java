@@ -14,4 +14,14 @@ public abstract class Card {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o){
+         /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof Card)) {
+            return false;
+        }
+        return Integer.compare(this.id, ((Card) o).getId())==0;
+    }
 }
