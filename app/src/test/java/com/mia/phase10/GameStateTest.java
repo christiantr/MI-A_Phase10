@@ -62,7 +62,10 @@ public class GameStateTest {
         GameLogicHandler.getInstance().initializeGame();
         GameLogicHandler.getInstance().addPlayer(new Player("Alex"));
         GameLogicHandler.getInstance().addPlayer(  new Player("Tester"));
+
         GameLogicHandler.getInstance().startRound();
+
+
         GameLogicHandler.getInstance().drawCard("Alex", StackType.DRAW_STACK);
         GameLogicHandler.getInstance().drawCard("Tester",StackType.DRAW_STACK);
 

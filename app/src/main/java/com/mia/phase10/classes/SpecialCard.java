@@ -13,6 +13,11 @@ public class SpecialCard extends Card {
         this.value = value;
     }
 
+    public SpecialCard(int id, String imagePath, SpecialCardValue value) {
+        super(id, imagePath);
+        this.value = value;
+    }
+
     public SpecialCardValue getValue() {
         return value;
     }

@@ -1,5 +1,7 @@
 package com.mia.phase10.gameLogic;
 
+import android.content.Context;
+
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
@@ -12,6 +14,7 @@ import java.util.Stack;
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
     private GameData gameData;
+    private Context context;
     //private constructor.
     private GameLogicHandler(){
 
@@ -20,11 +23,13 @@ public class GameLogicHandler {
     public static GameLogicHandler getInstance() {
         return glhInstance;
     }
+    public void setContext(Context context){
 
-    public void initializeGame(){
+    }
+    public void initializeGame(Context context){
         CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
-        drawStack.mixStack();
+
         CardStack layOffStack = new CardStack();
 
         this.gameData = new GameData(layOffStack,drawStack,new HashMap<String,Player>(),"");

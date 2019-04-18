@@ -1,7 +1,13 @@
 package com.mia.phase10.classes;
 
 public abstract class Card {
-    private int id;
+    protected int id;
+    protected String imagePath;
+
+    public Card(int id, String imagePath) {
+        this.id = id;
+        this.imagePath = imagePath;
+    }
 
     public Card(int id) {
         this.id = id;
@@ -13,6 +19,14 @@ public abstract class Card {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override
