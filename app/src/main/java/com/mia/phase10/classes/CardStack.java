@@ -2,8 +2,11 @@ package com.mia.phase10.classes;
 
 import android.graphics.Color;
 
+import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.List;
 
 public class CardStack {
@@ -47,7 +50,7 @@ public class CardStack {
 
 
     public Card getFirstCard(){
-        return cardList.remove(cardList.size()-1);
+        return cardList.get(0);
     }
 
     public void mixStack(){
@@ -58,8 +61,10 @@ public class CardStack {
         cardList.add(c);
     }
 
-    public Card drawCard(){
-
+    public Card drawCard() throws EmptyCardStackException {
+        if(this.cardList.isEmpty()) {
+            throw new EmptyCardStackException("tried to draw from empty CardStack");
+        }
         return cardList.remove(0);
     }
 

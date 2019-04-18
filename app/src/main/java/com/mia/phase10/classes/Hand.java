@@ -1,5 +1,8 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.exceptionClasses.CardNotFoundException;
+import com.mia.phase10.exceptionClasses.EmptyHandException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +19,16 @@ public class Hand {
         cardList.put(c.getId(),c);
     }
 
-    public Card removeCard(int cardid){
-        //this is currently just for testing purposes
-        //TODO implement this method
-       return cardList.remove(cardid);
+    public Card removeCard(int cardid) throws EmptyHandException, CardNotFoundException {
+        if(this.cardList.isEmpty()){
+            throw new EmptyHandException("tried to remove card from empty Hand!");
+        }
+        Card c = cardList.remove(cardid);
+        if(c == null){
+            throw new CardNotFoundException("Card not in Hand");
+        }
+
+       return c;
     }
 
     public Map<Integer, Card> getCardList() {

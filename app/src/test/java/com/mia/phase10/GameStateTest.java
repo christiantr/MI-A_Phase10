@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.StackType;
 
@@ -62,12 +63,15 @@ public class GameStateTest {
         GameLogicHandler.getInstance().initializeGame();
         GameLogicHandler.getInstance().addPlayer(new Player("Alex"));
         GameLogicHandler.getInstance().addPlayer(  new Player("Tester"));
+        try {
+            GameLogicHandler.getInstance().startRound();
 
-        GameLogicHandler.getInstance().startRound();
 
-
-        GameLogicHandler.getInstance().drawCard("Alex", StackType.DRAW_STACK);
-        GameLogicHandler.getInstance().drawCard("Tester",StackType.DRAW_STACK);
+            GameLogicHandler.getInstance().drawCard("Alex", StackType.DRAW_STACK);
+            GameLogicHandler.getInstance().drawCard("Tester",StackType.DRAW_STACK);
+        } catch (EmptyCardStackException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -7,6 +7,10 @@ import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.exceptionClasses.CardNotFoundException;
+import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.exceptionClasses.EmptyHandException;
+import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +43,7 @@ public class GameLogicHandler {
         this.gameData.addPlayer(player);
     }
 
-    public void startRound(){
+    public void startRound()throws EmptyCardStackException{
 
         for(Player p : gameData.getPlayers().values()){
             for(int i=0; i<10;i++){
@@ -49,13 +53,18 @@ public class GameLogicHandler {
         }
 
     }
-    public void layoffCard(String playerId, int cardId){
+    public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
-        Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
-        this.gameData.getLayOffStack().addCard(c);
+        try{
 
+            Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
+            this.gameData.getLayOffStack().addCard(c);
+
+        }catch(Exception c){
+            throw new PlayerNotFoundException("Player not found!");
+        }
     }
-    public void drawCard(String playerId, StackType stackType){
+    public void drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
         switch(stackType){
 
             case DRAW_STACK:
