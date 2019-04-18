@@ -51,5 +51,8 @@ public class JSONResourceReader {
         for(Card c : cards){
             cardStack.addCard(c);
         }
+
+
+        return cardStack;
     }
 }
