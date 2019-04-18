@@ -47,8 +47,7 @@ public class CardStack {
 
 
     public Card getFirstCard(){
-        //TODO implement method
-        return null;
+        return cardList.remove(cardList.size()-1);
     }
 
     public void mixStack(){
