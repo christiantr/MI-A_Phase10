@@ -25,7 +25,7 @@ public class GameLogicHandler {
         return glhInstance;
     }
 
-    public void initializeGame(Context context){
+    public void initializeGame(){
         CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
 
