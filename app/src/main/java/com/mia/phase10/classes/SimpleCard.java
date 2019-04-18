@@ -6,7 +6,14 @@ public class SimpleCard extends Card {
     private int number;
 
     public SimpleCard(int id, Colour color, int number) {
-        super(id);
+        super(id, "imagePath");
+        this.color = color;
+        this.number = number;
+
+    }
+
+    public SimpleCard(int id, String imagePath, Colour color, int number) {
+        super(id, imagePath);
         this.color = color;
         this.number = number;
     }

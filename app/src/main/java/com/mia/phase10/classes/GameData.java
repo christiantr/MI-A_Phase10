@@ -1,16 +1,24 @@
 package com.mia.phase10.classes;
 //this class contains all game data needed for displaying the current status to clients.
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameData {
 
     private CardStack layOffStack;
     private CardStack drawStack;
-    private List<Player> players;
+    private Map<String,Player> players;
     private String activePlayerId;
 
-    public GameData(CardStack layOffStack, CardStack drawStack, List<Player> players, String activePlayerId) {
+    public GameData(){
+        this.layOffStack = new CardStack();
+        this.drawStack = new CardStack();
+        this.players = new HashMap<String, Player>();
+        this.activePlayerId = "";
+    };
+    public GameData(CardStack layOffStack, CardStack drawStack, Map<String,Player> players, String activePlayerId) {
         this.layOffStack = layOffStack;
         this.drawStack = drawStack;
         this.players = players;
@@ -33,11 +41,11 @@ public class GameData {
         this.drawStack = drawStack;
     }
 
-    public List<Player> getPlayers() {
+    public Map<String,Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(Map<String,Player> players) {
         this.players = players;
     }
 
@@ -47,5 +55,9 @@ public class GameData {
 
     public void setActivePlayerId(String activePlayerId) {
         this.activePlayerId = activePlayerId;
+    }
+
+    public void addPlayer(Player player) {
+        this.players.put(player.getId(),player);
     }
 }
