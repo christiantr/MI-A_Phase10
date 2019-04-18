@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.StackType;
 
 import org.json.JSONStringer;
 import org.junit.Test;
@@ -23,7 +25,7 @@ import static org.junit.Assert.*;
 public class GameStateTest {
     @Test
     public void gameStateToJsonTest() {
-        CardStack drawStack = new CardStack();
+        /*CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
         drawStack.mixStack();
         CardStack layOffStack = new CardStack();
@@ -51,7 +53,18 @@ public class GameStateTest {
 
         Gson  gson = new Gson();
         System.out.println("DEBUG: " + "TAG" + ": " + gson.toJson(game));
-        assertNotEquals(gson.toJson(game),"");
+        assertNotEquals(gson.toJson(game),"");*/
+
+    }
+
+    @Test
+    public void gameLogicHandlerTest() {
+        GameLogicHandler.getInstance().initializeGame();
+        GameLogicHandler.getInstance().addPlayer(new Player("Alex"));
+        GameLogicHandler.getInstance().addPlayer(  new Player("Tester"));
+        GameLogicHandler.getInstance().startRound();
+        GameLogicHandler.getInstance().drawCard("Alex", StackType.DRAW_STACK);
+        GameLogicHandler.getInstance().drawCard("Tester",StackType.DRAW_STACK);
 
     }
 }
