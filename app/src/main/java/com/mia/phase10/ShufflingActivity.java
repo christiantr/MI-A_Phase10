@@ -19,6 +19,11 @@ public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;
     private Sensor accelerometer;
     private View v;
+
+    public int getShuffleCount() {
+        return shuffleCount;
+    }
+
     private int shuffleCount;
     private ProgressBar bar;
 
@@ -27,7 +32,13 @@ public class ShufflingActivity extends AppCompatActivity {
 
         @Override
         public void onSensorChanged(SensorEvent se) {
-            getAcceleration(se);
+            float x,y,z;
+            x = se.values[0];
+            y = se.values[1];
+            z = se.values[2];
+           if(enoughAcceleration(x,y,z)){
+                shuffle(v);
+            }
         }
 
         @Override
@@ -63,18 +74,12 @@ public class ShufflingActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    protected void getAcceleration(SensorEvent se) {
-        float x,y,z;
-        x = se.values[0];
-        y = se.values[1];
-        z = se.values[2];
+    protected boolean enoughAcceleration(float x, float y, float z) {
 
         float acceleration = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
 
-        if (acceleration >= 2) {
-            shuffle(v);
-
-        }
+        if (acceleration >= 2) { return true; }
+        else return false;
     }
 
     protected void shuffle(View view){
