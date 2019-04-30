@@ -21,7 +21,7 @@ public class GameLogicHandler {
     private GameData gameData;
 
     //private constructor.
-    private GameLogicHandler(){
+    private GameLogicHandler() {
 
     }
 
@@ -29,63 +29,65 @@ public class GameLogicHandler {
         return glhInstance;
     }
 
-    public void initializeGame(){
+    public void initializeGame() {
         CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
 
         CardStack layOffStack = new CardStack();
 
-        this.gameData = new GameData(layOffStack,drawStack,new HashMap<String,Player>(),"");
-
+        this.gameData = new GameData(layOffStack, drawStack, new HashMap<String, Player>(), "");
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player) {
         this.gameData.addPlayer(player);
     }
 
-    public void startRound()throws EmptyCardStackException{
+    public void startRound() throws EmptyCardStackException {
 
-        for(Player p : gameData.getPlayers().values()){
-            for(int i=0; i<10;i++){
+        for (Player p : gameData.getPlayers().values()) {
+            for (int i = 0; i < 10; i++) {
                 Card c = this.gameData.getDrawStack().drawCard();
                 p.getHand().addCard(c);
             }
         }
 
     }
+
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
-        try{
-
+        try {
             Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameData.getLayOffStack().addCard(c);
 
-        }catch(Exception c){
+        } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
     }
+
     public void drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
-        switch(stackType){
+        switch (stackType) {
 
             case DRAW_STACK:
                 Card drawCard = gameData.getDrawStack().drawCard();
                 gameData.getPlayers().get(playerId).getHand().addCard(drawCard);
                 break;
             case LAYOFF_STACK:
-                 Card firstCard = gameData.getLayOffStack().getFirstCard();
+                Card firstCard = gameData.getLayOffStack().getFirstCard();
                 gameData.getPlayers().get(playerId).getHand().addCard(firstCard);
-
         }
     }
 
-    public String getGameState(){
+    public String getGameState() {
         Gson gson = new Gson();
         return gson.toJson(this.gameData);
     }
 
-    public void setGameState(String json){
-        Gson gson = new Gson();
-        this.gameData = gson.fromJson(json,GameData.class);
+    public GameData getGameData() {
+        return gameData;
     }
 
+    public void setGameState(String json) {
+        Gson gson = new Gson();
+        this.gameData = gson.fromJson(json, GameData.class);
+    }
 }
