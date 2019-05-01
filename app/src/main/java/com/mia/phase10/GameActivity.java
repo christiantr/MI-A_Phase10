@@ -25,14 +25,16 @@ import java.util.Map;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
-    private Button b;
+    private Button shuffle;
+    private Button stop;
+    private Button switchPlayer;
     private View discardPile;
     private LinearLayout deck;
     private LinearLayout discardPileLayout;
     private LinearLayout p1_playstation;
     private ImageView stack;
-
-    GameLogicHandler gameLogicHandler;
+    private GameLogicHandler gameLogicHandler;
+    private GameData gameData;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -59,44 +61,45 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         } catch (EmptyCardStackException e) {
             e.printStackTrace();
         }
-        final GameData gameData = gameLogicHandler.getGameData();
-        CardStack cardStack = gameData.getDrawStack();
+        gameData = gameLogicHandler.getGameData();
+        gameData.setActivePlayerId("player_1");
 
-
-        b = findViewById(R.id.openShuffling);
-        b.setOnClickListener(new View.OnClickListener() {
+        discardPile = findViewById(R.id.ID_discard_pile);
+        stack = findViewById(R.id.ID_stack);
+        deck = findViewById(R.id.ID_deck);
+        discardPileLayout = findViewById(R.id.ID_discard_layout);
+        shuffle = findViewById(R.id.openShuffling);
+        shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startShufflingActivity();
             }
         });
 
-        discardPile = findViewById(R.id.ID_discard_pile);
-        stack = findViewById(R.id.ID_stack);
-        deck = findViewById(R.id.ID_deck);
-        discardPileLayout = findViewById(R.id.ID_discard_layout);
-
+        showHandCards();
+        switchPlayer = findViewById(R.id.ID_player_switch);
+        switchPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Player> players = gameData.getPlayers();
+                if (gameData.getActivePlayerId().equals("player_1")) {
+                    gameData.setActivePlayerId("player_2");
+                    ((LinearLayout) deck).removeAllViews();
+                } else {
+                    gameData.setActivePlayerId("player_1");
+                    ((LinearLayout) deck).removeAllViews();
+                }
+                showHandCards();
+            }
+        });
 
         MyDragEventListener myDragEventListener = new MyDragEventListener();
-        deck.setOnDragListener(myDragEventListener);
         discardPileLayout.setOnDragListener(myDragEventListener);
         discardPile.setTag("DISCARD PILE");
         discardPile.setOnLongClickListener(this);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(-70, 0, 0, 0);
-        Map<String, Player> players = gameData.getPlayers();
-        Map<Integer, Card> cards = players.get("player_1").getHand().getCardList();
-        for (Card card : cards.values()) {
-            ImageView cardImage = new ImageView(this);
-            cardImage.setLayoutParams(lp);
-            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), "drawable", getPackageName()));
-            cardImage.setImageDrawable(c);
-            cardImage.setTag("DISCARD PILE");
-            cardImage.setOnLongClickListener(this);
-            deck.addView(cardImage);
-        }
-
         ImageView cardImage = new ImageView(this);
         cardImage.setLayoutParams(lp);
         Drawable c = getResources().getDrawable(getResources().getIdentifier(gameData.getDrawStack().getFirstCard().getImagePath(), "drawable", getPackageName()));
@@ -104,6 +107,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cardImage.setTag("DISCARD PILE");
         cardImage.setOnLongClickListener(this);
         discardPileLayout.addView(cardImage);
+
 
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
@@ -122,10 +126,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 cardImage.setImageDrawable(c);
                 cardImage.setTag("DISCARD PILE");
                 cardImage.setOnLongClickListener(GameActivity.this);
+                gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().addCard(drawStackCard);
                 deck.addView(cardImage);
             }
         });
-
     }
 
     public void startShufflingActivity() {
@@ -153,4 +157,22 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         );
         return true;
     }
+
+    public void showHandCards() {
+        Map<String, Player> players = gameData.getPlayers();
+        Map<Integer, Card> cards = players.get(gameData.getActivePlayerId()).getHand().getCardList();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(-70, 0, 0, 0);
+        for (Card card : cards.values()) {
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), "drawable", getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag("DISCARD PILE");
+            cardImage.setOnLongClickListener(GameActivity.this);
+            cardImage.setId(card.getId());
+            deck.addView(cardImage);
+        }
+    }
+
 }

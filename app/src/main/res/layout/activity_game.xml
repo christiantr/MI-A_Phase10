@@ -10,16 +10,28 @@
 
     <Button
         android:id="@+id/openShuffling"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="Button"
+        android:layout_marginBottom="8dp"
+        android:text="open Shuffling"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/ID_player_switch"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Switch Player"
+        app:layout_constraintBottom_toTopOf="@+id/openShuffling"
+        app:layout_constraintEnd_toEndOf="@+id/openShuffling"
+        app:layout_constraintStart_toStartOf="@+id/openShuffling" />
 
     <ImageView
         android:id="@+id/ID_p2"
@@ -42,24 +54,24 @@
         app:srcCompat="@drawable/playstation_p" />
 
     <!--<ImageView-->
-        <!--android:id="@+id/ID_p3"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="32dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/ID_p2_playstation"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:srcCompat="@drawable/avatar_3" />-->
+    <!--android:id="@+id/ID_p3"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="32dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/ID_p2_playstation"-->
+    <!--app:layout_constraintTop_toTopOf="parent"-->
+    <!--app:srcCompat="@drawable/avatar_3" />-->
 
     <!--<ImageView-->
-        <!--android:id="@+id/ID_p3_playstation"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:layout_marginBottom="12dp"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/ID_p3"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/ID_p3"-->
-        <!--app:srcCompat="@drawable/playstation_p" />-->
+    <!--android:id="@+id/ID_p3_playstation"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/ID_p3"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/ID_p3"-->
+    <!--app:srcCompat="@drawable/playstation_p" />-->
 
     <ImageView
         android:id="@+id/ID_avatar"
@@ -86,10 +98,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
-        android:clickable="true"
         app:srcCompat="@drawable/stack" />
 
     <LinearLayout
@@ -159,4 +171,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
         app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
         app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
+
 </android.support.constraint.ConstraintLayout>
