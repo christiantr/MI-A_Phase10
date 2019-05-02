@@ -8,7 +8,6 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-
     <Button
         android:id="@+id/ID_button_start_game"
         style="@style/Widget.AppCompat.Button.Colored"

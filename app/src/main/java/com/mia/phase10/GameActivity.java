@@ -5,17 +5,15 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
@@ -26,15 +24,17 @@ import java.util.Map;
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private Button shuffle;
-    private Button stop;
-    private Button switchPlayer;
-    private View discardPile;
     private LinearLayout deck;
     private LinearLayout discardPileLayout;
-    private LinearLayout p1_playstation;
     private ImageView stack;
     private GameLogicHandler gameLogicHandler;
+    private TextView player1;
+    private TextView player2;
     private GameData gameData;
+    private String player1Name;
+    private String player2Name;
+    private Intent intent;
+
 
     @SuppressLint("CutPasteId")
     @Override
@@ -43,18 +43,18 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_game);
 
         // Get the Intent that started this activity and extract the string
-        final Intent intent = getIntent();
-        final TextView player1 = findViewById(R.id.ID_player_1);
-        final TextView player2 = findViewById(R.id.ID_player_2);
+        intent = getIntent();
+        player1 = findViewById(R.id.ID_player_1);
+        player2 = findViewById(R.id.ID_player_2);
         // Capture the layout's TextView and set the string as its text
-        player1.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
-        player2.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
-
+        player1Name = intent.getStringExtra(MainActivity.FIRST_PLAYER);
+        player2Name = intent.getStringExtra(MainActivity.SECOND_PLAYER);
+        player1.setText(player1Name);
+        player2.setText(player1Name);
         gameLogicHandler = GameLogicHandler.getInstance();
         gameLogicHandler.initializeGame();
         gameLogicHandler.addPlayer(new Player("player_1"));
         gameLogicHandler.addPlayer(new Player("player_2"));
-
         try {
             gameLogicHandler.startRound();
         } catch (EmptyCardStackException e) {
@@ -62,8 +62,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
         gameData = gameLogicHandler.getGameData();
         gameData.setActivePlayerId("player_1");
-
-        discardPile = findViewById(R.id.ID_discard_pile);
         stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
         discardPileLayout = findViewById(R.id.ID_discard_layout);
@@ -75,34 +73,14 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             }
         });
 
+        // shows cards form player1
         showHandCards();
-        switchPlayer = findViewById(R.id.ID_player_switch);
-        switchPlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Player> players = gameData.getPlayers();
-                if (gameData.getActivePlayerId().equals("player_1")) {
-                    gameData.setActivePlayerId("player_2");
-
-                    player1.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
-                    player2.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
-                } else {
-                    gameData.setActivePlayerId("player_1");
-                    ((LinearLayout) deck).removeAllViews();
-                    player1.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
-                    player2.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
-                }
-                showHandCards();
-            }
-        });
 
         MyDragEventListener myDragEventListener = new MyDragEventListener(this);
         discardPileLayout.setOnDragListener(myDragEventListener);
-        discardPile.setTag("DISCARD PILE");
-        discardPile.setOnLongClickListener(this);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(-70, 0, 0, 0);
+        lp.setMargins(0, 0, 0, 0);
         ImageView cardImage = new ImageView(this);
         cardImage.setLayoutParams(lp);
         Drawable c = getResources().getDrawable(getResources().getIdentifier(gameData.getDrawStack().getFirstCard().getImagePath(), "drawable", getPackageName()));
@@ -110,7 +88,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cardImage.setTag("DISCARD PILE");
         cardImage.setOnLongClickListener(this);
         discardPileLayout.addView(cardImage);
-
 
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
@@ -178,7 +155,24 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
     }
 
+    public void switchPlayerName(TextView p, TextView q) {
+        p.setText(player1Name);
+        q.setText(player2Name);
+    }
+
     public LinearLayout getDeck() {
         return deck;
+    }
+
+    public TextView getPlayer1() {
+        return player1;
+    }
+
+    public TextView getPlayer2() {
+        return player2;
+    }
+
+    public LinearLayout getDiscardPileLayout() {
+        return discardPileLayout;
     }
 }

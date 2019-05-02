@@ -22,17 +22,6 @@
         app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/ID_player_switch"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Switch Player"
-        app:layout_constraintBottom_toTopOf="@+id/openShuffling"
-        app:layout_constraintEnd_toEndOf="@+id/openShuffling"
-        app:layout_constraintStart_toStartOf="@+id/openShuffling" />
-
     <ImageView
         android:id="@+id/ID_p2"
         android:layout_width="wrap_content"
@@ -133,21 +122,13 @@
 
     <LinearLayout
         android:id="@+id/ID_discard_layout"
-        android:layout_width="84dp"
+        android:layout_width="74dp"
         android:layout_height="127dp"
         android:layout_marginEnd="109dp"
         android:layout_marginBottom="105dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <View
-            android:id="@+id/ID_discard_pile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"></LinearLayout>
 
     <TextView
         android:id="@+id/ID_player_2"
@@ -155,6 +136,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/benchnine"
         android:text="P2"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
         app:layout_constraintEnd_toEndOf="@+id/ID_p2"
         app:layout_constraintStart_toStartOf="@+id/ID_p2" />
@@ -165,6 +147,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/benchnine"
         android:text="P1"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
         app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
         app:layout_constraintStart_toStartOf="@+id/ID_avatar" />

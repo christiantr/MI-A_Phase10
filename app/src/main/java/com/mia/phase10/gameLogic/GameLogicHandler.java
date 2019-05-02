@@ -1,7 +1,5 @@
 package com.mia.phase10.gameLogic;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
@@ -12,9 +10,7 @@ import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
 
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
