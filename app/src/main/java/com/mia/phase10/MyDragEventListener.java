@@ -18,8 +18,6 @@ import com.mia.phase10.gameLogic.GameLogicHandler;
 
 public class MyDragEventListener implements View.OnDragListener {
 
-    private GameLogicHandler gameLogicHandler;
-    private GameData gameData;
     private GameActivity gameActivity = null;
 
     public MyDragEventListener(GameActivity gameActivity) {
@@ -29,8 +27,8 @@ public class MyDragEventListener implements View.OnDragListener {
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
-        gameLogicHandler = GameLogicHandler.getInstance();
-        gameData = gameLogicHandler.getGameData();
+        GameLogicHandler gameLogicHandler = GameLogicHandler.getInstance();
+        GameData gameData = gameLogicHandler.getGameData();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
 

@@ -23,11 +23,8 @@ import java.util.Map;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
-    private Button shuffle;
     private LinearLayout deck;
     private LinearLayout discardPileLayout;
-    private ImageView stack;
-    private GameLogicHandler gameLogicHandler;
     private TextView player1;
     private TextView player2;
     private GameData gameData;
@@ -42,6 +39,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        GameLogicHandler gameLogicHandler;
         // Get the Intent that started this activity and extract the string
         intent = getIntent();
         player1 = findViewById(R.id.ID_player_1);
@@ -62,10 +60,11 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
         gameData = gameLogicHandler.getGameData();
         gameData.setActivePlayerId("player_1");
-        stack = findViewById(R.id.ID_stack);
+
+        ImageView stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
         discardPileLayout = findViewById(R.id.ID_discard_layout);
-        shuffle = findViewById(R.id.openShuffling);
+        Button shuffle = findViewById(R.id.openShuffling);
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,13 +95,15 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 lp.setMargins(-70, 0, 0, 0);
                 ImageView cardImage = new ImageView(GameActivity.this);
                 Card drawStackCard = null;
+                String imagePath = "";
                 try {
                     drawStackCard = gameData.getDrawStack().drawCard();
+                    imagePath= drawStackCard.getImagePath();
                 } catch (EmptyCardStackException e) {
                     e.printStackTrace();
                 }
                 cardImage.setLayoutParams(lp);
-                Drawable c = getResources().getDrawable(getResources().getIdentifier(drawStackCard.getImagePath(), "drawable", getPackageName()));
+                Drawable c = getResources().getDrawable(getResources().getIdentifier(imagePath, "drawable", getPackageName()));
                 cardImage.setImageDrawable(c);
                 cardImage.setTag("DISCARD PILE");
                 cardImage.setOnLongClickListener(GameActivity.this);
@@ -113,9 +114,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     public void startShufflingActivity() {
-        //CardStack.mixStack();
-        Intent intent = new Intent(this, ShufflingActivity.class);
-        startActivity(intent);
+        Intent shufflingActivity = new Intent(this, ShufflingActivity.class);
+        startActivity(shufflingActivity);
     }
 
     @Override

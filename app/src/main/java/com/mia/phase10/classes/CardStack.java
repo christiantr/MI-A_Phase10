@@ -1,13 +1,9 @@
 package com.mia.phase10.classes;
 
-import android.graphics.Color;
-
-import com.mia.phase10.R;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.List;
 
 public class CardStack {
