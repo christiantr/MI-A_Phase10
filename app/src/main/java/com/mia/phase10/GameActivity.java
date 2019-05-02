@@ -30,7 +30,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private GameData gameData;
     private String player1Name;
     private String player2Name;
-    private Intent intent;
+    static final String DISCARD_PILE = "DISCARD PILE";
+    static final String DRAWABLE = "drawable";
 
 
     @SuppressLint("CutPasteId")
@@ -41,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
         GameLogicHandler gameLogicHandler;
         // Get the Intent that started this activity and extract the string
-        intent = getIntent();
+        Intent intent = getIntent();
         player1 = findViewById(R.id.ID_player_1);
         player2 = findViewById(R.id.ID_player_2);
         // Capture the layout's TextView and set the string as its text
@@ -82,9 +83,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         lp.setMargins(0, 0, 0, 0);
         ImageView cardImage = new ImageView(this);
         cardImage.setLayoutParams(lp);
-        Drawable c = getResources().getDrawable(getResources().getIdentifier(gameData.getDrawStack().getFirstCard().getImagePath(), "drawable", getPackageName()));
+        Drawable c = getResources().getDrawable(getResources().getIdentifier(gameData.getDrawStack().getFirstCard().getImagePath(), DRAWABLE, getPackageName()));
         cardImage.setImageDrawable(c);
-        cardImage.setTag("DISCARD PILE");
+        cardImage.setTag(DISCARD_PILE);
         cardImage.setOnLongClickListener(this);
         discardPileLayout.addView(cardImage);
 
@@ -103,9 +104,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     e.printStackTrace();
                 }
                 cardImage.setLayoutParams(lp);
-                Drawable c = getResources().getDrawable(getResources().getIdentifier(imagePath, "drawable", getPackageName()));
+                Drawable c = getResources().getDrawable(getResources().getIdentifier(imagePath, DRAWABLE, getPackageName()));
                 cardImage.setImageDrawable(c);
-                cardImage.setTag("DISCARD PILE");
+                cardImage.setTag(DISCARD_PILE);
                 cardImage.setOnLongClickListener(GameActivity.this);
                 gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().addCard(drawStackCard);
                 deck.addView(cardImage);
@@ -146,9 +147,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         for (Card card : cards.values()) {
             ImageView cardImage = new ImageView(GameActivity.this);
             cardImage.setLayoutParams(lp);
-            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), "drawable", getPackageName()));
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
             cardImage.setImageDrawable(c);
-            cardImage.setTag("DISCARD PILE");
+            cardImage.setTag(DISCARD_PILE);
             cardImage.setOnLongClickListener(GameActivity.this);
             cardImage.setId(card.getId());
             deck.addView(cardImage);

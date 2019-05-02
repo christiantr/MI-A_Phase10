@@ -71,11 +71,7 @@ public class MyDragEventListener implements View.OnDragListener {
                 ViewGroup owner = (ViewGroup) vw.getParent();
                 try {
                     gameLogicHandler.layoffCard(gameData.getActivePlayerId(), vw.getId());
-                } catch (EmptyHandException e) {
-                    e.printStackTrace();
-                } catch (CardNotFoundException e) {
-                    e.printStackTrace();
-                } catch (PlayerNotFoundException e) {
+                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                     e.printStackTrace();
                 }
 
