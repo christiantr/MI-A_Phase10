@@ -43,11 +43,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_game);
 
         // Get the Intent that started this activity and extract the string
-        Intent intent = getIntent();
-
+        final Intent intent = getIntent();
+        final TextView player1 = findViewById(R.id.ID_player_1);
+        final TextView player2 = findViewById(R.id.ID_player_2);
         // Capture the layout's TextView and set the string as its text
-        TextView player1 = findViewById(R.id.ID_player_1);
-        TextView player2 = findViewById(R.id.ID_player_2);
         player1.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
         player2.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
 
@@ -84,16 +83,20 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 Map<String, Player> players = gameData.getPlayers();
                 if (gameData.getActivePlayerId().equals("player_1")) {
                     gameData.setActivePlayerId("player_2");
-                    ((LinearLayout) deck).removeAllViews();
+
+                    player1.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
+                    player2.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
                 } else {
                     gameData.setActivePlayerId("player_1");
                     ((LinearLayout) deck).removeAllViews();
+                    player1.setText(intent.getStringExtra(MainActivity.FIRST_PLAYER));
+                    player2.setText(intent.getStringExtra(MainActivity.SECOND_PLAYER));
                 }
                 showHandCards();
             }
         });
 
-        MyDragEventListener myDragEventListener = new MyDragEventListener();
+        MyDragEventListener myDragEventListener = new MyDragEventListener(this);
         discardPileLayout.setOnDragListener(myDragEventListener);
         discardPile.setTag("DISCARD PILE");
         discardPile.setOnLongClickListener(this);
@@ -175,4 +178,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
     }
 
+    public LinearLayout getDeck() {
+        return deck;
+    }
 }

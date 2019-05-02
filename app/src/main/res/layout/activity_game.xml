@@ -129,7 +129,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ID_avatar">
-
     </LinearLayout>
 
     <LinearLayout
@@ -154,7 +153,6 @@
         android:id="@+id/ID_player_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:fontFamily="@font/benchnine"
         android:text="P2"
         app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
@@ -165,7 +163,6 @@
         android:id="@+id/ID_player_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:fontFamily="@font/benchnine"
         android:text="P1"
         app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"

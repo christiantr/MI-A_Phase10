@@ -25,6 +25,11 @@ public class MyDragEventListener implements View.OnDragListener{
     private GameLogicHandler gameLogicHandler;
     private GameData gameData;
 
+    private GameActivity activity = null;
+
+    public MyDragEventListener(GameActivity activity) {
+        this.activity = activity;
+    }
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -38,6 +43,7 @@ public class MyDragEventListener implements View.OnDragListener{
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
         // Handles each of the expected events
+
         switch (action) {
 
             case DragEvent.ACTION_DRAG_STARTED:
@@ -80,6 +86,9 @@ public class MyDragEventListener implements View.OnDragListener{
                 } catch (PlayerNotFoundException e) {
                     e.printStackTrace();
                 }
+
+
+                ((LinearLayout) this.activity.getDeck()).removeAllViews();
                 //showHandCards();
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
