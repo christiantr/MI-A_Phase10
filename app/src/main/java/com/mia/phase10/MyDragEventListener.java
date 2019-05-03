@@ -10,17 +10,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MyDragEventListener implements View.OnDragListener{
+import com.mia.phase10.classes.GameData;
+import com.mia.phase10.exceptionClasses.CardNotFoundException;
+import com.mia.phase10.exceptionClasses.EmptyHandException;
+import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
+import com.mia.phase10.gameLogic.GameLogicHandler;
+
+public class MyDragEventListener implements View.OnDragListener {
+
+    private GameActivity gameActivity = null;
+
+    public MyDragEventListener(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
+        GameLogicHandler gameLogicHandler = GameLogicHandler.getInstance();
+        GameData gameData = gameLogicHandler.getGameData();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(-70,0,0,0);
+        lp.setMargins(0, 0, 0, 0);
 
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
         // Handles each of the expected events
+
         switch (action) {
 
             case DragEvent.ACTION_DRAG_STARTED:
@@ -54,6 +69,27 @@ public class MyDragEventListener implements View.OnDragListener{
 
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
+                try {
+                    gameLogicHandler.layoffCard(gameData.getActivePlayerId(), vw.getId());
+                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                // remove old card from discard pile
+                (gameActivity.getDiscardPileLayout()).removeAllViews();
+                // switch player and remove cards from hand from active player
+                if (gameData.getActivePlayerId().equals("player_1")) {
+                    gameData.setActivePlayerId("player_2");
+                    (gameActivity.getDeck()).removeAllViews();
+                    gameActivity.switchPlayerName(gameActivity.getPlayer2(), gameActivity.getPlayer1());
+
+                } else {
+                    gameData.setActivePlayerId("player_1");
+                    (gameActivity.getDeck()).removeAllViews();
+                    gameActivity.switchPlayerName(gameActivity.getPlayer1(), gameActivity.getPlayer2());
+                }
+                gameActivity.showHandCards();
+
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
                 LinearLayout container = (LinearLayout) v;
