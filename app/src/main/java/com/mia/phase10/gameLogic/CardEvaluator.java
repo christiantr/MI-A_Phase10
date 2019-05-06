@@ -29,10 +29,10 @@ public class CardEvaluator {
                 return nineInARow(cardList1);
             case PHASE_8:
                 return checkIfPhaseEight(cardList1);
-            default:
-                break;
+            default:return false;
+
         }
-        return false;
+
     }
 
     public boolean checkPhase(Phase phase, List<Card> cardList1, List<Card> cardList2) {
@@ -49,10 +49,8 @@ public class CardEvaluator {
                 return checkIfPhaseNine(cardList1, cardList2);
             case PHASE_10:
                 return checkIfPhaseTen(cardList1, cardList2);
-            default:
-                break;
+            default:return false;
         }
-        return false;
     }
 
     private boolean isTwin(List<Card> list) {
@@ -163,7 +161,7 @@ public class CardEvaluator {
         return ((isQuintuple(list)&& isTriplet(list2))||(isQuintuple(list2)&& isTriplet(list)));
     }
 
-    private boolean checkForEqualNumbers(List<Card> list) {
+    public boolean checkForEqualNumbers(List<Card> list) {
         int number = 0;
         for (Card c : list) {
             if (c instanceof SimpleCard) {
@@ -181,7 +179,7 @@ public class CardEvaluator {
         return true;
     }
 
-    private boolean checkIfInARow(List<Card> list){
+    public boolean checkIfInARow(List<Card> list){
         int number = 0;
         boolean firstNumber = false;
 
@@ -195,7 +193,7 @@ public class CardEvaluator {
                         return false;
                     }
                 }else{
-                    if (number + 1 == ((SimpleCard) c).getNumber()) {
+                    if ((number + 1 )== ((SimpleCard) c).getNumber()) {
                         number = ((SimpleCard) c).getNumber();
                     } else {
                         return false;
@@ -208,7 +206,7 @@ public class CardEvaluator {
                     return false;
                 }
 
-            } else { 
+            } else {
                 return false;
             }
         }
