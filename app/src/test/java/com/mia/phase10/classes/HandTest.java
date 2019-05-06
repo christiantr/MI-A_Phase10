@@ -56,18 +56,14 @@ public class HandTest {
      }
  }
     @Test(expected = CardNotFoundException.class)
-    public void checkRemoveCardNotInHand(){
+    public void checkRemoveCardNotInHand() throws CardNotFoundException, EmptyHandException {
         Card c = new SimpleCard(1,Colour.BLUE,1);
         int size = hand.getCardList().size();
 
-        try {
-            assertEquals(c,hand.removeCard(10));
-        } catch (EmptyHandException e) {
-           fail();
-        } catch (CardNotFoundException e) {
-            assertNotNull(e);
-        }
-        assertEquals(size-1,hand.getCardList().size());
+
+            hand.removeCard(10);
+
+
 
     }
 }

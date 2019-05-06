@@ -24,6 +24,7 @@ public class PlayerTest {
         map.put(4,new SimpleCard(4,Colour.BLUE,4));
         map.put(5,new SimpleCard(5,Colour.BLUE,5));
         hand.setCardList(map);
+        player.setHand(hand);
 
     }
 
@@ -34,7 +35,7 @@ public class PlayerTest {
 
     @Test
     public void checkGetHand(){
-        assertEquals(hand, player.getHand());
+        assertEquals(hand.getCardList(), player.getHand().getCardList());
     }
 
     @Test
