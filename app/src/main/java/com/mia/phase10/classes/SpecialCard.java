@@ -25,4 +25,8 @@ public class SpecialCard extends Card {
     public void setValue(SpecialCardValue value) {
         this.value = value;
     }
+    public String toString(){
+        return super.toString()+"Value: "+this.value+";";
+    }
 }
+
