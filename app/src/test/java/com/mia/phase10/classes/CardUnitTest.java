@@ -45,6 +45,12 @@ public class CardUnitTest {
         card.setId(100);
         assertEquals(card.getId(), 100);
     }
+
+    @Test
+    public void specialCardSetValue(){
+        specialCard.setValue(SpecialCardValue.EXPOSE);
+        assertEquals(SpecialCardValue.EXPOSE, specialCard.getValue());
+    }
     @Test
     public void simpleCardSetColourTest(){
         card.setColor(Colour.RED);
@@ -54,6 +60,12 @@ public class CardUnitTest {
     public void simpleCardSetNumberTest(){
         card.setNumber(10);
         assertEquals(card.getNumber(), 10);
+    }
+
+    @Test
+    public void checkImagePath(){
+        card.setImagePath("Path");
+        assertEquals("Path",card.getImagePath());
     }
 
 
