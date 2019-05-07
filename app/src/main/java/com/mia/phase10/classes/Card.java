@@ -38,4 +38,8 @@ public abstract class Card {
         }
         return Integer.compare(this.id, ((Card) o).getId())==0;
     }
+
+    public String toString(){
+        return "ID: "+this.id+";";
+    }
 }

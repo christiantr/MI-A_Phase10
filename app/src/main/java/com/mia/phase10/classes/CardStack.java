@@ -62,10 +62,14 @@ public class CardStack {
     }
 
     public Card drawCard() throws EmptyCardStackException {
+
         if (this.cardList.isEmpty()) {
             throw new EmptyCardStackException("tried to draw from empty CardStack");
         }
         return cardList.remove(0);
+    }
+    public List<Card> getCardList(){
+        return this.cardList;
     }
 
 }
