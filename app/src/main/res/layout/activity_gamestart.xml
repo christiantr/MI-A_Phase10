@@ -16,12 +16,14 @@
             android:id="@+id/button_hostGame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="startHost"
             android:text="Host Game" />
 
         <Button
             android:id="@+id/button_joinGame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="startClient"
             android:text="Join Game" />
 
         <TextView
@@ -37,14 +39,22 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="0.0.0.0" />
+            android:text="0.0.0.0"
+            tools:visibility="invisible" />
 
         <EditText
-            android:id="@+id/input_Ip"
+            android:id="@+id/input_port"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            tools:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button_connectToHost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
