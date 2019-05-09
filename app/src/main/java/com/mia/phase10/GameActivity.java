@@ -52,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player2.setText(player1Name);
         gameLogicHandler = GameLogicHandler.getInstance();
         gameLogicHandler.initializeGame();
+        gameLogicHandler.getGameData().getDrawStack().mixStack();
         gameLogicHandler.addPlayer(new Player("player_1"));
         gameLogicHandler.addPlayer(new Player("player_2"));
         try {
