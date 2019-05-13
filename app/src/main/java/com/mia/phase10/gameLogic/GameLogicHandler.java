@@ -1,7 +1,5 @@
 package com.mia.phase10.gameLogic;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
@@ -11,10 +9,9 @@ import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
+import com.mia.phase10.gameFlow.GamePhase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
 
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
@@ -51,7 +48,7 @@ public class GameLogicHandler {
                 p.getHand().addCard(c);
             }
         }
-
+        this.gameData.setPhase(GamePhase.DRAW_PHASE);
     }
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
@@ -60,11 +57,15 @@ public class GameLogicHandler {
             Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameData.getLayOffStack().addCard(c);
 
+            this.gameData.nextPlayer();
+            this.gameData.setPhase(GamePhase.DRAW_PHASE);
+
         }catch(Exception c){
             throw new PlayerNotFoundException("Player not found!");
         }
     }
     public void drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
+
         switch(stackType){
 
             case DRAW_STACK:
@@ -76,7 +77,9 @@ public class GameLogicHandler {
                 gameData.getPlayers().get(playerId).getHand().addCard(firstCard);
 
         }
+        this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
     }
+
 
     public String getGameState(){
         Gson gson = new Gson();
