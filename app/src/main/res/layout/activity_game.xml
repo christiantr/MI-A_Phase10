@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
@@ -164,8 +163,62 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:background="@color/colorAccent"
         android:fitsSystemWindows="true"
-        app:menu="@menu/menu" />
-    
+        android:fontFamily="@font/benchnine"
+
+        android:maxWidth="100dp"
+        app:itemTextColor="#FFFFFF"
+        app:menu="@menu/menu">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ID_score"
+                    android:layout_width="62dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="64dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Punkte"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/ID_phase"
+                    android:layout_width="62dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="64dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Phase 2"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/ID_score"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/ID_more"
+                    android:layout_width="62dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="110dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="mehr"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
 
