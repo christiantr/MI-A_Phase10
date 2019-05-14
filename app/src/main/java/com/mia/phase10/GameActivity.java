@@ -21,6 +21,11 @@ import com.mia.phase10.gameLogic.GameLogicHandler;
 
 import java.util.Map;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private LinearLayout deck;
@@ -39,6 +44,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
 
         GameLogicHandler gameLogicHandler;
         // Get the Intent that started this activity and extract the string
@@ -176,4 +182,23 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public LinearLayout getDiscardPileLayout() {
         return discardPileLayout;
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_phasen, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.menu_phasen) {
+            Toast.makeText(getApplicationContext(), "Phase gedrückt!", Toast.LENGTH_LONG).show();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

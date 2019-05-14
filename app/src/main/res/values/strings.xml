@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Phase10</string>
+    <string name="menu_regeln">Regeln</string>
+    <string name="menu_Phasen">Phasen</string>
 </resources>
