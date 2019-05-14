@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Phase10</string>
     <string name="menu_regeln">Regeln</string>
-    <string name="menu_Phasen">Phasen</string>
-    <string name="phase_2">Phase 2:</string>
-    <string name="phase_3">Phase 3:</string>
-    <string name="phase_4">Phase 4:</string>
-    <string name="phase_5">Phase 5:</string>
-    <string name="phase_6">Phase 6:</string>
-    <string name="phase_7">Phase 7:</string>
-    <string name="phase_8">Phase 8:</string>
-    <string name="phase_9">Phase 9:</string>
-    <string name="phase_1">Phase 1:</string>
-    <string name="phasen">Phasen</string>
-    <string name="phase_10">Phase 10:</string>
+    <string name="menu_Phasen">Phasen:</string>
+    <string name="phase_1">1: 2 Drillinge</string>
+    <string name="phase_2">2: 1 Drilling + 1 Viererfolge</string>
+    <string name="phase_3">3: 1 Vierling + 1 Viererfolge</string>
+    <string name="phase_4">4: 1 Siebenerfolge</string>
+    <string name="phase_5">5: 1 Achterfolge</string>
+    <string name="phase_7">7: 2 Vierlinge</string>
+    <string name="phase_8">8: 7 Karten einer Farbe</string>
+    <string name="phase_9">9: 1 Fünfling + 1 Zwilling</string>
+    <string name="phase_6">6 1 Neunerfolge:</string>
+    <string name="phasen">Die 10 Phasen sind</string>
+    <string name="phase_10">10 1 Fünfling + 1 Drilling:</string>
 </resources>
