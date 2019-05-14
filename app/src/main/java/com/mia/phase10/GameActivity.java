@@ -195,7 +195,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         int id = item.getItemId();
         if (id == R.id.menu_phasen) {
             Toast.makeText(getApplicationContext(), "Phase gedrückt!", Toast.LENGTH_LONG).show();
-
+            Intent PhaseActivity = new Intent(this, PhaseActivity.class);
+            startActivity(PhaseActivity);
             return true;
         }
         return super.onOptionsItemSelected(item);
