@@ -19,9 +19,8 @@ public class PhaseActivity  extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.menu_phasen) {
-            Toast.makeText(getApplicationContext(), "Phase gedrückt!", Toast.LENGTH_LONG).show();
-            Intent PhaseActivity = new Intent(this, PhaseActivity.class);
+        if (id == R.id.back) {
+            Intent PhaseActivity = new Intent(this, GameActivity.class);
             startActivity(PhaseActivity);
             return true;
         }
