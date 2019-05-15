@@ -15,6 +15,7 @@ public class GameData {
     private String activePlayerId;
     private GamePhase phase;
 
+
     public GameData(){
         this.layOffStack = new CardStack();
         this.drawStack = new CardStack();
@@ -78,13 +79,18 @@ public class GameData {
     public void nextPlayer(){
         Iterator<Player> iter = this.players.values().iterator();
         int index =0;
-        while(iter.hasNext()){
-            if (iter.next().getId() == activePlayerId){
-                if(this.players.size()-2 > index){
-                    this.activePlayerId = iter.next().getId();
-                }
-                else{
-                    this.activePlayerId = this.players.values().iterator().next().getId();
+
+
+        if (activePlayerId ==""){
+            this.activePlayerId = this.players.values().iterator().next().getId();
+        }else {
+            while (iter.hasNext()) {
+                if (iter.next().getId() == activePlayerId) {
+                    if (this.players.size() - 2 > index) {
+                        this.activePlayerId = iter.next().getId();
+                    } else {
+                        this.activePlayerId = this.players.values().iterator().next().getId();
+                    }
                 }
             }
         }

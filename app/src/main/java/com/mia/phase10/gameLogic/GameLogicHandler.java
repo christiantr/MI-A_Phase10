@@ -1,6 +1,7 @@
 package com.mia.phase10.gameLogic;
 
 import com.google.gson.Gson;
+import com.mia.phase10.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
     private GameData gameData;
-
+    private GameActivity gameActivity;
     //private constructor.
     private GameLogicHandler(){
 
@@ -24,6 +25,10 @@ public class GameLogicHandler {
 
     public static GameLogicHandler getInstance() {
         return glhInstance;
+    }
+
+    public void setGameActivity(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
     }
 
     public void initializeGame(){
@@ -49,6 +54,8 @@ public class GameLogicHandler {
             }
         }
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
+        this.gameData.nextPlayer();
+        gameActivity.visualizePhase();
     }
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
@@ -59,28 +66,33 @@ public class GameLogicHandler {
 
             this.gameData.nextPlayer();
             this.gameData.setPhase(GamePhase.DRAW_PHASE);
+            gameActivity.visualizePhase();
 
         }catch(Exception c){
             throw new PlayerNotFoundException("Player not found!");
         }
     }
-    public void drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
-
+    public Card drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
+        Card card = null;
         switch(stackType){
 
             case DRAW_STACK:
-                Card drawCard = gameData.getDrawStack().drawCard();
-                gameData.getPlayers().get(playerId).getHand().addCard(drawCard);
+                card = gameData.getDrawStack().drawCard();
+                gameData.getPlayers().get(playerId).getHand().addCard(card);
                 break;
             case LAYOFF_STACK:
-                 Card firstCard = gameData.getLayOffStack().getFirstCard();
-                gameData.getPlayers().get(playerId).getHand().addCard(firstCard);
+                 card = gameData.getLayOffStack().getFirstCard();
+                gameData.getPlayers().get(playerId).getHand().addCard(card);
 
         }
         this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
+        gameActivity.visualizePhase();
+        return card;
     }
 
-
+    public GameData getGameData(){
+        return this.gameData;
+    }
     public String getGameState(){
         Gson gson = new Gson();
         return gson.toJson(this.gameData);

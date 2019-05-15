@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.StackType;
 
 import java.util.Map;
 
@@ -27,7 +30,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private LinearLayout discardPileLayout;
     private TextView player1;
     private TextView player2;
-    private GameData gameData;
+
     private String player1Name;
     private String player2Name;
     static final String DISCARD_PILE = "DISCARD PILE";
@@ -37,10 +40,11 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        GameLogicHandler.getInstance().setGameActivity(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        GameLogicHandler gameLogicHandler;
+        final GameActivity that = this;
+        final GameLogicHandler gameLogicHandler;
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         player1 = findViewById(R.id.ID_player_1);
@@ -59,8 +63,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         } catch (EmptyCardStackException e) {
             e.printStackTrace();
         }
-        gameData = gameLogicHandler.getGameData();
-        gameData.setActivePlayerId("player_1");
+
+
 
         ImageView stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
@@ -83,12 +87,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         lp.setMargins(0, 0, 0, 0);
         ImageView cardImage = new ImageView(this);
         cardImage.setLayoutParams(lp);
-        Drawable c = getResources().getDrawable(getResources().getIdentifier(gameData.getDrawStack().getFirstCard().getImagePath(), DRAWABLE, getPackageName()));
+        Drawable c = getResources().getDrawable(getResources().getIdentifier(gameLogicHandler.getGameData().getDrawStack().getFirstCard().getImagePath(), DRAWABLE, getPackageName()));
         cardImage.setImageDrawable(c);
         cardImage.setTag(DISCARD_PILE);
         cardImage.setOnLongClickListener(this);
         discardPileLayout.addView(cardImage);
-
+       // visualizePhase();
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
@@ -98,7 +102,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 Card drawStackCard = null;
                 String imagePath = "";
                 try {
-                    drawStackCard = gameData.getDrawStack().drawCard();
+                    drawStackCard = gameLogicHandler.drawCard(gameLogicHandler.getGameData().getActivePlayerId(), StackType.DRAW_STACK);
                     imagePath= drawStackCard.getImagePath();
                 } catch (EmptyCardStackException e) {
                     e.printStackTrace();
@@ -108,15 +112,39 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 cardImage.setImageDrawable(c);
                 cardImage.setTag(DISCARD_PILE);
                 cardImage.setOnLongClickListener(GameActivity.this);
-                gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().addCard(drawStackCard);
+                gameLogicHandler.getGameData().getPlayers().get(gameLogicHandler.getGameData().getActivePlayerId()).getHand().addCard(drawStackCard);
                 deck.addView(cardImage);
+
             }
         });
     }
 
+
     public void startShufflingActivity() {
         Intent shufflingActivity = new Intent(this, ShufflingActivity.class);
         startActivity(shufflingActivity);
+    }
+
+    public void visualizePhase(){
+        ImageView drawStack = findViewById(R.id.ID_stack);
+        LinearLayout layoffStack = findViewById(R.id.ID_discard_layout);
+        switch(GameLogicHandler.getInstance().getGameData().getPhase()){
+
+            case DRAW_PHASE:
+                Toast.makeText(this, "DRAWPHASE", Toast.LENGTH_SHORT).show();
+
+
+                drawStack.setBackgroundColor(Color.rgb(0,255,224));
+                break;
+            case LAYOFF_PHASE:
+                Toast.makeText(this, "LAYOFFPHASE", Toast.LENGTH_SHORT).show();
+
+                drawStack.setBackgroundColor(Color.argb(100,0,0,0));
+                layoffStack.setBackgroundColor(Color.rgb(0,255,224));
+                break;
+            case END_TURN_PHASE:
+                break;
+        }
     }
 
     @Override
@@ -140,8 +168,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     public void showHandCards() {
-        Map<String, Player> players = gameData.getPlayers();
-        Map<Integer, Card> cards = players.get(gameData.getActivePlayerId()).getHand().getCardList();
+        Map<String, Player> players = GameLogicHandler.getInstance().getGameData().getPlayers();
+        Map<Integer, Card> cards = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(-70, 0, 0, 0);
         for (Card card : cards.values()) {
@@ -159,6 +187,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void switchPlayerName(TextView p, TextView q) {
         p.setText(player1Name);
         q.setText(player2Name);
+    }
+
+    public void drawLayoffStack(){
+
     }
 
     public LinearLayout getDeck() {
