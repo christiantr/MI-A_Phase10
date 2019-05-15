@@ -27,6 +27,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private LinearLayout discardPileLayout;
     private TextView player1;
     private TextView player2;
+    private TextView score;
     private GameData gameData;
     private String player1Name;
     private String player2Name;
@@ -45,11 +46,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         Intent intent = getIntent();
         player1 = findViewById(R.id.ID_player_1);
         player2 = findViewById(R.id.ID_player_2);
+        score = findViewById(R.id.ID_score);
         // Capture the layout's TextView and set the string as its text
         player1Name = intent.getStringExtra(MainActivity.FIRST_PLAYER);
         player2Name = intent.getStringExtra(MainActivity.SECOND_PLAYER);
         player1.setText(player1Name);
-        player2.setText(player1Name);
+        player2.setText(player2Name);
         gameLogicHandler = GameLogicHandler.getInstance();
         gameLogicHandler.initializeGame();
         gameLogicHandler.addPlayer(new Player("player_1"));
@@ -99,7 +101,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 String imagePath = "";
                 try {
                     drawStackCard = gameData.getDrawStack().drawCard();
-                    imagePath= drawStackCard.getImagePath();
+                    imagePath = drawStackCard.getImagePath();
                 } catch (EmptyCardStackException e) {
                     e.printStackTrace();
                 }
@@ -171,6 +173,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public TextView getPlayer2() {
         return player2;
+    }
+
+    public TextView getScore() {
+        return score;
     }
 
     public LinearLayout getDiscardPileLayout() {

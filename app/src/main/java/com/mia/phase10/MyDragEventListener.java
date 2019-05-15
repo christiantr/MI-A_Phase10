@@ -11,10 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mia.phase10.classes.GameData;
+import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+
+import java.util.Map;
 
 public class MyDragEventListener implements View.OnDragListener {
 
@@ -78,14 +81,19 @@ public class MyDragEventListener implements View.OnDragListener {
                 // remove old card from discard pile
                 (gameActivity.getDiscardPileLayout()).removeAllViews();
                 // switch player and remove cards from hand from active player
+                Map<String, Player> players = gameData.getPlayers();
                 if (gameData.getActivePlayerId().equals("player_1")) {
                     gameData.setActivePlayerId("player_2");
+                    Player activePlayer = players.get(gameData.getActivePlayerId());
                     (gameActivity.getDeck()).removeAllViews();
+                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
                     gameActivity.switchPlayerName(gameActivity.getPlayer2(), gameActivity.getPlayer1());
 
                 } else {
                     gameData.setActivePlayerId("player_1");
+                    Player activePlayer = players.get(gameData.getActivePlayerId());
                     (gameActivity.getDeck()).removeAllViews();
+                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
                     gameActivity.switchPlayerName(gameActivity.getPlayer1(), gameActivity.getPlayer2());
                 }
                 gameActivity.showHandCards();
