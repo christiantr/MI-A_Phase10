@@ -156,69 +156,88 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
             app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
             app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
+
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigationView"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
         android:background="@color/colorAccent"
+        android:layout_gravity="end"
         android:fitsSystemWindows="true"
         android:fontFamily="@font/benchnine"
+        android:maxWidth="100dp">
 
-        android:maxWidth="100dp"
-        app:itemTextColor="#FFFFFF"
-        app:menu="@menu/menu">
+        <LinearLayout
+            android:layout_width="221dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:scrollbars="vertical">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/ID_score_label"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/benchnine"
+                android:text="Punkte"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/ID_score"
-                    android:layout_width="62dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="64dp"
-                    android:fontFamily="@font/benchnine"
-                    android:text="Punkte"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/ID_more"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/ID_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/benchnine"
+                android:text="45"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/ID_phase"
-                    android:layout_width="62dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="64dp"
-                    android:fontFamily="@font/benchnine"
-                    android:text="Phase 2"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/ID_score"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/ID_phase_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/benchnine"
+                android:text="aktuelle Phase"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_score"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/ID_more"
-                    android:layout_width="62dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="110dp"
-                    android:fontFamily="@font/benchnine"
-                    android:text="mehr"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.NavigationView>
+            <TextView
+                android:id="@+id/ID_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/benchnine"
+                android:text="3"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/ID_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:clickable="true"
+                android:fontFamily="@font/benchnine"
+                android:text="mehr"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.DrawerLayout>
 
