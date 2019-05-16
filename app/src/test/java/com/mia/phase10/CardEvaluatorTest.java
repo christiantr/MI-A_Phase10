@@ -353,9 +353,13 @@ public class CardEvaluatorTest {
 
     @Test
     public void testCheckIfInARowOnlySimpleCardsTrue(){
-        list1.add(b1);
-        list1.add(b2);
-        list1.add(b3);
+        list1.add(b4);
+        list1.add(b5);
+        list1.add(b6);
+        list1.add(b7);
+        list1.add(b8);
+        list1.add(b9);
+        list1.add(b10);
         assertTrue(evaluator.checkIfInARow(list1));
     }
 
