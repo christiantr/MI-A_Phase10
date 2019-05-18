@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,59 +41,11 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        GameLogicHandler.getInstance().setGameActivity(this);
         super.onCreate(savedInstanceState);
+       // Initialize View and set Listeners
         setContentView(R.layout.activity_game);
-        final GameActivity that = this;
-        final GameLogicHandler gameLogicHandler;
-        // Get the Intent that started this activity and extract the string
-        Intent intent = getIntent();
-        player1 = findViewById(R.id.ID_player_1);
-        player2 = findViewById(R.id.ID_player_2);
-        // Capture the layout's TextView and set the string as its text
-        player1Name = intent.getStringExtra(MainActivity.FIRST_PLAYER);
-        player2Name = intent.getStringExtra(MainActivity.SECOND_PLAYER);
-        player1.setText(player1Name);
-        player2.setText(player1Name);
-        gameLogicHandler = GameLogicHandler.getInstance();
-        gameLogicHandler.initializeGame();
-        gameLogicHandler.addPlayer(new Player("player_1"));
-        gameLogicHandler.addPlayer(new Player("player_2"));
-        try {
-            gameLogicHandler.startRound();
-        } catch (EmptyCardStackException e) {
-            e.printStackTrace();
-        }
-
-
-
         ImageView stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
-        discardPileLayout = findViewById(R.id.ID_discard_layout);
-        Button shuffle = findViewById(R.id.openShuffling);
-        shuffle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startShufflingActivity();
-            }
-        });
-
-        // shows cards form player1
-        showHandCards();
-
-        MyDragEventListener myDragEventListener = new MyDragEventListener(this);
-        discardPileLayout.setOnDragListener(myDragEventListener);
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(0, 0, 0, 0);
-        ImageView cardImage = new ImageView(this);
-        cardImage.setLayoutParams(lp);
-        Drawable c = getResources().getDrawable(getResources().getIdentifier(gameLogicHandler.getGameData().getDrawStack().getFirstCard().getImagePath(), DRAWABLE, getPackageName()));
-        cardImage.setImageDrawable(c);
-        cardImage.setTag(DISCARD_PILE);
-        cardImage.setOnLongClickListener(this);
-        discardPileLayout.addView(cardImage);
-       // visualizePhase();
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
@@ -102,24 +55,50 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 Card drawStackCard = null;
                 String imagePath = "";
                 try {
-                    drawStackCard = gameLogicHandler.drawCard(gameLogicHandler.getGameData().getActivePlayerId(), StackType.DRAW_STACK);
-                    imagePath= drawStackCard.getImagePath();
+                     GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.DRAW_STACK);
                 } catch (EmptyCardStackException e) {
                     e.printStackTrace();
                 }
-                cardImage.setLayoutParams(lp);
-                Drawable c = getResources().getDrawable(getResources().getIdentifier(imagePath, DRAWABLE, getPackageName()));
-                cardImage.setImageDrawable(c);
-                cardImage.setTag(DISCARD_PILE);
-                cardImage.setOnLongClickListener(GameActivity.this);
-                gameLogicHandler.getGameData().getPlayers().get(gameLogicHandler.getGameData().getActivePlayerId()).getHand().addCard(drawStackCard);
-                deck.addView(cardImage);
-
             }
         });
+
+        //preparing gameData
+        GameLogicHandler.getInstance().initializeGame();
+        GameLogicHandler.getInstance().addPlayer(new Player("player_1"));
+        GameLogicHandler.getInstance().addPlayer(new Player("player_2"));
+        GameLogicHandler.getInstance().setGameActivity(this);
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            e.printStackTrace();
+        }
+
     }
 
+    public void visualize(){
 
+        //Visualizing Data from GameData (GUI drawing ONLY here)
+        View mainView =findViewById(R.id.id_main_screen);
+        mainView.invalidate();
+        visualizePhase();
+
+        //Visualizing cards of active player
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(-70, 0, 0, 0);
+        deck.removeAllViews();
+        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().values()) {
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setId(card.getId());
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameActivity.this);
+            deck.addView(cardImage);
+
+        }
+
+    }
     public void startShufflingActivity() {
         Intent shufflingActivity = new Intent(this, ShufflingActivity.class);
         startActivity(shufflingActivity);

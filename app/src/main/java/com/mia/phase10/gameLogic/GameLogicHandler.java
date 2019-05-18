@@ -55,7 +55,7 @@ public class GameLogicHandler {
         }
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
-        gameActivity.visualizePhase();
+       this.gameActivity.visualize();
     }
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
@@ -66,13 +66,13 @@ public class GameLogicHandler {
 
             this.gameData.nextPlayer();
             this.gameData.setPhase(GamePhase.DRAW_PHASE);
-            gameActivity.visualizePhase();
 
+            this.gameActivity.visualize();
         }catch(Exception c){
             throw new PlayerNotFoundException("Player not found!");
         }
     }
-    public Card drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
+    public void drawCard(String playerId, StackType stackType) throws EmptyCardStackException {
         Card card = null;
         switch(stackType){
 
@@ -86,8 +86,8 @@ public class GameLogicHandler {
 
         }
         this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
-        gameActivity.visualizePhase();
-        return card;
+        this.gameActivity.visualize();
+
     }
 
     public GameData getGameData(){
