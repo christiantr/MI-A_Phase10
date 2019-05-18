@@ -71,7 +71,11 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                 GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
                 Card c= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
-                GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
+                if (owner==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || owner==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
+                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
+                }else{
+                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().add(c);
+                }
 
 
                 owner.removeView(vw); //remove the dragged view

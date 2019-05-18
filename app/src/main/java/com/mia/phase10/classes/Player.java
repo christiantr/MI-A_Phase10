@@ -9,6 +9,7 @@ public class Player {
     private int points;
     private Hand hand;
     private ArrayList<Card> phaseCards;
+    private ArrayList<Card> phaseCards2;
     private Phase currentPhase;
 
     public Player(String id) {
@@ -16,6 +17,7 @@ public class Player {
         this.hand = new Hand();
         this.points = 0;
         this.phaseCards=new ArrayList<>();
+        this.phaseCards2=new ArrayList<>();
         currentPhase=Phase.PHASE_1;
     }
 
@@ -49,6 +51,14 @@ public class Player {
 
     public void setPhaseCards(ArrayList<Card> phaseCards) {
         this.phaseCards = phaseCards;
+    }
+
+    public ArrayList<Card> getPhaseCards2() {
+        return phaseCards2;
+    }
+
+    public void setPhaseCards2(ArrayList<Card> phaseCards2) {
+        this.phaseCards2 = phaseCards2;
     }
 
     public Phase getCurrentPhase() {

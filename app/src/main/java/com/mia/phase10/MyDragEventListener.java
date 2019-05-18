@@ -76,7 +76,11 @@ public class MyDragEventListener implements View.OnDragListener {
                 // remove old card from discard pile
                 (GameLogicHandler.getInstance().getGameActivity().getDiscardPileLayout()).removeAllViews();
                 (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()).removeAllViews();
                 (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutR()).removeAllViews();
                 GameLogicHandler.getInstance().getGameActivity().showPlaystation2Cards();
 
                 // switch player and remove cards from hand from active player

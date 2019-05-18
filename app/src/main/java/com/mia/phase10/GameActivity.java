@@ -31,6 +31,7 @@ import com.mia.phase10.gameLogic.StackType;
 import com.mia.phase10.gameLogic.Phase;
 
 
+import java.util.List;
 import java.util.Map;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
@@ -41,8 +42,16 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private TextView player1;
     private TextView player2;
     private TextView score;
+    private ImageView playstationP1Image;
+    private ImageView playstationP1ImageSeperated;
+    private ImageView playstationP2Image;
+    private ImageView playstationP2ImageSeperated;
     private LinearLayout playstationP1Layout;
+    private LinearLayout playstationP1LayoutL;
+    private LinearLayout playstationP1LayoutR;
     private LinearLayout playstationP2Layout;
+    private LinearLayout playstationP2LayoutL;
+    private LinearLayout playstationP2LayoutR;
     private Button check;
     private Button cancel;
     private String player1Name;
@@ -64,10 +73,30 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player1=findViewById(R.id.ID_player_1);
         player2=findViewById(R.id.ID_player_2);
         score=findViewById(R.id.ID_score);
+        playstationP1Image=findViewById(R.id.ID_p1_playstation);
+        playstationP2Image=findViewById(R.id.ID_p2_playstation);
+        playstationP1ImageSeperated=findViewById(R.id.ID_p1_playstation_two);
+        playstationP2ImageSeperated=findViewById(R.id.ID_p2_playstation_two);
         playstationP1Layout=findViewById(R.id.ID_p1_playstation_layout);
         playstationP2Layout=findViewById(R.id.ID_p2_playstation_layout);
+        playstationP1LayoutL=findViewById(R.id.ID_p1_playstation_two_layout_left);
+        playstationP1LayoutR=findViewById(R.id.ID_p1_playstation_two_layout_right);
+        playstationP2LayoutL=findViewById(R.id.ID_p2_playstation_layout_left);
+        playstationP2LayoutR=findViewById(R.id.ID_p2_playstation_layout_right);
         check=findViewById(R.id.checkPhase);
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameLogicHandler.getInstance().checkPhase();
+            }
+        });
         cancel=findViewById(R.id.Cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameLogicHandler.getInstance().getGameActivity().removeCardsFromPlaystationBackToHand();
+            }
+        });
 
         //Logic?
         Intent intent = getIntent();
@@ -81,6 +110,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
         MyDragEventListenerTwo myDrag = new MyDragEventListenerTwo();
         playstationP1Layout.setOnDragListener(myDrag);
+        playstationP1LayoutL.setOnDragListener(myDrag);
+        playstationP1LayoutR.setOnDragListener(myDrag);
+
 
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
@@ -126,6 +158,34 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     }
 
+    public void makePlaystationLayoutVisible(Phase p){
+        if (p==Phase.PHASE_4 ||p==Phase.PHASE_5 || p==Phase.PHASE_6 ||p==Phase.PHASE_8){
+            playstationP1ImageSeperated.setVisibility(View.INVISIBLE);
+            playstationP2ImageSeperated.setVisibility(View.INVISIBLE);
+            playstationP1LayoutL.setVisibility(View.INVISIBLE);
+            playstationP1LayoutR.setVisibility(View.INVISIBLE);
+            playstationP2LayoutL.setVisibility(View.INVISIBLE);
+            playstationP2LayoutR.setVisibility(View.INVISIBLE);
+            playstationP1Image.setVisibility(View.VISIBLE);
+            playstationP2Image.setVisibility(View.VISIBLE);
+            playstationP1Layout.setVisibility(View.VISIBLE);
+            playstationP2Layout.setVisibility(View.VISIBLE);
+
+        }else{
+            playstationP1Image.setVisibility(View.INVISIBLE);
+            playstationP2Image.setVisibility(View.INVISIBLE);
+            playstationP1Layout.setVisibility(View.INVISIBLE);
+            playstationP2Layout.setVisibility(View.INVISIBLE);
+            playstationP1ImageSeperated.setVisibility(View.VISIBLE);
+            playstationP2ImageSeperated.setVisibility(View.VISIBLE);
+            playstationP1LayoutL.setVisibility(View.VISIBLE);
+            playstationP1LayoutR.setVisibility(View.VISIBLE);
+            playstationP2LayoutL.setVisibility(View.VISIBLE);
+            playstationP2LayoutR.setVisibility(View.VISIBLE);
+        }
+
+    }
+
     public void showHandCards() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(-70, 0, 0, 0);
@@ -152,7 +212,29 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             cardImage.setTag(DISCARD_PILE);
             cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setId(card.getId());
-            playstationP1Layout.addView(cardImage);
+            if(playstationP1Image.getVisibility()==View.VISIBLE){
+                playstationP1Layout.addView(cardImage);
+            }
+            else {
+                playstationP1LayoutL.addView(cardImage);
+                showPlaystation1RCards();
+            }
+            cardImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void showPlaystation1RCards() {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+            ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
+            cardImage.setId(card.getId());
+            playstationP1LayoutR.addView(cardImage);
             cardImage.setVisibility(View.VISIBLE);
         }
     }
@@ -167,10 +249,33 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             cardImage.setTag(DISCARD_PILE);
             cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setId(card.getId());
-            playstationP2Layout.addView(cardImage);
+            if(playstationP2Image.getVisibility()==View.VISIBLE){
+                playstationP2Layout.addView(cardImage);
+            }
+            else {
+                playstationP2LayoutL.addView(cardImage);
+                showPlaystation2RCards();
+            }
             cardImage.setVisibility(View.VISIBLE);
         }
     }
+
+    public void showPlaystation2RCards() {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+            ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
+            cardImage.setId(card.getId());
+            playstationP1LayoutR.addView(cardImage);
+            cardImage.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void setVisibilityOfButtons(){
         check.setVisibility(View.INVISIBLE);
         cancel.setVisibility(View.INVISIBLE);
@@ -182,6 +287,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancel.setVisibility(View.INVISIBLE);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
+
         for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
             ImageView cardImage = new ImageView(GameActivity.this);
             cardImage.setLayoutParams(lp);
@@ -192,7 +298,24 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             cardImage.setId(card.getId());
             deck.addView(cardImage);
         }
-        playstationP1Layout.removeAllViews();
+        if(playstationP1Image.getVisibility()==View.VISIBLE){
+            playstationP1Layout.removeAllViews();
+        }
+        else {
+            for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+                ImageView cardImage = new ImageView(GameActivity.this);
+                cardImage.setLayoutParams(lp);
+                Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+                cardImage.setImageDrawable(c);
+                cardImage.setTag(DISCARD_PILE);
+                cardImage.setOnLongClickListener(GameActivity.this);
+                cardImage.setId(card.getId());
+                deck.addView(cardImage);
+            }
+            playstationP1LayoutL.removeAllViews();
+            playstationP1LayoutR.removeAllViews();
+        }
+
     }
 
     public void startShufflingActivity() {
@@ -267,10 +390,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         return discardPileLayout;
     }
 
-    public LinearLayout getPlaystationP1Layout() {
-        return playstationP1Layout;
-    }
-
     public Button getCheck() {
         return check;
     }
@@ -279,7 +398,27 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         return cancel;
     }
 
+    public LinearLayout getPlaystationP1Layout() {
+        return playstationP1Layout;
+    }
+
     public LinearLayout getPlaystationP2Layout() {
         return playstationP2Layout;
+    }
+
+    public LinearLayout getPlaystationP1LayoutL() {
+        return playstationP1LayoutL;
+    }
+
+    public LinearLayout getPlaystationP1LayoutR() {
+        return playstationP1LayoutR;
+    }
+
+    public LinearLayout getPlaystationP2LayoutL() {
+        return playstationP2LayoutL;
+    }
+
+    public LinearLayout getPlaystationP2LayoutR() {
+        return playstationP2LayoutR;
     }
 }
