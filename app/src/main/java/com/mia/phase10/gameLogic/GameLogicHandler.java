@@ -50,6 +50,7 @@ public class GameLogicHandler {
     }
 
     public void startRound()throws EmptyCardStackException{
+        this.getGameData().getDrawStack().mixStack();
         this.gameActivity.startShufflingActivity();
         for(Player p : gameData.getPlayers().values()){
             for(int i=0; i<10;i++){

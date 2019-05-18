@@ -24,17 +24,12 @@ import static com.mia.phase10.GameActivity.DRAWABLE;
 
 public class MyDragEventListenerTwo implements View.OnDragListener {
 
-    private GameActivity gameActivity = null;
-
-    public MyDragEventListenerTwo(GameActivity gameActivity) {
-        this.gameActivity = gameActivity;
+    public MyDragEventListenerTwo() {
     }
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
-        GameLogicHandler gameLogicHandler = GameLogicHandler.getInstance();
-        GameData gameData = gameLogicHandler.getGameData();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
         lp.height=200;
@@ -73,11 +68,10 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 v.invalidate();
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
-                gameActivity.getCheck().setVisibility(View.VISIBLE);
-                gameActivity.getCancel().setVisibility(View.VISIBLE);
-                Map<Integer, Card> cards = gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().getCardList();
-                Card c = cards.get(vw.getId());
-                gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards().add(c);
+                GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
+                Card c= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+                GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
 
 
                 owner.removeView(vw); //remove the dragged view

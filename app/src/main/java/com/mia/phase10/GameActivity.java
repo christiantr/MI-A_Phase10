@@ -60,7 +60,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_game);
         ImageView stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
-        discardPileLayout=findViewById(R.id.ID_deck);
+        discardPileLayout=findViewById(R.id.ID_discard_layout);
         player1=findViewById(R.id.ID_player_1);
         player2=findViewById(R.id.ID_player_2);
         score=findViewById(R.id.ID_score);
@@ -69,6 +69,18 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         check=findViewById(R.id.checkPhase);
         cancel=findViewById(R.id.Cancel);
 
+        //Logic?
+        Intent intent = getIntent();
+        player1Name = intent.getStringExtra(MainActivity.FIRST_PLAYER);
+        player2Name = intent.getStringExtra(MainActivity.SECOND_PLAYER);
+        player1.setText(player1Name);
+        player2.setText(player2Name);
+
+        MyDragEventListener myDragEventListener = new MyDragEventListener();
+        discardPileLayout.setOnDragListener(myDragEventListener);
+
+        MyDragEventListenerTwo myDrag = new MyDragEventListenerTwo();
+        playstationP1Layout.setOnDragListener(myDrag);
 
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override

@@ -1,5 +1,6 @@
 package com.mia.phase10;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.util.Log;
@@ -21,20 +22,14 @@ import java.util.Map;
 
 public class MyDragEventListener implements View.OnDragListener {
 
-    private GameActivity gameActivity = null;
-
-    public MyDragEventListener(GameActivity gameActivity) {
-        this.gameActivity = gameActivity;
+    public MyDragEventListener() {
     }
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
-        GameLogicHandler gameLogicHandler = GameLogicHandler.getInstance();
-        GameData gameData = gameLogicHandler.getGameData();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
         // Handles each of the expected events
@@ -73,36 +68,33 @@ public class MyDragEventListener implements View.OnDragListener {
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
                 try {
-                    gameLogicHandler.layoffCard(gameData.getActivePlayerId(), vw.getId()); //delete card of hand
+                    GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId()); //delete card of hand
                 } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                     e.printStackTrace();
                 }
 
                 // remove old card from discard pile
-                (gameActivity.getDiscardPileLayout()).removeAllViews();
-                (gameActivity.getPlaystationP1Layout()).removeAllViews();
-                (gameActivity.getPlaystationP2Layout()).removeAllViews();
-                 gameActivity.showPlaystation2Cards();
+                (GameLogicHandler.getInstance().getGameActivity().getDiscardPileLayout()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout()).removeAllViews();
+                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout()).removeAllViews();
+                GameLogicHandler.getInstance().getGameActivity().showPlaystation2Cards();
 
                 // switch player and remove cards from hand from active player
-                Map<String, Player> players = gameData.getPlayers();
-                if (gameData.getActivePlayerId().equals("player_1")) {
-                    gameData.setActivePlayerId("player_2");
-                    Player activePlayer = players.get(gameData.getActivePlayerId());
-                    (gameActivity.getDeck()).removeAllViews();
-                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
-                    gameActivity.switchPlayerName(gameActivity.getPlayer2(), gameActivity.getPlayer1());
+                if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals("player_1")) {
+                    GameLogicHandler.getInstance().getGameData().setActivePlayerId("player_2");
+                    (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
+                    GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
+                    GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer2(), GameLogicHandler.getInstance().getGameActivity().getPlayer1());
 
 
                 } else {
-                    gameData.setActivePlayerId("player_1");
-                    Player activePlayer = players.get(gameData.getActivePlayerId());
-                    (gameActivity.getDeck()).removeAllViews();
-                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
-                    gameActivity.switchPlayerName(gameActivity.getPlayer1(), gameActivity.getPlayer2());
+                    GameLogicHandler.getInstance().getGameData().setActivePlayerId("player_1");
+                    (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
+                    GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
+                    GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer1(), GameLogicHandler.getInstance().getGameActivity().getPlayer2());
                 }
-                gameActivity.showPlaystation1Cards();
-                gameActivity.showHandCards();
+                GameLogicHandler.getInstance().getGameActivity().showPlaystation1Cards();
+                GameLogicHandler.getInstance().getGameActivity().showHandCards();
 
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
