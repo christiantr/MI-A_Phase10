@@ -1,5 +1,8 @@
 package com.mia.phase10.gameLogic;
 
+import android.view.View;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.mia.phase10.GameActivity;
 import com.mia.phase10.classes.Card;
@@ -19,9 +22,7 @@ public class GameLogicHandler {
     private GameData gameData;
     private GameActivity gameActivity;
     //private constructor.
-    private GameLogicHandler(){
-
-    }
+    private GameLogicHandler(){}
 
     public static GameLogicHandler getInstance() {
         return glhInstance;
@@ -31,10 +32,13 @@ public class GameLogicHandler {
         this.gameActivity = gameActivity;
     }
 
+    public GameActivity getGameActivity() {
+        return gameActivity;
+    }
+
     public void initializeGame(){
         CardStack drawStack = new CardStack();
         drawStack.generateCardStack();
-
         CardStack layOffStack = new CardStack();
 
         this.gameData = new GameData(layOffStack,drawStack,new HashMap<String,Player>(),"");
@@ -46,7 +50,7 @@ public class GameLogicHandler {
     }
 
     public void startRound()throws EmptyCardStackException{
-
+        this.gameActivity.startShufflingActivity();
         for(Player p : gameData.getPlayers().values()){
             for(int i=0; i<10;i++){
                 Card c = this.gameData.getDrawStack().drawCard();
@@ -55,7 +59,7 @@ public class GameLogicHandler {
         }
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
-       this.gameActivity.visualize();
+        this.gameActivity.visualize();
     }
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
@@ -82,7 +86,7 @@ public class GameLogicHandler {
                 break;
             case LAYOFF_STACK:
                  card = gameData.getLayOffStack().getFirstCard();
-                gameData.getPlayers().get(playerId).getHand().addCard(card);
+                 gameData.getPlayers().get(playerId).getHand().addCard(card);
 
         }
         this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
@@ -103,4 +107,44 @@ public class GameLogicHandler {
         this.gameData = gson.fromJson(json,GameData.class);
     }
 
+
+    public void checkPhase() {
+        if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
+            this.gameActivity.setVisibilityOfButtons();
+                for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
+                    try {
+                        this.layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
+
+            if (this.gameData.getActivePlayerId().equals("player_1")) {
+                this.gameActivity.getDeck().removeAllViews();
+                this.gameActivity.getPlaystationP1Layout().removeAllViews();
+                this.gameActivity.getPlaystationP2Layout().removeAllViews();
+                this.gameActivity.showPlaystation2Cards();
+                gameData.setActivePlayerId("player_2");
+                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
+
+            } else {
+                this.gameActivity.getPlaystationP2Layout().removeAllViews();
+                this.gameActivity.showPlaystation2Cards();
+                gameData.setActivePlayerId("player_1");
+                this.gameActivity.getDeck().removeAllViews();
+                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
+                this.gameActivity.getPlaystationP1Layout().removeAllViews();
+
+            }
+            this.gameActivity.showHandCards();
+            this.gameActivity.showPlaystation1Cards();
+
+        } else {
+            this.gameActivity.removeCardsFromPlaystationBackToHand();
+            this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().clear();
+            Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

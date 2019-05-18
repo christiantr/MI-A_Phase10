@@ -30,8 +30,6 @@ public class GameData {
 
     }
 
-
-
     public CardStack getLayOffStack() {
         return layOffStack;
     }
