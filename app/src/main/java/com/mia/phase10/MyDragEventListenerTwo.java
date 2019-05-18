@@ -2,6 +2,7 @@ package com.mia.phase10;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
@@ -10,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.GameData;
-import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
@@ -19,11 +20,13 @@ import com.mia.phase10.gameLogic.GameLogicHandler;
 
 import java.util.Map;
 
-public class MyDragEventListener implements View.OnDragListener {
+import static com.mia.phase10.GameActivity.DRAWABLE;
+
+public class MyDragEventListenerTwo implements View.OnDragListener {
 
     private GameActivity gameActivity = null;
 
-    public MyDragEventListener(GameActivity gameActivity) {
+    public MyDragEventListenerTwo(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
     }
 
@@ -34,6 +37,7 @@ public class MyDragEventListener implements View.OnDragListener {
         GameData gameData = gameLogicHandler.getGameData();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
+        lp.height=200;
 
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
@@ -65,44 +69,16 @@ public class MyDragEventListener implements View.OnDragListener {
                 ClipData.Item item = event.getClipData().getItemAt(0);
                 // Gets the text data from the item.
                 String dragData = item.getText().toString();
-                // Displays a message containing the dragged data.
-                Toast.makeText(v.getContext(), "Dragged data is " + dragData, Toast.LENGTH_SHORT).show();
                 // Invalidates the view to force a redraw
                 v.invalidate();
-
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
-                try {
-                    gameLogicHandler.layoffCard(gameData.getActivePlayerId(), vw.getId()); //delete card of hand
-                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                    e.printStackTrace();
-                }
+                gameActivity.getCheck().setVisibility(View.VISIBLE);
+                gameActivity.getCancel().setVisibility(View.VISIBLE);
+                Map<Integer, Card> cards = gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().getCardList();
+                Card c = cards.get(vw.getId());
+                gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards().add(c);
 
-                // remove old card from discard pile
-                (gameActivity.getDiscardPileLayout()).removeAllViews();
-                (gameActivity.getPlaystationP1Layout()).removeAllViews();
-                (gameActivity.getPlaystationP2Layout()).removeAllViews();
-                 gameActivity.showPlaystation2Cards();
-
-                // switch player and remove cards from hand from active player
-                Map<String, Player> players = gameData.getPlayers();
-                if (gameData.getActivePlayerId().equals("player_1")) {
-                    gameData.setActivePlayerId("player_2");
-                    Player activePlayer = players.get(gameData.getActivePlayerId());
-                    (gameActivity.getDeck()).removeAllViews();
-                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
-                    gameActivity.switchPlayerName(gameActivity.getPlayer2(), gameActivity.getPlayer1());
-
-
-                } else {
-                    gameData.setActivePlayerId("player_1");
-                    Player activePlayer = players.get(gameData.getActivePlayerId());
-                    (gameActivity.getDeck()).removeAllViews();
-                    gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
-                    gameActivity.switchPlayerName(gameActivity.getPlayer1(), gameActivity.getPlayer2());
-                }
-                gameActivity.showPlaystation1Cards();
-                gameActivity.showHandCards();
 
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
@@ -110,17 +86,14 @@ public class MyDragEventListener implements View.OnDragListener {
                 vw.setLayoutParams(lp);
                 container.addView(vw);//Add the dragged view
                 vw.setVisibility(View.VISIBLE);//finally set Visibility to VISIBLE
+
+
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
 
             case DragEvent.ACTION_DRAG_ENDED:
                 // Invalidates the view to force a redraw
                 v.invalidate();
-                // Does a getResult(), and displays what happened.
-                if (event.getResult())
-                    Toast.makeText(v.getContext(), "The drop was handled.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(v.getContext(), "The drop didn't work.", Toast.LENGTH_SHORT).show();
                 // returns true; the value is ignored.
                 return true;
             // An unknown action type was received.

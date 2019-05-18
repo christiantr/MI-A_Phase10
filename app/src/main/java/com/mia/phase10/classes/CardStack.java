@@ -22,28 +22,30 @@ public class CardStack {
         int count = 1;
         Colour colour = null;
         String imagePath = "";
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 12; j++) {
-                switch (i) {
-                    case (1):
-                        colour = Colour.BLUE;
-                        imagePath = "card_b_" + j;
-                        break;
-                    case (2):
-                        colour = Colour.GREEN;
-                        imagePath = "card_g_" + j;
-                        break;
-                    case (3):
-                        colour = Colour.RED;
-                        imagePath = "card_r_" + j;
-                        break;
-                    case (4):
-                        colour = Colour.YELLOW;
-                        imagePath = "card_y_" + j;
-                        break;
+        for (int k = 1; k <= 2; k++) {
+            for (int i = 1; i <= 4; i++) {
+                for (int j = 1; j <= 12; j++) {
+                    switch (i) {
+                        case (1):
+                            colour = Colour.BLUE;
+                            imagePath = "card_b_" + j;
+                            break;
+                        case (2):
+                            colour = Colour.GREEN;
+                            imagePath = "card_g_" + j;
+                            break;
+                        case (3):
+                            colour = Colour.RED;
+                            imagePath = "card_r_" + j;
+                            break;
+                        case (4):
+                            colour = Colour.YELLOW;
+                            imagePath = "card_y_" + j;
+                            break;
+                    }
+                    cardList.add(new SimpleCard(count, imagePath, colour, j));
+                    count += 1;
                 }
-                cardList.add(new SimpleCard(count, imagePath, colour, j));
-                count += 1;
             }
         }
     }
