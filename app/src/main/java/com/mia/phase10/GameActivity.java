@@ -12,12 +12,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.exceptionClasses.EmptyHandException;
+import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
+import com.mia.phase10.gameLogic.CardEvaluator;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.Phase;
 
 import java.util.Map;
 
@@ -33,7 +39,25 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private String player2Name;
     static final String DISCARD_PILE = "DISCARD PILE";
     static final String DRAWABLE = "drawable";
+    private LinearLayout playstationP1Layout;
+    private LinearLayout playstationP2Layout;
+    private Button check;
+    private Button cancel;
+    GameLogicHandler gameLogicHandler;
 
+
+
+    public Button getCheck() {
+        return check;
+    }
+
+    public Button getCancel() {
+        return cancel;
+    }
+
+    public LinearLayout getPlaystationP2Layout() {
+        return playstationP2Layout;
+    }
 
     @SuppressLint("CutPasteId")
     @Override
@@ -41,7 +65,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        GameLogicHandler gameLogicHandler;
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         player1 = findViewById(R.id.ID_player_1);
@@ -54,6 +77,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player2.setText(player2Name);
         gameLogicHandler = GameLogicHandler.getInstance();
         gameLogicHandler.initializeGame();
+        gameLogicHandler.getGameData().getDrawStack().mixStack();
         gameLogicHandler.addPlayer(new Player("player_1"));
         gameLogicHandler.addPlayer(new Player("player_2"));
         try {
@@ -67,6 +91,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         ImageView stack = findViewById(R.id.ID_stack);
         deck = findViewById(R.id.ID_deck);
         discardPileLayout = findViewById(R.id.ID_discard_layout);
+        playstationP1Layout = findViewById(R.id.ID_p1_playstation_layout);
+        playstationP2Layout = findViewById(R.id.ID_p2_playstation_layout);
+
         Button shuffle = findViewById(R.id.openShuffling);
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +108,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         MyDragEventListener myDragEventListener = new MyDragEventListener(this);
         discardPileLayout.setOnDragListener(myDragEventListener);
 
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
         ImageView cardImage = new ImageView(this);
@@ -91,11 +119,30 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cardImage.setOnLongClickListener(this);
         discardPileLayout.addView(cardImage);
 
+        MyDragEventListenerTwo myDrag = new MyDragEventListenerTwo(this);
+        playstationP1Layout.setOnDragListener(myDrag);
+
+        check = findViewById(R.id.checkPhase);
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPhase();
+            }
+        });
+        cancel = findViewById(R.id.Cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeCardsFromPlaystationBackToHand();
+            }
+        });
+
+
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-                lp.setMargins(-70, 0, 0, 0);
+                lp.setMargins(0, 0, 0, 0);
                 ImageView cardImage = new ImageView(GameActivity.this);
                 Card drawStackCard = null;
                 String imagePath = "";
@@ -110,10 +157,108 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 cardImage.setImageDrawable(c);
                 cardImage.setTag(DISCARD_PILE);
                 cardImage.setOnLongClickListener(GameActivity.this);
+                cardImage.setId(drawStackCard.getId());
                 gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().addCard(drawStackCard);
                 deck.addView(cardImage);
             }
         });
+    }
+
+    private void checkPhase() {
+        Phase phase = Phase.PHASE_4; //later get from Player
+        CardEvaluator evaluator = CardEvaluator.getInstance();
+
+        if (evaluator.checkPhase(phase, gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
+            check.setVisibility(View.INVISIBLE);
+            cancel.setVisibility(View.INVISIBLE);
+            removeCardsFromHand();
+            Toast.makeText(this, "The phase is correct!", Toast.LENGTH_SHORT).show();
+
+            if (gameData.getActivePlayerId().equals("player_1")) {
+                getDeck().removeAllViews();
+                getPlaystationP1Layout().removeAllViews();
+                getPlaystationP2Layout().removeAllViews();
+                showPlaystation2Cards();
+                gameData.setActivePlayerId("player_2");
+                switchPlayerName(getPlayer2(), getPlayer1());
+
+            } else {
+                getPlaystationP2Layout().removeAllViews();
+                showPlaystation2Cards();
+                gameData.setActivePlayerId("player_1");
+                getDeck().removeAllViews();
+                switchPlayerName(getPlayer1(), getPlayer2());
+                getPlaystationP1Layout().removeAllViews();
+
+            }
+            showHandCards();
+            showPlaystation1Cards();
+        } else {
+            removeCardsFromPlaystationBackToHand();
+            Toast.makeText(this, "The phase is not correct!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void removeCardsFromHand(){
+        for (Card card : gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards()) {
+            try {
+                gameLogicHandler.layoffCard(gameData.getActivePlayerId(), card.getId()); //delete card of hand
+            } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void showPlaystation1Cards() {
+        Map<String, Player> players = gameData.getPlayers();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        for (Card card : gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards()) {
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameActivity.this);
+            cardImage.setId(card.getId());
+            playstationP1Layout.addView(cardImage);
+            cardImage.setVisibility(View.VISIBLE);
+        }
+    }
+    public void showPlaystation2Cards() {
+        Map<String, Player> players = gameData.getPlayers();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        for (Card card : gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards()) {
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameActivity.this);
+            cardImage.setId(card.getId());
+            playstationP2Layout.addView(cardImage);
+            cardImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void removeCardsFromPlaystationBackToHand() {
+        check.setVisibility(View.INVISIBLE);
+        cancel.setVisibility(View.INVISIBLE);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        for (Card card : gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards()) {
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setLayoutParams(lp);
+            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+            cardImage.setImageDrawable(c);
+            cardImage.setTag(DISCARD_PILE);
+            cardImage.setOnLongClickListener(GameActivity.this);
+            cardImage.setId(card.getId());
+            deck.addView(cardImage);
+        }
+        playstationP1Layout.removeAllViews();
+        gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards().clear();
     }
 
     public void startShufflingActivity() {
@@ -145,7 +290,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         Map<String, Player> players = gameData.getPlayers();
         Map<Integer, Card> cards = players.get(gameData.getActivePlayerId()).getHand().getCardList();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(-70, 0, 0, 0);
+        lp.setMargins(0, 0, 0, 0);
         for (Card card : cards.values()) {
             ImageView cardImage = new ImageView(GameActivity.this);
             cardImage.setLayoutParams(lp);
@@ -182,4 +327,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public LinearLayout getDiscardPileLayout() {
         return discardPileLayout;
     }
+
+    public LinearLayout getPlaystationP1Layout() {
+        return playstationP1Layout;
+    }
+
 }
