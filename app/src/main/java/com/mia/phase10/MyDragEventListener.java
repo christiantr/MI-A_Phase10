@@ -80,6 +80,10 @@ public class MyDragEventListener implements View.OnDragListener {
 
                 // remove old card from discard pile
                 (gameActivity.getDiscardPileLayout()).removeAllViews();
+                (gameActivity.getPlaystationP1Layout()).removeAllViews();
+                (gameActivity.getPlaystationP2Layout()).removeAllViews();
+                 gameActivity.showPlaystation2Cards();
+
                 // switch player and remove cards from hand from active player
                 Map<String, Player> players = gameData.getPlayers();
                 if (gameData.getActivePlayerId().equals("player_1")) {
@@ -88,7 +92,6 @@ public class MyDragEventListener implements View.OnDragListener {
                     (gameActivity.getDeck()).removeAllViews();
                     gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
                     gameActivity.switchPlayerName(gameActivity.getPlayer2(), gameActivity.getPlayer1());
-                    gameActivity.removeCardsFromPlaystation();
 
 
                 } else {
@@ -97,10 +100,9 @@ public class MyDragEventListener implements View.OnDragListener {
                     (gameActivity.getDeck()).removeAllViews();
                     gameActivity.getScore().setText(String.valueOf(activePlayer.getPoints()));
                     gameActivity.switchPlayerName(gameActivity.getPlayer1(), gameActivity.getPlayer2());
-                    gameActivity.removeCardsFromPlaystation();
                 }
+                gameActivity.showPlaystation1Cards();
                 gameActivity.showHandCards();
-                //gameActivity.showPlaystationCards();
 
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout

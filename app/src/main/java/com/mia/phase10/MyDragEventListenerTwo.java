@@ -77,7 +77,7 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 gameActivity.getCancel().setVisibility(View.VISIBLE);
                 Map<Integer, Card> cards = gameData.getPlayers().get(gameData.getActivePlayerId()).getHand().getCardList();
                 Card c = cards.get(vw.getId());
-                gameActivity.getPhaseCards().add(c);
+                gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards().add(c);
 
 
                 owner.removeView(vw); //remove the dragged view
