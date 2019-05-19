@@ -1,10 +1,12 @@
 package com.mia.phase10.gameLogic;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mia.phase10.GameActivity;
+import com.mia.phase10.MainActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
@@ -195,5 +197,14 @@ public class GameLogicHandler {
             }
 
         }
+    }
+
+    public void setPlayerNames(Intent intent) {
+        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
+        this.getGameActivity().setPlayer1Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
+        this.gameData.nextPlayer();
+        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
+        this.getGameActivity().setPlayer2Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
+        this.gameData.nextPlayer();
     }
 }
