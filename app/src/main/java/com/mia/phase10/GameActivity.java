@@ -42,6 +42,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private TextView player1;
     private TextView player2;
     private TextView score;
+    private TextView phase;
     private ImageView playstationP1Image;
     private ImageView playstationP1ImageSeperated;
     private ImageView playstationP2Image;
@@ -73,6 +74,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player1=findViewById(R.id.ID_player_1);
         player2=findViewById(R.id.ID_player_2);
         score=findViewById(R.id.ID_score);
+        phase=findViewById(R.id.ID_phase);
         playstationP1Image=findViewById(R.id.ID_p1_playstation);
         playstationP2Image=findViewById(R.id.ID_p2_playstation);
         playstationP1ImageSeperated=findViewById(R.id.ID_p1_playstation_two);
@@ -149,12 +151,21 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         //Visualizing Data from GameData (GUI drawing ONLY here)
         View mainView =findViewById(R.id.drawerLayout);
         mainView.invalidate();
+        this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
         visualizePhase();
+
+        //Visualizing playstation of other player
+
+        this.getPlaystationP1Layout().removeAllViews();
+        this.getPlaystationP1LayoutL().removeAllViews();
+        this.getPlaystationP1LayoutR().removeAllViews();
+        this.getDeck().removeAllViews();
 
         //Visualizing cards of active player
         showHandCards();
         showPlaystation1Cards();
-        showPlaystation2Cards();
+        showPlaystation1RCards();
+
 
     }
 
@@ -188,7 +199,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public void showHandCards() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(-70, 0, 0, 0);
+        lp.setMargins(0, 0, 0, 0);
         deck.removeAllViews();
         for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().values()) {
             ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
@@ -217,7 +228,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             }
             else {
                 playstationP1LayoutL.addView(cardImage);
-                showPlaystation1RCards();
             }
             cardImage.setVisibility(View.VISIBLE);
         }
@@ -254,7 +264,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             }
             else {
                 playstationP2LayoutL.addView(cardImage);
-                showPlaystation2RCards();
             }
             cardImage.setVisibility(View.VISIBLE);
         }
@@ -271,7 +280,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             cardImage.setTag(DISCARD_PILE);
             cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setId(card.getId());
-            playstationP1LayoutR.addView(cardImage);
+            playstationP2LayoutR.addView(cardImage);
             cardImage.setVisibility(View.VISIBLE);
         }
     }
@@ -283,8 +292,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
 
     public void removeCardsFromPlaystationBackToHand() {
-        check.setVisibility(View.INVISIBLE);
-        cancel.setVisibility(View.INVISIBLE);
+        setVisibilityOfButtons();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
 
@@ -315,6 +323,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             playstationP1LayoutL.removeAllViews();
             playstationP1LayoutR.removeAllViews();
         }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
 
     }
 

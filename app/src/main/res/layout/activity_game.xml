@@ -50,11 +50,11 @@
 
         <Button
             android:id="@+id/checkPhase"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="check"
@@ -68,18 +68,21 @@
 
         <Button
             android:id="@+id/Cancel"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="cancel"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.438"
+            app:layout_constraintHorizontal_bias="0.478"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.684" />
 
         <ImageView
             android:id="@+id/ID_p2"
@@ -154,7 +157,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
-            app:layout_constraintHorizontal_bias="0.787"
+            app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
             app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
 
@@ -166,7 +169,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
-            app:layout_constraintHorizontal_bias="0.212"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
             app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
 
@@ -208,19 +211,22 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toTopOf="@+id/ID_deck"
             app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/playstation_two" />
 
         <ImageView
             android:id="@+id/ID_stack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="74dp"
+            android:layout_height="127dp"
             android:layout_marginEnd="16dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
+            app:layout_constraintVertical_bias="0.516"
             app:srcCompat="@drawable/stack" />
 
         <LinearLayout
@@ -245,11 +251,11 @@
 
         <LinearLayout
             android:id="@+id/ID_p1_playstation_two_layout_left"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="90dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
@@ -260,16 +266,16 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ID_p1_playstation_two_layout_right"
-            app:layout_constraintHorizontal_bias="0.943"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="@+id/ID_p1_playstation_two"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.468">
+            app:layout_constraintVertical_bias="0.47">
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_p1_playstation_two_layout_right"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="90dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -283,10 +289,10 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
-            app:layout_constraintHorizontal_bias="0.645"
+            app:layout_constraintHorizontal_bias="0.657"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.468" />
+            app:layout_constraintVertical_bias="0.47" />
 
         <TextView
             android:id="@+id/ID_player_2"

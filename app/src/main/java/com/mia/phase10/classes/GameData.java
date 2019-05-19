@@ -78,7 +78,6 @@ public class GameData {
         Iterator<Player> iter = this.players.values().iterator();
         int index =0;
 
-
         if (activePlayerId ==""){
             this.activePlayerId = this.players.values().iterator().next().getId();
         }else {

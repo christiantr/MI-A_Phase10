@@ -53,7 +53,7 @@ public class GameLogicHandler {
 
     public void startRound() throws EmptyCardStackException {
         this.getGameData().getDrawStack().mixStack();
-        this.gameActivity.startShufflingActivity();
+        //this.gameActivity.startShufflingActivity();
         for (Player p : gameData.getPlayers().values()) {
             for (int i = 0; i < 10; i++) {
                 Card c = this.gameData.getDrawStack().drawCard();
@@ -132,8 +132,6 @@ public class GameLogicHandler {
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
                 if (this.gameData.getActivePlayerId().equals("player_1")) {
-                    this.gameActivity.getDeck().removeAllViews();
-                    this.gameActivity.getPlaystationP1Layout().removeAllViews();
                     this.gameActivity.getPlaystationP2Layout().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
                     gameData.setActivePlayerId("player_2");
@@ -143,23 +141,18 @@ public class GameLogicHandler {
                     this.gameActivity.getPlaystationP2Layout().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
                     gameData.setActivePlayerId("player_1");
-                    this.gameActivity.getDeck().removeAllViews();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
-                    this.gameActivity.getPlaystationP1Layout().removeAllViews();
-
                 }
-                this.gameActivity.showHandCards();
-                this.gameActivity.showPlaystation1Cards();
+                this.gameActivity.visualize();
 
             } else {
                 this.gameActivity.removeCardsFromPlaystationBackToHand();
-                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().clear();
                 Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards(),
-                    this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards2())) {
-                this.gameActivity.setVisibilityOfButtons();
+            if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards(),
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2())) {
+                    this.gameActivity.setVisibilityOfButtons();
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
                     try {
                         this.layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
@@ -178,12 +171,10 @@ public class GameLogicHandler {
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
                 if (this.gameData.getActivePlayerId().equals("player_1")) {
-                    this.gameActivity.getDeck().removeAllViews();
-                    this.gameActivity.getPlaystationP1LayoutL().removeAllViews();
-                    this.gameActivity.getPlaystationP1LayoutR().removeAllViews();
                     this.gameActivity.getPlaystationP2LayoutL().removeAllViews();
                     this.gameActivity.getPlaystationP2LayoutR().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
+                    this.gameActivity.showPlaystation2RCards();
                     gameData.setActivePlayerId("player_2");
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
 
@@ -191,20 +182,15 @@ public class GameLogicHandler {
                     this.gameActivity.getPlaystationP2LayoutL().removeAllViews();
                     this.gameActivity.getPlaystationP2LayoutR().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
+                    this.gameActivity.showPlaystation2RCards();
                     gameData.setActivePlayerId("player_1");
-                    this.gameActivity.getDeck().removeAllViews();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
-                    this.gameActivity.getPlaystationP1LayoutL().removeAllViews();
-                    this.gameActivity.getPlaystationP1LayoutR().removeAllViews();
 
                 }
-                this.gameActivity.showHandCards();
-                this.gameActivity.showPlaystation1Cards();
+                this.gameActivity.visualize();
 
             } else {
                 this.gameActivity.removeCardsFromPlaystationBackToHand();
-                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().clear();
-                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().clear();
                 Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
 

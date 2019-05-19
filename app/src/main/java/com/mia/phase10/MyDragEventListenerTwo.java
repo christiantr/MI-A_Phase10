@@ -68,10 +68,11 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 v.invalidate();
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
+
                 GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                 GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
                 Card c= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
-                if (owner==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || owner==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
+                if (v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
                     GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
                 }else{
                     GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().add(c);
