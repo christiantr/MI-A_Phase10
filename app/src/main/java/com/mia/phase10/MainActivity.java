@@ -1,6 +1,8 @@
 package com.mia.phase10;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,8 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.mia.phase10.network.IpAddressGet;
+import com.mia.phase10.network.Server;
 
+public class MainActivity extends AppCompatActivity {
+    private final String TAG = "MAIN";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
     private EditText ip;
@@ -56,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
-        String dummyIp = "1.1.1.1";
-        int dummyPort = 22;
-        hostPortIp.setText(String.format("Hosting at: %s : %d", dummyIp, dummyPort));
-        hostPortIp.setVisibility(View.VISIBLE);
+        AsyncTask server = new Server();
+        server.execute();
+        showIpAddress();
 
 
     }
@@ -89,5 +93,23 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(FIRST_PLAYER, firstPlayer.getText().toString());
         intent.putExtra(SECOND_PLAYER, secondPlayer.getText().toString());
         startActivity(intent);
+    }
+
+    private void showIpAddress() {
+        IpAddressGet finder = new IpAddressGet();
+        String ipAddress = finder.wifiIpAddress(getApplicationContext());
+        if (ipAddress != null) {
+            Log.i(TAG, String.format("IP: %s\n", ipAddress));
+            hostPortIp.setText(String.format("Hosting at: %s", ipAddress));
+            hostPortIp.setVisibility(View.VISIBLE);
+        } else {
+            hostPortIp.setText(String.format("WiFi not available!"));
+            hostPortIp.setTextColor(Color.RED);
+        }
+
+
+        hostPortIp.setVisibility(View.VISIBLE);
+
+
     }
 }
