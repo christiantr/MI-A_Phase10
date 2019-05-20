@@ -110,7 +110,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void visualize(){
 
         //Visualizing Data from GameData (GUI drawing ONLY here)
-        View mainView =findViewById(R.id.id_main_screen);
+        View mainView =findViewById(R.id.drawerLayout);
         mainView.invalidate();
         visualizePhase();
 
@@ -119,7 +119,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         lp.setMargins(-70, 0, 0, 0);
         deck.removeAllViews();
         for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().values()) {
-           cardImage.setId(card.getId());
+            ImageView cardImage = new ImageView(GameActivity.this);
+            cardImage.setId(card.getId());
             cardImage.setTag(DISCARD_PILE);
             cardImage.setOnLongClickListener(GameActivity.this);
             deck.addView(cardImage);
