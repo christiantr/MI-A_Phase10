@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.Host;
+import com.mia.phase10.network.TextTransportObject;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -28,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private Button joinGame;
     private Button hostGame;
     private Button connecToHost;
+    private Button testMessage;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.1.5";
+    AsyncTask client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         hostGame = (Button) findViewById(R.id.button_hostGame);
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
+        testMessage = (Button) findViewById(R.id.button_sendTestMessage);
         connecToHost.setOnClickListener(new View.OnClickListener() {
             //            @Override
             public void onClick(View view) {
@@ -49,8 +54,20 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                AsyncTask client = new Client(hostIpAddress, SERVER_PORT);
+                client = new Client(hostIpAddress, SERVER_PORT);
                 client.execute();
+                testMessage.setVisibility(View.VISIBLE);
+                connecToHost.setVisibility(View.GONE);
+                ip.setVisibility(View.GONE);
+            }
+        });
+
+        testMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Serializable obj = new TextTransportObject("Test message");
+                ((Client) client).sendObject(obj);
+
             }
         });
 
@@ -63,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         port.setVisibility(View.GONE);
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
-
+        testMessage.setVisibility(View.GONE);
 //        setContentView(R.layout.activity_main);
     }
 
@@ -93,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
         connecToHost.setVisibility(View.VISIBLE);
-
     }
 
 

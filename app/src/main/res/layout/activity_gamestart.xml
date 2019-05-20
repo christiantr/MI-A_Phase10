@@ -56,5 +56,11 @@
             android:layout_height="wrap_content"
             android:text="Connect" />
 
+        <Button
+            android:id="@+id/button_sendTestMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SendMessage" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

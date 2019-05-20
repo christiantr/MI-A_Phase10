@@ -53,20 +53,17 @@ public class Client extends AsyncTask {
         out.flush();
         Log.i(TAG, String.format("I/O created"));
         active = true;
-
-
-        Serializable obj = new TextTransportObject("Hello there.");
-        sendObject(obj);
-
-        Log.i(TAG, "message sent");
         in = new ObjectInputStream(
                 new BufferedInputStream(socket.getInputStream()));
-        Log.i(TAG, "in created");
-        try {
-            Object received = in.readObject();
-            Log.i(TAG, ((TextTransportObject) received).toString());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+
+
+        while(active) {
+            try {
+                Object received = in.readObject();
+                Log.i(TAG, ((TextTransportObject) received).toString());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -75,7 +72,7 @@ public class Client extends AsyncTask {
 
     }
 
-    private void sendObject(Serializable obj) {
+    public  void sendObject(Serializable obj) {
         Thread sent = new Thread(new SentObjectThread(out, obj));
         sent.start();
 
