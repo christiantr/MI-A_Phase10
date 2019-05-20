@@ -62,6 +62,25 @@ public class CardStack {
     public void addCard(Card c) {
         cardList.add(c);
     }
+    public Card drawLastCard(){
+        Card c  = null;
+
+        if(!this.cardList.isEmpty()){
+            c = cardList.remove(cardList.size()-1);
+        }
+
+        return c;
+    }
+
+    public Card getLastCard(){
+        Card c  = null;
+
+        if(!this.cardList.isEmpty()){
+            c = cardList.get(cardList.size()-1);
+        }
+
+        return c;
+    }
 
     public Card drawCard() throws EmptyCardStackException {
 

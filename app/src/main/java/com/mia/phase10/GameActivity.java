@@ -84,9 +84,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             e.printStackTrace();
         }
         Intent intent = getIntent();
-        GameLogicHandler.getInstance().setPlayerNames(intent);
-        player1.setText(player1Name);
-        player2.setText(player2Name);
+
     }
 
     private void initializeListeners() {
@@ -153,7 +151,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void visualize() {
         GameLogicHandler.getInstance().getGameActivity().makePlaystationLayoutVisible(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase());
         //Visualizing Data from GameData (GUI drawing ONLY here)
-
+        player1.setText(player1Name);
+        player2.setText(player2Name);
+        player1.invalidate();
+        player2.invalidate();
+        player1.requestLayout();
+        player2.requestLayout();
         View mainView =findViewById(R.id.drawerLayout);
         mainView.invalidate();
         this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
@@ -164,6 +167,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         this.getPlaystationP1Layout().removeAllViews();
         this.getPlaystationP1LayoutL().removeAllViews();
         this.getPlaystationP1LayoutR().removeAllViews();
+        this.getPlaystationP2Layout().removeAllViews();
+        this.getPlaystationP2LayoutL().removeAllViews();
+        this.getPlaystationP2LayoutR().removeAllViews();
         this.getDeck().removeAllViews();
         this.getDiscardPileLayout().removeAllViews();
 
@@ -171,13 +177,15 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         showHandCards();
         showPlaystation1Cards();
         showPlaystation1RCards();
+        showPlaystation2Cards();
+        showPlaystation2RCards();
         showLayOffStack();
     }
 
     private void showLayOffStack() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 
-            Card card= GameLogicHandler.getInstance().getGameData().getLayOffStack().getFirstCard();
+            Card card= GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard();
             ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setLayoutParams(lp);
             Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
@@ -273,7 +281,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void showPlaystation2Cards() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
+        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(player2Name).getPhaseCards()) {
             ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setLayoutParams(lp);
             Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
@@ -293,7 +301,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void showPlaystation2RCards() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(player2Name).getPhaseCards2()) {
             ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setLayoutParams(lp);
             Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
@@ -497,5 +505,11 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public LinearLayout getPlaystationP2LayoutR() {
         return playstationP2LayoutR;
+    }
+    public void setPlayer1(String name){
+        this.player1Name  = name;
+    }
+    public void setPlayer2(String name){
+        this.player2Name  = name;
     }
 }

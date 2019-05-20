@@ -3,9 +3,12 @@ package com.mia.phase10.classes;
 
 import com.mia.phase10.gameFlow.GamePhase;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class GameData {
 
@@ -75,7 +78,36 @@ public class GameData {
     }
 
     public void nextPlayer(){
-        Iterator<Player> iter = this.players.values().iterator();
+        Set<String> playerSet = this.players.keySet();
+        ArrayList<String> playerList = new ArrayList<String>(playerSet);
+        playerList.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
+        int found=-1;
+        int index = 0;
+        if(activePlayerId.equals("")){
+            this.activePlayerId = playerList.get(0);
+        }
+        else {
+            for (String name : playerList) {
+
+                if (name.equals(activePlayerId)) {
+                    found = index;
+                }
+                index++;
+            }
+            if(found+1<=playerList.size()-1){
+                activePlayerId=playerList.get(found+1);
+            }
+            else{
+                activePlayerId = playerList.get(0);
+            }
+        }
+       /* Iterator<Player> iter = this.players.values().iterator();
         int index =0;
 
         if (activePlayerId ==""){
@@ -90,6 +122,6 @@ public class GameData {
                     }
                 }
             }
-        }
+        }*/
     }
 }

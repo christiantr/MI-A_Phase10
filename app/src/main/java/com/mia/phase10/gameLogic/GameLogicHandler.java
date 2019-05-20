@@ -67,6 +67,9 @@ public class GameLogicHandler {
         }
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
+        this.setPlayerNames();
+
+        
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
         this.gameActivity.visualize();
     }
@@ -79,14 +82,10 @@ public class GameLogicHandler {
             this.gameData.getLayOffStack().addCard(c);
 
             this.gameData.nextPlayer();
+            this.setPlayerNames();
             this.gameData.setPhase(GamePhase.DRAW_PHASE);
             this.gameActivity.visualize();
-            if (this.gameData.getActivePlayerId().equals("player_1")) {
-                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
 
-            } else {
-                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
-            }
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
@@ -101,7 +100,7 @@ public class GameLogicHandler {
                 gameData.getPlayers().get(playerId).getHand().addCard(card);
                 break;
             case LAYOFF_STACK:
-                card = gameData.getLayOffStack().getFirstCard();
+                card = gameData.getLayOffStack().drawLastCard();
                 gameData.getPlayers().get(playerId).getHand().addCard(card);
 
         }
@@ -174,12 +173,25 @@ public class GameLogicHandler {
         }
     }
 
-    public void setPlayerNames(Intent intent) {
-        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
+    public void setPlayerNames() {
+        this.gameActivity.setPlayer1Name(this.gameData.getActivePlayerId());
+        String player2="";
+        for(Player p : gameData.getPlayers().values()){
+            if(!p.getId().equals(gameData.getActivePlayerId())){
+                player2 = p.getId();
+            }
+        }
+        this.gameActivity.setPlayer2Name(player2);
+
+
+        /*this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
         this.getGameActivity().setPlayer1Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
         this.gameData.nextPlayer();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
         this.getGameActivity().setPlayer2Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
-        this.gameData.nextPlayer();
+        this.gameData.nextPlayer();*/
+
+
+
     }
 }
