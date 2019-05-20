@@ -65,7 +65,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     MyDragEventListener myDragEventListener;
     MyDragEventListenerTwo myDrag;
 
-
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
