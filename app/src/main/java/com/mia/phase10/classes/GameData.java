@@ -1,8 +1,10 @@
 package com.mia.phase10.classes;
 //this class contains all game data needed for displaying the current status to clients.
 
+import com.mia.phase10.gameFlow.GamePhase;
+
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 public class GameData {
@@ -11,6 +13,8 @@ public class GameData {
     private CardStack drawStack;
     private Map<String,Player> players;
     private String activePlayerId;
+    private GamePhase phase;
+
 
     public GameData(){
         this.layOffStack = new CardStack();
@@ -18,12 +22,15 @@ public class GameData {
         this.players = new HashMap<String, Player>();
         this.activePlayerId = "";
     };
-    public GameData(CardStack layOffStack, CardStack drawStack, Map<String,Player> players, String activePlayerId) {
+    public GameData(CardStack layOffStack, CardStack drawStack, Map<String, Player> players, String activePlayerId) {
         this.layOffStack = layOffStack;
         this.drawStack = drawStack;
         this.players = players;
         this.activePlayerId = activePlayerId;
+
     }
+
+
 
     public CardStack getLayOffStack() {
         return layOffStack;
@@ -59,5 +66,33 @@ public class GameData {
 
     public void addPlayer(Player player) {
         this.players.put(player.getId(),player);
+    }
+
+    public GamePhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(GamePhase phase) {
+        this.phase = phase;
+    }
+
+    public void nextPlayer(){
+        Iterator<Player> iter = this.players.values().iterator();
+        int index =0;
+
+
+        if (activePlayerId ==""){
+            this.activePlayerId = this.players.values().iterator().next().getId();
+        }else {
+            while (iter.hasNext()) {
+                if (iter.next().getId() == activePlayerId) {
+                    if (this.players.size() - 2 > index) {
+                        this.activePlayerId = iter.next().getId();
+                    } else {
+                        this.activePlayerId = this.players.values().iterator().next().getId();
+                    }
+                }
+            }
+        }
     }
 }
