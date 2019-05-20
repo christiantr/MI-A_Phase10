@@ -101,7 +101,7 @@ public class GameLogicHandler {
                 gameData.getPlayers().get(playerId).getHand().addCard(card);
                 break;
             case LAYOFF_STACK:
-                card = gameData.getLayOffStack().getFirstCard();
+                card = gameData.getLayOffStack().drawLastCard();
                 gameData.getPlayers().get(playerId).getHand().addCard(card);
 
         }
@@ -181,5 +181,8 @@ public class GameLogicHandler {
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
         this.getGameActivity().setPlayer2Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
         this.gameData.nextPlayer();
+
+
+
     }
 }
