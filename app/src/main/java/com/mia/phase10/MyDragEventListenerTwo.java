@@ -78,14 +78,12 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                     GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().add(c);
                 }
 
-
-                owner.removeView(vw); //remove the dragged view
+               owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
                 LinearLayout container = (LinearLayout) v;
                 vw.setLayoutParams(lp);
                 container.addView(vw);//Add the dragged view
                 vw.setVisibility(View.VISIBLE);//finally set Visibility to VISIBLE
-
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;

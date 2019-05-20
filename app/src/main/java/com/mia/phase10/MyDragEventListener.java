@@ -73,38 +73,7 @@ public class MyDragEventListener implements View.OnDragListener {
                     e.printStackTrace();
                 }
 
-                // remove old card from discard pile
-                (GameLogicHandler.getInstance().getGameActivity().getDiscardPileLayout()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()).removeAllViews();
-                (GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutR()).removeAllViews();
-                GameLogicHandler.getInstance().getGameActivity().showPlaystation2Cards();
 
-                // switch player and remove cards from hand from active player
-                if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals("player_1")) {
-                    GameLogicHandler.getInstance().getGameData().nextPlayer();
-                    (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
-                    GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
-                    GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer2(), GameLogicHandler.getInstance().getGameActivity().getPlayer1());
-
-
-                } else {
-                    GameLogicHandler.getInstance().getGameData().nextPlayer();
-                    (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
-                    GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
-                    GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer1(), GameLogicHandler.getInstance().getGameActivity().getPlayer2());
-                }
-                GameLogicHandler.getInstance().getGameActivity().visualize();
-
-                owner.removeView(vw); //remove the dragged view
-                //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
-                LinearLayout container = (LinearLayout) v;
-                vw.setLayoutParams(lp);
-                container.addView(vw);//Add the dragged view
-                vw.setVisibility(View.VISIBLE);//finally set Visibility to VISIBLE
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
 
