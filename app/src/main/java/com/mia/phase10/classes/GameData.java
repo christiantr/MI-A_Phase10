@@ -30,8 +30,6 @@ public class GameData {
 
     }
 
-
-
     public CardStack getLayOffStack() {
         return layOffStack;
     }
@@ -79,7 +77,6 @@ public class GameData {
     public void nextPlayer(){
         Iterator<Player> iter = this.players.values().iterator();
         int index =0;
-
 
         if (activePlayerId ==""){
             this.activePlayerId = this.players.values().iterator().next().getId();
