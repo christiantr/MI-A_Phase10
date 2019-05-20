@@ -45,5 +45,20 @@ public class GameDataTest {
         assertEquals(stack.getCardList(), gameData.getLayOffStack().getCardList());
     }
 
+    @Test
+    public void checkNextPlayer(){
+        gameData.addPlayer(new Player("Player1"));
+        gameData.addPlayer(new Player("Player2"));
+
+        gameData.nextPlayer();
+        assertEquals("Player1",gameData.getActivePlayerId());
+        gameData.nextPlayer();
+        assertEquals("Player2",gameData.getActivePlayerId());
+        gameData.nextPlayer();
+        assertEquals("Player1",gameData.getActivePlayerId());
+        gameData.nextPlayer();
+        assertEquals("Player2",gameData.getActivePlayerId());
+
+    }
 
 }
