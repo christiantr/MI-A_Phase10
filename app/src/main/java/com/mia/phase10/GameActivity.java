@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,22 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
-import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
-import com.mia.phase10.exceptionClasses.EmptyHandException;
-import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
-import com.mia.phase10.gameLogic.CardEvaluator;
 import com.mia.phase10.gameLogic.GameLogicHandler;
-
-import com.mia.phase10.gameLogic.StackType;
-
 import com.mia.phase10.gameLogic.Phase;
-
-
-import java.util.List;
-import java.util.Map;
+import com.mia.phase10.gameLogic.StackType;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -56,6 +45,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private LinearLayout playstationP2LayoutR;
     private Button check;
     private Button cancel;
+    // private ConstraintLayout phaseClosed;
     private String player1Name;
     private String player2Name;
 
@@ -146,6 +136,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         playstationP2LayoutR = findViewById(R.id.ID_p2_playstation_layout_right);
         check = findViewById(R.id.checkPhase);
         cancel = findViewById(R.id.Cancel);
+        // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
     public void visualize() {
@@ -194,8 +185,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setId(card.getId());
             discardPileLayout.addView(cardImage);
-
-
     }
 
     public void makePlaystationLayoutVisible(Phase p) {
@@ -318,7 +307,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         check.setVisibility(View.INVISIBLE);
         cancel.setVisibility(View.INVISIBLE);
     }
-
 
     public void removeCardsFromPlaystationBackToHand() {
         setVisibilityOfButtons();
