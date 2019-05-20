@@ -154,7 +154,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void visualize() {
         GameLogicHandler.getInstance().getGameActivity().makePlaystationLayoutVisible(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase());
         //Visualizing Data from GameData (GUI drawing ONLY here)
-        View mainView = findViewById(R.id.drawerLayout);
+
+        View mainView =findViewById(R.id.drawerLayout);
         mainView.invalidate();
         this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
         visualizePhase();
@@ -176,6 +177,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     private void showLayOffStack() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+
             Card card= GameLogicHandler.getInstance().getGameData().getLayOffStack().getFirstCard();
             ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
             cardImage.setLayoutParams(lp);
