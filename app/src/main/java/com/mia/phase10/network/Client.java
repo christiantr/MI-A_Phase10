@@ -65,13 +65,15 @@ public class Client extends AsyncTask {
         if (local) {
             Log.i(TAG, "Try locahost");
 
-//            InetAddress localhost = InetAddress.getByName("127.0.0.1");
-//            if (localhost != null) {
-//                Log.i(TAG, localhost.toString());
-//            } else {
-//                Log.i(TAG, "Localhost not found");
-//            }
-//            socket = new Socket(localhost, serverPort);
+//            InetAddress localhost = InetAddress.getLoopbackAddress();
+            InetAddress localhost = InetAddress.getByName(null);
+
+            if (localhost != null) {
+                Log.i(TAG, localhost.toString());
+            } else {
+                Log.i(TAG, "Localhost not found");
+            }
+            socket = new Socket(localhost, serverPort);
         }
 
 

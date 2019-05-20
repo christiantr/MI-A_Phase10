@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mia.phase10.network.Client;
-import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.Host;
+import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.TextTransportObject;
 
 import java.io.Serializable;
@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamestart);
         hostGame = (Button) findViewById(R.id.button_hostGame);
@@ -92,14 +95,13 @@ public class MainActivity extends AppCompatActivity {
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
         AsyncTask server = new Host();
-        server.execute();
+        server.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         showIpAddress();
 
         Log.i(TAG, "Starting Client at Host.\n");
         AsyncTask client = Client.atLocal(SERVER_PORT);
         Log.i(TAG, "local");
-
-        client.execute();
+        client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
     }
