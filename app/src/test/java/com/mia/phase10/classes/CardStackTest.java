@@ -16,7 +16,7 @@ public class CardStackTest {
         }
     @Test
     public void checkGenerate(){
-            Card c = new SimpleCard(1,Colour.BLUE,1);
+            Card c = new SimpleCard(1,Colour.BLUE,1,5);
 
             int size = stack.getCardList().size();
 

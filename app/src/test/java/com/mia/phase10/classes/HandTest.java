@@ -22,17 +22,17 @@ public class HandTest {
     public void before(){
      hand = new Hand();
      map = new HashMap<Integer, Card>();
-        map.put(1,new SimpleCard(1,Colour.BLUE,1));
-        map.put(2,new SimpleCard(2,Colour.BLUE,2));
-        map.put(3,new SimpleCard(3,Colour.BLUE,3));
-        map.put(4,new SimpleCard(4,Colour.BLUE,4));
-        map.put(5,new SimpleCard(5,Colour.BLUE,5));
+        map.put(1,new SimpleCard(1,Colour.BLUE,1,5));
+        map.put(2,new SimpleCard(2,Colour.BLUE,2,5));
+        map.put(3,new SimpleCard(3,Colour.BLUE,3,5));
+        map.put(4,new SimpleCard(4,Colour.BLUE,4,5));
+        map.put(5,new SimpleCard(5,Colour.BLUE,5,5));
         hand.setCardList(map);
  }
 
  @Test
     public void checkAddCard(){
-        Card c = new SimpleCard(6,Colour.BLUE,6);
+        Card c = new SimpleCard(6,Colour.BLUE,6,10);
         map.put(c.getId(),c);
         hand.addCard(c);
         assertEquals(map, hand.getCardList());
@@ -44,7 +44,7 @@ public class HandTest {
  }
  @Test
     public void checkRemoveCard(){
-        Card c = new SimpleCard(1,Colour.BLUE,1);
+        Card c = new SimpleCard(1,Colour.BLUE,1,5);
         int size = hand.getCardList().size();
      try {
          assertEquals(c,hand.removeCard(1));
@@ -57,7 +57,7 @@ public class HandTest {
  }
     @Test(expected = CardNotFoundException.class)
     public void checkRemoveCardNotInHand() throws CardNotFoundException, EmptyHandException {
-        Card c = new SimpleCard(1,Colour.BLUE,1);
+        Card c = new SimpleCard(1,Colour.BLUE,1,5);
         int size = hand.getCardList().size();
 
 
