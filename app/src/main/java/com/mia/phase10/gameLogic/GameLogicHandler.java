@@ -1,12 +1,10 @@
 package com.mia.phase10.gameLogic;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mia.phase10.GameActivity;
-import com.mia.phase10.MainActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
@@ -69,7 +67,7 @@ public class GameLogicHandler {
         this.gameData.nextPlayer();
         this.setPlayerNames();
 
-        
+
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
         this.gameActivity.visualize();
     }
@@ -91,15 +89,21 @@ public class GameLogicHandler {
         }
     }
 
-    public void layoffPhase(View v, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
+    public void layoffPhaw23se(View v, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
         try {
             Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
 
-            if (v==this.gameActivity.getPlaystationP1Layout() || v==this.gameActivity.getPlaystationP1LayoutL()){
+            if (v == this.gameActivity.getPlaystationP1Layout() || v == this.gameActivity.getPlaystationP1LayoutL()) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(c);
-            }else{
+                if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCardsTemp().add(c);
+                }
+            } else {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(c);
+                if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
+                }
             }
 
             this.gameActivity.visualize();
@@ -109,17 +113,35 @@ public class GameLogicHandler {
         }
     }
 
-    public void moveCardsBackToHand(){
-        for (Card c:this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
+    public void movePhaseCardsBackToHand() {
+        for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
             this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
         }
-        if (this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()!=null){
-            for (Card c:this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
-                this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);}
+        if (this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2() != null) {
+            for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+                this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
+            }
 
         }
         this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
         this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
+        this.gameActivity.visualize();
+    }
+
+    public void moveCardsBackToHand() {
+        for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp()) {
+            this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().remove(c);
+            this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
+        }
+        if (this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp() != null) {
+            for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp()) {
+                this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().remove(c);
+                this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
+            }
+
+        }
+        this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().clear();
+        this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().clear();
         this.gameActivity.visualize();
     }
 
@@ -164,8 +186,8 @@ public class GameLogicHandler {
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
             } else {
-               moveCardsBackToHand();
-               Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
+                movePhaseCardsBackToHand();
+                Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards(),
@@ -177,18 +199,62 @@ public class GameLogicHandler {
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
             } else {
-                moveCardsBackToHand();
+                movePhaseCardsBackToHand();
                 Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
 
         }
     }
 
+    public void checkNewCardList() { //needs to be updated if there are more than 2 players
+        Phase phase = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
+        boolean result=false;
+        if (phase == Phase.PHASE_4 || phase == Phase.PHASE_5 || phase == Phase.PHASE_6) {
+            result=isARow();
+        }
+        else if (phase == Phase.PHASE_8) {
+            result=CardEvaluator.getInstance().checkSameColors(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+        }
+        else if(phase == Phase.PHASE_1 || phase == Phase.PHASE_7 || phase == Phase.PHASE_9 || phase == Phase.PHASE_10){result=checkEqualNumbers();}
+        else {
+            boolean left1=false;
+            boolean right2=false;
+            boolean left2=false;
+            boolean right1=false;
+            left1=CardEvaluator.getInstance().checkForEqualNumbers(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+            left2=CardEvaluator.getInstance().checkForEqualNumbers(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2());
+            right1=isARow();
+            right2=CardEvaluator.getInstance().checkIfInARow(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2());
+            result =(left1&&right2)||(right1&&left2);
+        }
+
+        if (result){
+            this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().clear();
+            this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().clear();
+            this.gameActivity.visualize();
+        }
+        else moveCardsBackToHand();
+        Toast.makeText(this.gameActivity, "The list is not correct!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private boolean checkEqualNumbers(){
+        boolean left=false;
+        boolean right=false;
+        left=CardEvaluator.getInstance().checkForEqualNumbers(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+        right=CardEvaluator.getInstance().checkForEqualNumbers(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2());
+        return left && right;
+    }
+
+    private boolean isARow(){
+        return CardEvaluator.getInstance().checkIfInARow(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+    }
+
     public void setPlayerNames() {
         this.gameActivity.setPlayer1Name(this.gameData.getActivePlayerId());
-        String player2="";
-        for(Player p : gameData.getPlayers().values()){
-            if(!p.getId().equals(gameData.getActivePlayerId())){
+        String player2 = "";
+        for (Player p : gameData.getPlayers().values()) {
+            if (!p.getId().equals(gameData.getActivePlayerId())) {
                 player2 = p.getId();
             }
         }
@@ -201,7 +267,6 @@ public class GameLogicHandler {
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
         this.getGameActivity().setPlayer2Name(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
         this.gameData.nextPlayer();*/
-
 
 
     }
