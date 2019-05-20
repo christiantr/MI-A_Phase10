@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,6 +39,10 @@ public class Host extends AsyncTask {
             Log.i(TAG, String.format("Client connected. Remote Ip is: %s", remoteIp.toString()));
 
             // takes input from the client socket
+            out = new ObjectOutputStream(
+                    new BufferedOutputStream(connections.get(0).getOutputStream()));
+            out.flush();
+
             in = new ObjectInputStream(
                     new BufferedInputStream(connections.get(0).getInputStream()));
 
@@ -45,6 +50,9 @@ public class Host extends AsyncTask {
                 try {
                     Object inObject = in.readObject();
                   Log.i(TAG, String.format("Received: %s",inObject.toString()));
+
+                  out.writeObject(new TextTransportObject("hello back"));
+                  out.flush();
 
                 } catch (IOException i) {
                     Log.e(TAG, i.toString());

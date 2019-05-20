@@ -3,6 +3,7 @@ package com.mia.phase10.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +35,7 @@ public class Client extends AsyncTask {
         try {
             run();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         }
         return null;
     }
@@ -45,14 +46,21 @@ public class Client extends AsyncTask {
         socket = new Socket(serverIp, serverPort);
 
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        out.flush();
         Log.i(TAG, String.format("I/O created"));
         active = true;
-
         out.writeObject(new TextTransportObject("Hello there."));
         out.flush();
         Log.i(TAG, "message sent");
-
-
+        in = new ObjectInputStream(
+                new BufferedInputStream(socket.getInputStream()));
+        Log.i(TAG, "in created");
+        try {
+            Object received = in.readObject();
+            Log.i(TAG, ((TextTransportObject) received).toString());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
     }
