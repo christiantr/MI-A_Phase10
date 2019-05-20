@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                client = new Client(hostIpAddress, SERVER_PORT);
+                client = Client.atAddress(hostIpAddress, SERVER_PORT);
                 client.execute();
                 testMessage.setVisibility(View.VISIBLE);
                 connecToHost.setVisibility(View.GONE);
@@ -94,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask server = new Host();
         server.execute();
         showIpAddress();
+
+        Log.i(TAG, "Starting Client at Host.\n");
+        AsyncTask client = Client.atLocal(SERVER_PORT);
+        Log.i(TAG, "local");
+
+        client.execute();
 
 
     }

@@ -23,17 +23,29 @@ public class Client extends AsyncTask {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private boolean active;
+    private final boolean local;
 
 
-    public Client(InetAddress serverIp, int serverPort) {
+    private Client(InetAddress serverIp, int serverPort, boolean local) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
-        Log.i(TAG, String.format("Client connecting to: %s  %d", serverIp.toString(), serverPort));
+        this.local = local;
+
+    }
+
+    public static Client atAddress(InetAddress serverIp, int serverPort) {
+        return new Client(serverIp, serverPort, false);
+    }
+
+    public static Client atLocal(int serverPort) {
+        Log.i(TAG, "local");
+        return new Client(null, serverPort, true);
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
+        Log.i(TAG, "execute");
 
         try {
             run();
@@ -45,8 +57,22 @@ public class Client extends AsyncTask {
 
 
     public void run() throws IOException {
-        Log.i(TAG, String.format("Connecting to %s at %d", serverIp.toString(), serverPort));
-        socket = new Socket(serverIp, serverPort);
+        Log.i(TAG, "run");
+        if (!local) {
+            Log.i(TAG, String.format("Client connecting to %s at %d", serverIp.toString(), serverPort));
+            socket = new Socket(serverIp, serverPort);
+        }
+        if (local) {
+            Log.i(TAG, "Try locahost");
+
+//            InetAddress localhost = InetAddress.getByName("127.0.0.1");
+//            if (localhost != null) {
+//                Log.i(TAG, localhost.toString());
+//            } else {
+//                Log.i(TAG, "Localhost not found");
+//            }
+//            socket = new Socket(localhost, serverPort);
+        }
 
 
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
@@ -57,12 +83,12 @@ public class Client extends AsyncTask {
                 new BufferedInputStream(socket.getInputStream()));
 
 
-        while(active) {
+        while (active) {
             try {
                 Object received = in.readObject();
                 Log.i(TAG, ((TextTransportObject) received).toString());
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.toString());
             }
         }
 
@@ -72,7 +98,7 @@ public class Client extends AsyncTask {
 
     }
 
-    public  void sendObject(Serializable obj) {
+    public void sendObject(Serializable obj) {
         Thread sent = new Thread(new SentObjectThread(out, obj));
         sent.start();
 
