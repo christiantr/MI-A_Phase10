@@ -69,12 +69,7 @@ public class GameLogicHandler {
         this.gameData.nextPlayer();
         this.setPlayerNames();
 
-        //JUST FOR TESTING PURPOSE
-        //TODO DELETE!
-        for(Player p : this.gameData.getPlayers().values()){
-            p.getPhaseCards().add(this.gameData.getDrawStack().drawCard());
-        }
-        //END OF TESTING
+        
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
         this.gameActivity.visualize();
     }
