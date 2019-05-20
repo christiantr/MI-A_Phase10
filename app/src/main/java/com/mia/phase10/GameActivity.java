@@ -97,7 +97,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameLogicHandler.getInstance().getGameActivity().removeCardsFromPlaystationBackToHand();
+               GameLogicHandler.getInstance().moveCardsBackToHand();
             }
         });
 
@@ -320,7 +320,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
 
-    public void removeCardsFromPlaystationBackToHand() {
+    /*public void removeCardsFromPlaystationBackToHand() {
         setVisibilityOfButtons();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
@@ -354,7 +354,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
 
-    }
+    }*/
 
     public void startShufflingActivity() {
         Intent shufflingActivity = new Intent(this, ShufflingActivity.class);

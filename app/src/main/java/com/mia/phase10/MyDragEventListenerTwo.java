@@ -71,19 +71,11 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
 
                 GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                 GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                Card c= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
-                if (v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
-                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
-                }else{
-                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().add(c);
+                try {
+                    GameLogicHandler.getInstance().layoffPhase(v,GameLogicHandler.getInstance().getGameData().getActivePlayerId(),vw.getId());
+                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                    e.printStackTrace();
                 }
-
-               owner.removeView(vw); //remove the dragged view
-                //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
-                LinearLayout container = (LinearLayout) v;
-                vw.setLayoutParams(lp);
-                container.addView(vw);//Add the dragged view
-                vw.setVisibility(View.VISIBLE);//finally set Visibility to VISIBLE
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
