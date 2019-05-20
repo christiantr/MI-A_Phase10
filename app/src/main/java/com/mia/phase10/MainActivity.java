@@ -11,8 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mia.phase10.network.Client;
 import com.mia.phase10.network.IpAddressGet;
-import com.mia.phase10.network.Server;
+import com.mia.phase10.network.Host;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MAIN";
@@ -24,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Button joinGame;
     private Button hostGame;
     private Button connecToHost;
-
+    private static final int SERVER_PORT = 4001;
+    private static final String DEFAULT_IP = "192.168.1.5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +39,24 @@ public class MainActivity extends AppCompatActivity {
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
         connecToHost.setOnClickListener(new View.OnClickListener() {
-            @Override
+            //            @Override
             public void onClick(View view) {
-                String ipAdress = ip.getText().toString();
-                int portNumber = Integer.parseInt(port.getText().toString());
-                Log.i("TAG", String.format("Connect to: %s  at %d", ipAdress, portNumber));
+                Log.i("TAG", "Connect button clicked");
+                InetAddress hostIpAddress = null;
+                try {
+                    hostIpAddress = InetAddress.getByName(ip.getText().toString());
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+
+                AsyncTask client = new Client(hostIpAddress, SERVER_PORT);
+                client.execute();
             }
         });
 
 
         ip = (EditText) findViewById(R.id.input_Ip);
+        ip.setText(DEFAULT_IP);
         port = (EditText) findViewById(R.id.input_port);
         hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
         ip.setVisibility(View.GONE);
@@ -55,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Called when the user uses the "Host Game" button
+     * Called when the user uses the "Client Game" button
      */
     public void startHost(View view) {
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
-        AsyncTask server = new Server();
+        AsyncTask server = new Host();
         server.execute();
         showIpAddress();
 
@@ -69,17 +82,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Called when the user uses the "Host Game" button
+     * Called when the user uses the "Client Game" button
      */
 
     public void startClient(View view) {
         Log.i("TAG", "Starting game as client.");
 //
         ip.setVisibility(View.VISIBLE);
-        port.setVisibility(View.VISIBLE);
+//        port.setVisibility(View.VISIBLE);
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
         connecToHost.setVisibility(View.VISIBLE);
+
     }
 
 

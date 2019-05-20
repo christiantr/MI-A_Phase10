@@ -1,55 +1,54 @@
 package com.mia.phase10.network;
 
-import java.io.BufferedOutputStream;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
-public class Client implements Runnable {
-    private static final int SERVER_PORT = 4001;
+public class Client extends AsyncTask {
+
+    private static final String TAG = "CLIENT";
+    private final int serverPort;
+    private final InetAddress serverIp;
     private Socket socket;
     private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private boolean active;
+
+
+    public Client(InetAddress serverIp, int serverPort) {
+//        this.mHandler = mHandler;
+        this.serverPort = serverPort;
+        this.serverIp = serverIp;
+        Log.i(TAG, String.format("Client connecting to: %s  %d", serverIp.toString(), serverPort));
+    }
 
     @Override
-    public void run() {
-        startClient("127.0.0.1", SERVER_PORT);
-        sendMessage("Hello World");
+    protected Object doInBackground(Object[] objects) {
 
-    }
-
-    private void startClient(String IP, int port) {
         try {
-            socket = new Socket(IP, port);
-            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-
+            run();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
 
-    private void sendMessage(String message) {
+    public void run() throws IOException {
+        Log.i(TAG, String.format("Connecting to %s at %d", serverIp.toString(), serverPort));
+        socket = new Socket(serverIp, serverPort);
+
+//        out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+//        in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+//        Log.i(TAG, String.format("I/O created"));
+//        active = true;
 
 
-        Object obj = new TextTransportObject(message);
-        try {
-            out.writeObject(obj);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void closeClient() {
-        try {
-            out.close();
-            socket.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
