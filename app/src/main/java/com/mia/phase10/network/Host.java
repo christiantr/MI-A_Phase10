@@ -31,17 +31,10 @@ public class Host extends AsyncTask {
         connectionListener = new ConnectionListener(connections);
         try {
             serverSocket = new ServerSocket(port);
-
-
-
-
-            Connection connection =
-                    new Connection(serverSocket.accept(), connectionListener);
+            Connection connection = Connection.establishConnection(serverSocket.accept(), connectionListener);
             connections.addConnection(connection);
             Thread conn = new Thread(connection);
             conn.start();
-
-
 
 
         } catch (IOException e) {

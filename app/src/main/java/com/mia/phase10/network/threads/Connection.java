@@ -16,16 +16,15 @@ public class Connection implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private final static String TAG = "CONNECTION";
-    private boolean active = false;
     private ConnectionListener connectionListener;
+    private boolean active;
 
-    public Connection(Socket socket, ConnectionListener connectionListener) {
-        this.connectionListener = connectionListener;
-        this.socket = socket;
-        this.out = null;
-        this.in = null;
+    public static Connection establishConnection(Socket socket, ConnectionListener connectionListener) {
+
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
         try {
-            this.out = new ObjectOutputStream(
+            out = new ObjectOutputStream(
                     new BufferedOutputStream(socket.getOutputStream()));
             out.flush();
 
@@ -34,32 +33,44 @@ public class Connection implements Runnable {
         }
 
         try {
-            this.in = new ObjectInputStream(
+            in = new ObjectInputStream(
                     new BufferedInputStream(socket.getInputStream()));
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
         Log.i(TAG, String.format("Connection created for: %s", socket.getInetAddress().toString()));
-        active = true;
+        return new Connection(socket, out, in, connectionListener, true);
+    }
+
+
+    public Connection(Socket socket,
+                      ObjectOutputStream out,
+                      ObjectInputStream in,
+                      ConnectionListener connectionListener,
+                      boolean active) {
+        this.socket = socket;
+        this.out = out;
+        this.in = in;
+        this.connectionListener = connectionListener;
+        this.active = active;
     }
 
     @Override
     public void run() {
         while (active) {
-            while (true) {
-                try {
-                    Object inObject = in.readObject();
-                    Log.i(TAG, String.format("Received: %s", inObject.toString()));
-                    connectionListener.onReceivedObject((Serializable) inObject);
 
-                } catch (IOException i) {
-                    Log.e(TAG, i.toString());
+            try {
+                Object inObject = in.readObject();
+                Log.i(TAG, String.format("Received: %s", inObject.toString()));
+                connectionListener.onReceivedObject((Serializable) inObject);
 
-                } catch (ClassNotFoundException e) {
-                    Log.e(TAG, e.toString());
-                }
-//            }
+            } catch (IOException i) {
+                Log.e(TAG, i.toString());
+
+            } catch (ClassNotFoundException e) {
+                Log.e(TAG, e.toString());
             }
+
 
         }
     }
