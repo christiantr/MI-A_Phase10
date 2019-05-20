@@ -3,64 +3,45 @@ package com.mia.phase10.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import com.mia.phase10.network.threads.Connection;
+import com.mia.phase10.network.threads.ConnectionListener;
+import com.mia.phase10.network.threads.Connections;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Host extends AsyncTask {
 
-    private static final int SERVER_PORT = 4001;
+    private static final int SERVER_PORT = 9999;
     private ServerSocket serverSocket;
     private Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
     private final static String TAG = "HOST";
-    private List<Socket> connections;
+    private Connections connections;
+    private ConnectionListener connectionListener;
 
     private void startServer(int port) {
         Log.i(TAG, "Host start");
-        connections = new ArrayList<>();
+        connections = Connections.emptyList();
+        connectionListener = new ConnectionListener(connections);
         try {
             serverSocket = new ServerSocket(port);
 
 
-            connections.add(serverSocket.accept());
-            InetAddress remoteIp = connections.get(0).getInetAddress();
 
 
-            Log.i(TAG, String.format("Client connected. Remote Ip is: %s", remoteIp.toString()));
+            Connection connection =
+                    new Connection(serverSocket.accept(), connectionListener);
+            connections.addConnection(connection);
+            Thread conn = new Thread(connection);
+            conn.start();
 
-            // takes input from the client socket
-            out = new ObjectOutputStream(
-                    new BufferedOutputStream(connections.get(0).getOutputStream()));
-            out.flush();
 
-            in = new ObjectInputStream(
-                    new BufferedInputStream(connections.get(0).getInputStream()));
-
-            while (true) {
-                try {
-                    Object inObject = in.readObject();
-                  Log.i(TAG, String.format("Received: %s",inObject.toString()));
-
-                  out.writeObject(new TextTransportObject("hello back"));
-                  out.flush();
-
-                } catch (IOException i) {
-                    Log.e(TAG, i.toString());
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
 
 
         } catch (IOException e) {
@@ -85,6 +66,8 @@ public class Host extends AsyncTask {
         return null;
 
     }
+
+
 }
 
 

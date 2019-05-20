@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button joinGame;
     private Button hostGame;
     private Button connecToHost;
-    private static final int SERVER_PORT = 4001;
+    private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.1.5";
 
     @Override

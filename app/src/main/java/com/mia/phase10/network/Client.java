@@ -3,11 +3,14 @@ package com.mia.phase10.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mia.phase10.network.threads.SentObjectThread;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -45,12 +48,16 @@ public class Client extends AsyncTask {
         Log.i(TAG, String.format("Connecting to %s at %d", serverIp.toString(), serverPort));
         socket = new Socket(serverIp, serverPort);
 
+
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         out.flush();
         Log.i(TAG, String.format("I/O created"));
         active = true;
-        out.writeObject(new TextTransportObject("Hello there."));
-        out.flush();
+
+
+        Serializable obj = new TextTransportObject("Hello there.");
+        sendObject(obj);
+
         Log.i(TAG, "message sent");
         in = new ObjectInputStream(
                 new BufferedInputStream(socket.getInputStream()));
@@ -63,7 +70,14 @@ public class Client extends AsyncTask {
         }
 
 
+//
+
+
     }
 
+    private void sendObject(Serializable obj) {
+        Thread sent = new Thread(new SentObjectThread(out, obj));
+        sent.start();
 
+    }
 }
