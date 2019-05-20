@@ -37,6 +37,7 @@ import java.util.Map;
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private LinearLayout deck;
+    private ImageView stack;
 
     private LinearLayout discardPileLayout;
     private TextView player1;
@@ -61,70 +62,17 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     static final String DISCARD_PILE = "DISCARD PILE";
     static final String DRAWABLE = "drawable";
 
+    MyDragEventListener myDragEventListener;
+    MyDragEventListenerTwo myDrag;
+
 
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // Initialize View and set Listeners
-        setContentView(R.layout.activity_game);
-        ImageView stack = findViewById(R.id.ID_stack);
-        deck = findViewById(R.id.ID_deck);
-        discardPileLayout=findViewById(R.id.ID_discard_layout);
-        player1=findViewById(R.id.ID_player_1);
-        player2=findViewById(R.id.ID_player_2);
-        score=findViewById(R.id.ID_score);
-        phase=findViewById(R.id.ID_phase);
-        playstationP1Image=findViewById(R.id.ID_p1_playstation);
-        playstationP2Image=findViewById(R.id.ID_p2_playstation);
-        playstationP1ImageSeperated=findViewById(R.id.ID_p1_playstation_two);
-        playstationP2ImageSeperated=findViewById(R.id.ID_p2_playstation_two);
-        playstationP1Layout=findViewById(R.id.ID_p1_playstation_layout);
-        playstationP2Layout=findViewById(R.id.ID_p2_playstation_layout);
-        playstationP1LayoutL=findViewById(R.id.ID_p1_playstation_two_layout_left);
-        playstationP1LayoutR=findViewById(R.id.ID_p1_playstation_two_layout_right);
-        playstationP2LayoutL=findViewById(R.id.ID_p2_playstation_layout_left);
-        playstationP2LayoutR=findViewById(R.id.ID_p2_playstation_layout_right);
-        check=findViewById(R.id.checkPhase);
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameLogicHandler.getInstance().checkPhase();
-            }
-        });
-        cancel=findViewById(R.id.Cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameLogicHandler.getInstance().getGameActivity().removeCardsFromPlaystationBackToHand();
-            }
-        });
-
-        MyDragEventListener myDragEventListener = new MyDragEventListener();
-        discardPileLayout.setOnDragListener(myDragEventListener);
-
-        MyDragEventListenerTwo myDrag = new MyDragEventListenerTwo();
-        playstationP1Layout.setOnDragListener(myDrag);
-        playstationP1LayoutL.setOnDragListener(myDrag);
-        playstationP1LayoutR.setOnDragListener(myDrag);
-
-
-        stack.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            public void onClick(View v) {
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-                lp.setMargins(0, 0, 0, 0);
-                ImageView cardImage = new ImageView(GameActivity.this);
-                Card drawStackCard = null;
-                String imagePath = "";
-                try {
-                     GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.DRAW_STACK);
-                } catch (EmptyCardStackException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
+        findViewByIDObjects();
+        initializeListeners();
 
         //preparing gameData
         GameLogicHandler.getInstance().initializeGame();
@@ -142,8 +90,63 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player2.setText(player2Name);
     }
 
+    private void initializeListeners() {
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { GameLogicHandler.getInstance().checkPhase(); }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { GameLogicHandler.getInstance().getGameActivity().removeCardsFromPlaystationBackToHand(); }
+        });
+
+        myDragEventListener = new MyDragEventListener();
+        myDrag = new MyDragEventListenerTwo();
+
+        stack.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            public void onClick(View v) { setStackListener(); }
+        });
+    }
+
+    public void setStackListener(){
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        ImageView cardImage = new ImageView(GameActivity.this);
+        Card drawStackCard = null;
+        String imagePath = "";
+        try {
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.DRAW_STACK);
+        } catch (EmptyCardStackException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void findViewByIDObjects(){
+        setContentView(R.layout.activity_game);
+        stack = findViewById(R.id.ID_stack);
+        deck = findViewById(R.id.ID_deck);
+        discardPileLayout=findViewById(R.id.ID_discard_layout);
+        player1=findViewById(R.id.ID_player_1);
+        player2=findViewById(R.id.ID_player_2);
+        score=findViewById(R.id.ID_score);
+        phase=findViewById(R.id.ID_phase);
+        playstationP1Image=findViewById(R.id.ID_p1_playstation);
+        playstationP2Image=findViewById(R.id.ID_p2_playstation);
+        playstationP1ImageSeperated=findViewById(R.id.ID_p1_playstation_two);
+        playstationP2ImageSeperated=findViewById(R.id.ID_p2_playstation_two);
+        playstationP1Layout=findViewById(R.id.ID_p1_playstation_layout);
+        playstationP2Layout=findViewById(R.id.ID_p2_playstation_layout);
+        playstationP1LayoutL=findViewById(R.id.ID_p1_playstation_two_layout_left);
+        playstationP1LayoutR=findViewById(R.id.ID_p1_playstation_two_layout_right);
+        playstationP2LayoutL=findViewById(R.id.ID_p2_playstation_layout_left);
+        playstationP2LayoutR=findViewById(R.id.ID_p2_playstation_layout_right);
+        check=findViewById(R.id.checkPhase);
+        cancel=findViewById(R.id.Cancel);
+    }
 
     public void visualize(){
+        GameLogicHandler.getInstance().getGameActivity().makePlaystationLayoutVisible(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase());
         //Visualizing Data from GameData (GUI drawing ONLY here)
         View mainView =findViewById(R.id.drawerLayout);
         mainView.invalidate();
@@ -337,13 +340,31 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             case DRAW_PHASE:
                 Toast.makeText(this, "DRAWPHASE", Toast.LENGTH_SHORT).show();
 
+                discardPileLayout.setOnDragListener(null);
+                playstationP1Layout.setOnDragListener(null);
+                playstationP1LayoutL.setOnDragListener(null);
+                playstationP1LayoutR.setOnDragListener(null);
+                stack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) { setStackListener(); }
+                });
+
+                layoffStack.setBackgroundColor(Color.argb(100,0,0,0));
                 drawStack.setBackgroundColor(Color.rgb(0,255,224));
                 break;
             case LAYOFF_PHASE:
                 Toast.makeText(this, "LAYOFFPHASE", Toast.LENGTH_SHORT).show();
 
+                //if else ob phase bereits abgelegt
+                stack.setOnClickListener(null);
+                discardPileLayout.setOnDragListener(myDragEventListener);
+                playstationP1Layout.setOnDragListener(myDrag);
+                playstationP1LayoutL.setOnDragListener(myDrag);
+                playstationP1LayoutR.setOnDragListener(myDrag);
+
                 drawStack.setBackgroundColor(Color.argb(100,0,0,0));
                 layoffStack.setBackgroundColor(Color.rgb(0,255,224));
+
                 break;
             case END_TURN_PHASE:
                 break;

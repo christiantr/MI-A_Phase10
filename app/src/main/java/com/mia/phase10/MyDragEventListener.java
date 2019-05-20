@@ -85,20 +85,19 @@ public class MyDragEventListener implements View.OnDragListener {
 
                 // switch player and remove cards from hand from active player
                 if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals("player_1")) {
-                    GameLogicHandler.getInstance().getGameData().setActivePlayerId("player_2");
+                    GameLogicHandler.getInstance().getGameData().nextPlayer();
                     (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
                     GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
                     GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer2(), GameLogicHandler.getInstance().getGameActivity().getPlayer1());
 
 
                 } else {
-                    GameLogicHandler.getInstance().getGameData().setActivePlayerId("player_1");
+                    GameLogicHandler.getInstance().getGameData().nextPlayer();
                     (GameLogicHandler.getInstance().getGameActivity().getDeck()).removeAllViews();
                     GameLogicHandler.getInstance().getGameActivity().getScore().setText(String.valueOf(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints()));
                     GameLogicHandler.getInstance().getGameActivity().switchPlayerName(GameLogicHandler.getInstance().getGameActivity().getPlayer1(), GameLogicHandler.getInstance().getGameActivity().getPlayer2());
                 }
-                GameLogicHandler.getInstance().getGameActivity().showPlaystation1Cards();
-                GameLogicHandler.getInstance().getGameActivity().showHandCards();
+                GameLogicHandler.getInstance().getGameActivity().visualize();
 
                 owner.removeView(vw); //remove the dragged view
                 //caste the view into LinearLayout as our drag acceptable layout is LinearLayout

@@ -12,6 +12,7 @@ public class Player {
     private ArrayList<Card> phaseCards2;
     private Phase currentPhase;
     private String currentName;
+    boolean phaseAchieved;
 
     public Player(String id) {
         this.id = id;
@@ -21,6 +22,7 @@ public class Player {
         this.phaseCards2=new ArrayList<>();
         currentPhase=Phase.PHASE_1;
         currentName=id;
+        phaseAchieved=false;
     }
 
     public String getId() {
@@ -77,5 +79,13 @@ public class Player {
 
     public String getCurrentName() {
         return currentName;
+    }
+
+    public boolean isPhaseAchieved() {
+        return phaseAchieved;
+    }
+
+    public void setPhaseAchieved(boolean phaseAchieved) {
+        this.phaseAchieved = phaseAchieved;
     }
 }

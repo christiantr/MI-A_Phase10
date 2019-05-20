@@ -63,11 +63,11 @@ public class GameLogicHandler {
             }
             p.getPhaseCards().clear();
             p.getPhaseCards2().clear();
+            p.setPhaseAchieved(false);
         }
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
 
-        this.gameActivity.makePlaystationLayoutVisible(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase());
         this.gameActivity.visualize();
     }
 
@@ -80,8 +80,13 @@ public class GameLogicHandler {
 
             this.gameData.nextPlayer();
             this.gameData.setPhase(GamePhase.DRAW_PHASE);
-
             this.gameActivity.visualize();
+            if (this.gameData.getActivePlayerId().equals("player_1")) {
+                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
+
+            } else {
+                this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
+            }
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
@@ -118,11 +123,12 @@ public class GameLogicHandler {
         this.gameData = gson.fromJson(json, GameData.class);
     }
 
-    public void checkPhase() {
+    public void checkPhase() { //needs to be updated if there are more than 2 players
         Phase p = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
         if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameActivity.setVisibilityOfButtons();
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
                     try {
                         this.layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
@@ -136,13 +142,13 @@ public class GameLogicHandler {
                 if (this.gameData.getActivePlayerId().equals("player_1")) {
                     this.gameActivity.getPlaystationP2Layout().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
-                    gameData.setActivePlayerId("player_2");
+                    gameData.nextPlayer();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
 
                 } else {
                     this.gameActivity.getPlaystationP2Layout().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
-                    gameData.setActivePlayerId("player_1");
+                    gameData.nextPlayer();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
                 }
                 this.gameActivity.visualize();
@@ -154,7 +160,8 @@ public class GameLogicHandler {
         } else {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards(),
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2())) {
-                    this.gameActivity.setVisibilityOfButtons();
+                this.gameActivity.setVisibilityOfButtons();
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
                     try {
                         this.layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
@@ -177,7 +184,7 @@ public class GameLogicHandler {
                     this.gameActivity.getPlaystationP2LayoutR().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
                     this.gameActivity.showPlaystation2RCards();
-                    gameData.setActivePlayerId("player_2");
+                    gameData.nextPlayer();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer2(), this.gameActivity.getPlayer1());
 
                 } else {
@@ -185,7 +192,7 @@ public class GameLogicHandler {
                     this.gameActivity.getPlaystationP2LayoutR().removeAllViews();
                     this.gameActivity.showPlaystation2Cards();
                     this.gameActivity.showPlaystation2RCards();
-                    gameData.setActivePlayerId("player_1");
+                    gameData.nextPlayer();
                     this.gameActivity.switchPlayerName(this.gameActivity.getPlayer1(), this.gameActivity.getPlayer2());
 
                 }
