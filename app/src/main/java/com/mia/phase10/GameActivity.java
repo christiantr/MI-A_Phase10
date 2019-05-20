@@ -369,7 +369,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     }
                 });
 
-                layoffStack.setBackgroundColor(Color.argb(100, 0, 0, 0));
+                layoffStack.setBackgroundColor(Color.TRANSPARENT);
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 break;
             case LAYOFF_PHASE:
@@ -393,7 +393,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     });
                 }*/
 
-                drawStack.setBackgroundColor(Color.argb(100, 0, 0, 0));
+                drawStack.setBackgroundColor(Color.TRANSPARENT);
                 layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
 
                 break;
