@@ -18,6 +18,7 @@ import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +83,7 @@ public class GameLogicHandler {
             Hand hand = gameData.getPlayers().get(playerId).getHand();
             Card c = hand.removeCard(cardId);
 
-            this.gameActivity.removeCardsFromPlaystationBackToHand();
+
             this.gameData.getLayOffStack().addCard(c);
             if (hand.getCardList().isEmpty()) {
                 this.gameData.setRoundClosed(true);
@@ -120,7 +121,7 @@ public class GameLogicHandler {
 
     public void removeHandCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
         try {
-            Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
+            gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameActivity.visualize();
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
@@ -140,7 +141,7 @@ public class GameLogicHandler {
 
     public void checkPhasePlayer() {
         for (Player p : gameData.getPlayers().values()) {
-            if(p.isPhaseAchieved()){
+            if (p.isPhaseAchieved()) {
                 p.setCurrentPhase((p.getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(p.getCurrentPhase()).ordinal() + 1] : null);
             }
         }
@@ -162,10 +163,13 @@ public class GameLogicHandler {
 
     public void checkPhase() { //needs to be updated if there are more than 2 players
         Phase p = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
-        if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8 || true) {
-            if (true) {
+        ArrayList<Card> phaseCards = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards();
+
+        if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
+            if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameActivity.setVisibilityOfButtons();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards(phaseCards);
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
                     try {
                         this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
@@ -186,6 +190,7 @@ public class GameLogicHandler {
 
                 this.gameActivity.setVisibilityOfButtons();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards(phaseCards);
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
                     try {
                         this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
@@ -193,6 +198,7 @@ public class GameLogicHandler {
                         e.printStackTrace();
                     }
                 }
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards2(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2());
                 for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
                     try {
                         this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand

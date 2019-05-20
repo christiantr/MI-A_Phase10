@@ -213,7 +213,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             playstationP2LayoutL.setVisibility(View.VISIBLE);
             playstationP2LayoutR.setVisibility(View.VISIBLE);
         }
-
     }
 
     public void showHandCards() {
@@ -342,7 +341,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
-
     }
 
     public void startShufflingActivity() {
