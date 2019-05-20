@@ -1,6 +1,8 @@
 package com.mia.phase10.network;
 
-public class TextTransportObject {
+import java.io.Serializable;
+
+public class TextTransportObject implements Serializable {
     private final String message;
 
     public TextTransportObject(String message) {
