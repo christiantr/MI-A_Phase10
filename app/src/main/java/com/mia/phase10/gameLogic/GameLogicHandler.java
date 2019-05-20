@@ -19,6 +19,7 @@ import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
@@ -86,6 +87,8 @@ public class GameLogicHandler {
             if (hand.getCardList().isEmpty()) {
                 this.gameData.setRoundClosed(true);
                 this.gameData.setPhase(GamePhase.END_TURN_PHASE);
+                this.countCards();
+                this.checkPhasePlayer();
                 startRound();
             } else {
                 this.gameData.nextPlayer();
@@ -124,6 +127,24 @@ public class GameLogicHandler {
         }
     }
 
+    public void countCards() {
+        for (Player p : gameData.getPlayers().values()) {
+            Map<Integer, Card> cards = p.getHand().getCardList();
+            int points = p.getPoints();
+            for (Map.Entry<Integer, Card> item : cards.entrySet()) {
+                points = points + item.getValue().getcountCard();
+            }
+            p.setPoints(points);
+        }
+    }
+
+    public void checkPhasePlayer() {
+        for (Player p : gameData.getPlayers().values()) {
+            if(p.isPhaseAchieved()){
+                p.setCurrentPhase((p.getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(p.getCurrentPhase()).ordinal() + 1] : null);
+            }
+        }
+    }
 
     public GameData getGameData() {
         return this.gameData;

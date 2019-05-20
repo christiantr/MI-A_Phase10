@@ -356,7 +356,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="64dp"
                 android:fontFamily="@font/benchnine"
-                android:text="45"
+                android:text="0"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toTopOf="@+id/ID_more"
                 app:layout_constraintStart_toStartOf="parent" />

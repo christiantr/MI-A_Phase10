@@ -148,9 +148,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player2.invalidate();
         player1.requestLayout();
         player2.requestLayout();
-        View mainView =findViewById(R.id.drawerLayout);
+        View mainView = findViewById(R.id.drawerLayout);
         mainView.invalidate();
         this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
+        this.score.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() + "");
         visualizePhase();
 
         //Visualizing playstation of other player
@@ -176,15 +177,15 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private void showLayOffStack() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 
-            Card card= GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard();
-            ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
-            cardImage.setLayoutParams(lp);
-            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
-            cardImage.setImageDrawable(c);
-            cardImage.setTag(DISCARD_PILE);
-            cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
-            cardImage.setId(card.getId());
-            discardPileLayout.addView(cardImage);
+        Card card = GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard();
+        ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
+        cardImage.setLayoutParams(lp);
+        Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+        cardImage.setImageDrawable(c);
+        cardImage.setTag(DISCARD_PILE);
+        cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
+        cardImage.setId(card.getId());
+        discardPileLayout.addView(cardImage);
     }
 
     public void makePlaystationLayoutVisible(Phase p) {
@@ -494,10 +495,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public LinearLayout getPlaystationP2LayoutR() {
         return playstationP2LayoutR;
     }
-    public void setPlayer1(String name){
-        this.player1Name  = name;
+
+    public void setPlayer1(String name) {
+        this.player1Name = name;
     }
-    public void setPlayer2(String name){
-        this.player2Name  = name;
+
+    public void setPlayer2(String name) {
+        this.player2Name = name;
     }
 }
