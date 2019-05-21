@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="395dp"
+        android:layout_height="715dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <Button
+            android:id="@+id/button_hostGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startHost"
+            android:text="Host Game" />
+
+        <Button
+            android:id="@+id/button_joinGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startClient"
+            android:text="Join Game" />
+
+        <TextView
+            android:id="@+id/textView_IpAndPort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/input_Ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="0.0.0.0"
+            tools:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/input_port"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            tools:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button_connectToHost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect" />
+
+        <Button
+            android:id="@+id/button_sendTestMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SendMessage" />
+
+        <Button
+            android:id="@+id/button_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
