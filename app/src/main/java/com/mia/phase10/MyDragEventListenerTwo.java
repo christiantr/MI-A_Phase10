@@ -2,26 +2,18 @@ package com.mia.phase10;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.GameData;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.PlaystationType;
 
-import java.util.Map;
-
-import static com.mia.phase10.GameActivity.DRAWABLE;
 
 public class MyDragEventListenerTwo implements View.OnDragListener {
 

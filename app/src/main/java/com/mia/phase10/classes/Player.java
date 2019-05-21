@@ -14,7 +14,7 @@ public class Player {
     private ArrayList<Card> phaseCards2Temp;
     private Phase currentPhase;
     private String currentName;
-    boolean phaseAchieved;
+    private boolean phaseAchieved;
 
     public Player(String id) {
         this.id = id;

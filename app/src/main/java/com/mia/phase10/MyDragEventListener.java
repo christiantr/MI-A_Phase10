@@ -60,8 +60,6 @@ public class MyDragEventListener implements View.OnDragListener {
                 ClipData.Item item = event.getClipData().getItemAt(0);
                 // Gets the text data from the item.
                 String dragData = item.getText().toString();
-                // Displays a message containing the dragged data.
-                Toast.makeText(v.getContext(), "Dragged data is " + dragData, Toast.LENGTH_SHORT).show();
                 // Invalidates the view to force a redraw
                 v.invalidate();
 
@@ -80,11 +78,6 @@ public class MyDragEventListener implements View.OnDragListener {
             case DragEvent.ACTION_DRAG_ENDED:
                 // Invalidates the view to force a redraw
                 v.invalidate();
-                // Does a getResult(), and displays what happened.
-                if (event.getResult())
-                    Toast.makeText(v.getContext(), "The drop was handled.", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(v.getContext(), "The drop didn't work.", Toast.LENGTH_SHORT).show();
                 // returns true; the value is ignored.
                 return true;
             // An unknown action type was received.

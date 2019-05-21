@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
@@ -78,18 +76,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     private void initializeListeners() {
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameLogicHandler.getInstance().checkPhase();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               GameLogicHandler.getInstance().movePhaseCardsBackToHand();
-            }
-        });
 
         myDragEventListener = new MyDragEventListener();
         myDrag = new MyDragEventListenerTwo();
@@ -320,8 +306,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         switch (GameLogicHandler.getInstance().getGameData().getPhase()) {
 
             case DRAW_PHASE:
-                Toast.makeText(this, "DRAWPHASE", Toast.LENGTH_SHORT).show();
-
                 discardPileLayout.setOnDragListener(null);
                 playstationP1Layout.setOnDragListener(null);
                 playstationP1LayoutL.setOnDragListener(null);
@@ -337,12 +321,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 break;
             case LAYOFF_PHASE:
-                Toast.makeText(this, "LAYOFFPHASE", Toast.LENGTH_SHORT).show();
                 stack.setOnClickListener(null);
                 discardPileLayout.setOnDragListener(myDragEventListener);
                 playstationP1Layout.setOnDragListener(myDrag);
                 playstationP1LayoutL.setOnDragListener(myDrag);
                 playstationP1LayoutR.setOnDragListener(myDrag);
+
 
                 if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
                     check.setOnClickListener(new View.OnClickListener() {
@@ -355,6 +339,19 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                         @Override
                         public void onClick(View v) {
                             GameLogicHandler.getInstance().moveCardsBackToHand();
+                        }
+                    });
+                }else{
+                    check.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            GameLogicHandler.getInstance().checkPhase();
+                        }
+                    });
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            GameLogicHandler.getInstance().movePhaseCardsBackToHand();
                         }
                     });
                 }
