@@ -17,7 +17,7 @@ public class CardUnitTest {
     SpecialCard specialCard;
     @Before
     public void before(){
-        card = new SimpleCard(1,Colour.BLUE,1);
+        card = new SimpleCard(1,Colour.BLUE,1, 5);
         specialCard = new SpecialCard(90, SpecialCardValue.JOKER);
     }
     @Test

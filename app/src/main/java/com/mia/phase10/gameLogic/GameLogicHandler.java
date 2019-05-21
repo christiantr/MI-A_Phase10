@@ -8,6 +8,7 @@ import com.mia.phase10.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
+import com.mia.phase10.classes.Hand;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
@@ -15,7 +16,9 @@ import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
@@ -55,6 +58,7 @@ public class GameLogicHandler {
         this.getGameData().getDrawStack().mixStack();
         //this.gameActivity.startShufflingActivity();
         for (Player p : gameData.getPlayers().values()) {
+            p.getHand().getCardList().clear();
             for (int i = 0; i < 10; i++) {
                 Card c = this.gameData.getDrawStack().drawCard();
                 p.getHand().addCard(c);
@@ -63,27 +67,33 @@ public class GameLogicHandler {
             p.getPhaseCards2().clear();
             p.setPhaseAchieved(false);
         }
+
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
         this.setPlayerNames();
-
-
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
         this.gameActivity.visualize();
     }
 
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
-
         try {
+            Hand hand = gameData.getPlayers().get(playerId).getHand();
+            Card c = hand.removeCard(cardId);
 
-            Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
+
             this.gameData.getLayOffStack().addCard(c);
-
-            this.gameData.nextPlayer();
-            this.setPlayerNames();
-            this.gameData.setPhase(GamePhase.DRAW_PHASE);
-            this.gameActivity.visualize();
-
+            if (hand.getCardList().isEmpty()) {
+                this.gameData.setRoundClosed(true);
+                this.gameData.setPhase(GamePhase.END_TURN_PHASE);
+                this.countCards();
+                this.checkPhasePlayer();
+                startRound();
+            } else {
+                this.gameData.nextPlayer();
+                this.setPlayerNames();
+                this.gameData.setPhase(GamePhase.DRAW_PHASE);
+                this.gameActivity.visualize();
+            }
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
@@ -162,6 +172,34 @@ public class GameLogicHandler {
         this.gameActivity.visualize();
     }
 
+    public void removeHandCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
+        try {
+            gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
+            this.gameActivity.visualize();
+        } catch (Exception c) {
+            throw new PlayerNotFoundException("Player not found!");
+        }
+    }
+
+    public void countCards() {
+        for (Player p : gameData.getPlayers().values()) {
+            Map<Integer, Card> cards = p.getHand().getCardList();
+            int points = p.getPoints();
+            for (Map.Entry<Integer, Card> item : cards.entrySet()) {
+                points = points + item.getValue().getcountCard();
+            }
+            p.setPoints(points);
+        }
+    }
+
+    public void checkPhasePlayer() {
+        for (Player p : gameData.getPlayers().values()) {
+            if (p.isPhaseAchieved()) {
+                p.setCurrentPhase((p.getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(p.getCurrentPhase()).ordinal() + 1] : null);
+            }
+        }
+    }
+
     public GameData getGameData() {
         return this.gameData;
     }
@@ -178,10 +216,22 @@ public class GameLogicHandler {
 
     public void checkPhase() { //needs to be updated if there are more than 2 players
         Phase p = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
+        ArrayList<Card> phaseCards = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards();
+
         if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameActivity.setVisibilityOfButtons();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
+
+               /* this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards(phaseCards);
+                for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
+                    try {
+                        this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }*/
+
 
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
@@ -195,6 +245,23 @@ public class GameLogicHandler {
 
                 this.gameActivity.setVisibilityOfButtons();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
+
+                /*this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards(phaseCards);
+                for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
+                    try {
+                        this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseCards2(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2());
+                for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
+                    try {
+                        this.removeHandCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), card.getId()); //delete card of hand
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }*/
 
                 Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 

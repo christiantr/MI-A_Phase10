@@ -17,6 +17,7 @@ public class GameData {
     private Map<String,Player> players;
     private String activePlayerId;
     private GamePhase phase;
+    private boolean roundClosed;
 
 
     public GameData(){
@@ -75,6 +76,14 @@ public class GameData {
 
     public void setPhase(GamePhase phase) {
         this.phase = phase;
+    }
+
+    public boolean isRoundClosed() {
+        return roundClosed;
+    }
+
+    public void setRoundClosed(boolean roundClosed) {
+        this.roundClosed = roundClosed;
     }
 
     public void nextPlayer(){

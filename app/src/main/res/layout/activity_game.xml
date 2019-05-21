@@ -356,7 +356,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="64dp"
                 android:fontFamily="@font/benchnine"
-                android:text="45"
+                android:text="0"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toTopOf="@+id/ID_more"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -399,4 +399,12 @@
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/ID_phase_closed"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/phase_closed"-->
+        <!--android:orientation="horizontal">-->
+    <!--</android.support.constraint.ConstraintLayout>-->
 </android.support.v4.widget.DrawerLayout>

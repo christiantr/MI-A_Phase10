@@ -108,5 +108,4 @@ public class Player {
     public void setPhaseCards2Temp(ArrayList<Card> phaseCards2Temp) {
         this.phaseCards2Temp = phaseCards2Temp;
     }
-
 }
