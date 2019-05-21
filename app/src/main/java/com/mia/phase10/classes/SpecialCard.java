@@ -9,8 +9,8 @@ public class SpecialCard extends Card {
         this.value = value;
     }
 
-    public SpecialCard(int id, String imagePath, SpecialCardValue value) {
-        super(id, imagePath);
+    public SpecialCard(int id, String imagePath, SpecialCardValue value, int countCard) {
+        super(id, imagePath, countCard);
         this.value = value;
     }
 

@@ -22,9 +22,15 @@ public class CardStack {
         int count = 1;
         Colour colour = null;
         String imagePath = "";
+        int countCard = 0;
         for (int k = 1; k <= 2; k++) {
             for (int i = 1; i <= 4; i++) {
                 for (int j = 1; j <= 12; j++) {
+                    if (j <= 5) {
+                        countCard = 5;
+                    } else {
+                        countCard = 10;
+                    }
                     switch (i) {
                         case (1):
                             colour = Colour.BLUE;
@@ -43,7 +49,7 @@ public class CardStack {
                             imagePath = "card_y_" + j;
                             break;
                     }
-                    cardList.add(new SimpleCard(count, imagePath, colour, j));
+                    cardList.add(new SimpleCard(count, imagePath, colour, j, countCard));
                     count += 1;
                 }
             }
@@ -62,21 +68,22 @@ public class CardStack {
     public void addCard(Card c) {
         cardList.add(c);
     }
-    public Card drawLastCard(){
-        Card c  = null;
 
-        if(!this.cardList.isEmpty()){
-            c = cardList.remove(cardList.size()-1);
+    public Card drawLastCard() {
+        Card c = null;
+
+        if (!this.cardList.isEmpty()) {
+            c = cardList.remove(cardList.size() - 1);
         }
 
         return c;
     }
 
-    public Card getLastCard(){
-        Card c  = null;
+    public Card getLastCard() {
+        Card c = null;
 
-        if(!this.cardList.isEmpty()){
-            c = cardList.get(cardList.size()-1);
+        if (!this.cardList.isEmpty()) {
+            c = cardList.get(cardList.size() - 1);
         }
 
         return c;
@@ -89,7 +96,8 @@ public class CardStack {
         }
         return cardList.remove(0);
     }
-    public List<Card> getCardList(){
+
+    public List<Card> getCardList() {
         return this.cardList;
     }
 

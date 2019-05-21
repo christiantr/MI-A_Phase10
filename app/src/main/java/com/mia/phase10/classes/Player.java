@@ -18,11 +18,11 @@ public class Player {
         this.id = id;
         this.hand = new Hand();
         this.points = 0;
-        this.phaseCards=new ArrayList<>();
-        this.phaseCards2=new ArrayList<>();
-        currentPhase=Phase.PHASE_1;
-        currentName=id;
-        phaseAchieved=false;
+        this.phaseCards = new ArrayList<>();
+        this.phaseCards2 = new ArrayList<>();
+        currentPhase = Phase.PHASE_1;
+        currentName = id;
+        phaseAchieved = false;
     }
 
     public String getId() {
@@ -88,4 +88,5 @@ public class Player {
     public void setPhaseAchieved(boolean phaseAchieved) {
         this.phaseAchieved = phaseAchieved;
     }
+
 }

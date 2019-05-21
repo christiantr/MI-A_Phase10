@@ -3,10 +3,12 @@ package com.mia.phase10.classes;
 public abstract class Card {
     protected int id;
     protected String imagePath;
+    protected int countCard;
 
-    public Card(int id, String imagePath) {
+    public Card(int id, String imagePath, int countCard) {
         this.id = id;
         this.imagePath = imagePath;
+        this.countCard = countCard;
     }
 
     public Card(int id) {
@@ -27,6 +29,14 @@ public abstract class Card {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public int getcountCard() {
+        return countCard;
+    }
+
+    public void setcountCard(int count) {
+        this.countCard = count;
     }
 
     @Override
