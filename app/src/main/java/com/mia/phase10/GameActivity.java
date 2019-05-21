@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private LinearLayout playstationP2LayoutR;
     private Button check;
     private Button cancel;
+    private ImageButton checkTwo;
+    private ImageButton cancelTwo;
     // private ConstraintLayout phaseClosed;
     private String player1Name;
     private String player2Name;
@@ -122,6 +125,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         playstationP2LayoutR = findViewById(R.id.ID_p2_playstation_layout_right);
         check = findViewById(R.id.checkPhase);
         cancel = findViewById(R.id.Cancel);
+        checkTwo = findViewById(R.id.check);
+        cancelTwo = findViewById(R.id.cross);
         // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
@@ -293,6 +298,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void setVisibilityOfButtons() {
         check.setVisibility(View.INVISIBLE);
         cancel.setVisibility(View.INVISIBLE);
+        checkTwo.setVisibility(View.INVISIBLE);
+        cancelTwo.setVisibility(View.INVISIBLE);
     }
 
     public void startShufflingActivity() {
@@ -303,6 +310,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void visualizePhase() {
         ImageView drawStack = findViewById(R.id.ID_stack);
         LinearLayout layoffStack = findViewById(R.id.ID_discard_layout);
+        final String currentP = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
+
         switch (GameLogicHandler.getInstance().getGameData().getPhase()) {
 
             case DRAW_PHASE:
@@ -310,6 +319,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 playstationP1Layout.setOnDragListener(null);
                 playstationP1LayoutL.setOnDragListener(null);
                 playstationP1LayoutR.setOnDragListener(null);
+                playstationP2Layout.setOnDragListener(null);
+                playstationP2LayoutL.setOnDragListener(null);
+                playstationP2LayoutR.setOnDragListener(null);
+
                 stack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -327,21 +340,44 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 playstationP1LayoutL.setOnDragListener(myDrag);
                 playstationP1LayoutR.setOnDragListener(myDrag);
 
-
                 if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
                     check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().checkNewCardList();
+                            GameLogicHandler.getInstance().checkNewCardList(currentP);
                         }
                     });
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().moveCardsBackToHand();
+                            GameLogicHandler.getInstance().moveCardsBackToHand(currentP);
                         }
                     });
-                }else{
+
+
+                    GameLogicHandler.getInstance().getGameData().nextPlayer();
+                    if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
+
+                        playstationP2Layout.setOnDragListener(myDrag);
+                        playstationP2LayoutL.setOnDragListener(myDrag);
+                        playstationP2LayoutR.setOnDragListener(myDrag);
+
+                        checkTwo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                GameLogicHandler.getInstance().checkNewCardList(currentP);
+                            }
+                        });
+                        cancelTwo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                GameLogicHandler.getInstance().moveCardsBackToHand(currentP);
+                            }
+                        });
+                    }
+                    GameLogicHandler.getInstance().getGameData().setActivePlayerId(currentP);
+
+                } else {
                     check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -465,5 +501,13 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public void setPlayer2(String name) {
         this.player2Name = name;
+    }
+
+    public ImageButton getCheckTwo() {
+        return checkTwo;
+    }
+
+    public ImageButton getCancelTwo() {
+        return cancelTwo;
     }
 }

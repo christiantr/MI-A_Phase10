@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
@@ -62,21 +63,42 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
 
-                GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
-                GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                String player= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getId();
-                if (v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
+                String player = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getId();
+
+                if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
                     try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION,player,vw.getId());
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION, player, vw.getId());
                     } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
                     try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT,player,vw.getId());
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT, player, vw.getId());
                     } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                         e.printStackTrace();
-                    }                }
+                    }
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
