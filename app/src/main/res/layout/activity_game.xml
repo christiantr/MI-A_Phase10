@@ -1,155 +1,410 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="horizontal"
-    tools:context=".GameActivity">
+    android:fitsSystemWindows="true">
 
-    <Button
-        android:id="@+id/openShuffling"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="open Shuffling"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.986"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/ID_p2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatar_2" />
-
-    <ImageView
-        android:id="@+id/ID_p2_playstation"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
-        app:layout_constraintStart_toEndOf="@+id/ID_p2"
-        app:srcCompat="@drawable/playstation_p" />
-
-    <!--<ImageView-->
-    <!--android:id="@+id/ID_p3"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="32dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--app:layout_constraintStart_toEndOf="@+id/ID_p2_playstation"-->
-    <!--app:layout_constraintTop_toTopOf="parent"-->
-    <!--app:srcCompat="@drawable/avatar_3" />-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/ID_p3_playstation"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_marginStart="16dp"-->
-    <!--android:layout_marginBottom="12dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="@+id/ID_p3"-->
-    <!--app:layout_constraintStart_toEndOf="@+id/ID_p3"-->
-    <!--app:srcCompat="@drawable/playstation_p" />-->
-
-    <ImageView
-        android:id="@+id/ID_avatar"
-        android:layout_width="55dp"
-        android:layout_height="93dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/avatar" />
-
-    <ImageView
-        android:id="@+id/ID_p1_playstation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/ID_avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/playstation" />
-
-    <ImageView
-        android:id="@+id/ID_stack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
-        app:srcCompat="@drawable/stack" />
-
-    <LinearLayout
-        android:id="@+id/ID_p1_playstaion_layout"
-        android:layout_width="365dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:gravity="center|right|left"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
         android:orientation="horizontal"
+
         app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
         app:layout_constraintEnd_toEndOf="@+id/ID_p1_playstation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation" />
+        app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation">
 
-    <LinearLayout
-        android:id="@+id/ID_deck"
-        android:layout_width="386dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:gravity="center|right|left"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ID_avatar">
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ID_deck"
+            android:layout_width="386dp"
+            android:layout_height="101dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center|right|left"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ID_avatar">
 
-    <LinearLayout
-        android:id="@+id/ID_discard_layout"
-        android:layout_width="74dp"
-        android:layout_height="127dp"
-        android:layout_marginEnd="109dp"
-        android:layout_marginBottom="105dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"></LinearLayout>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/ID_player_2"
+        <LinearLayout
+            android:id="@+id/ID_discard_layout"
+            android:layout_width="74dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ID_stack"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.48000002"
+            tools:context=".GameActivity">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/checkPhase"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="check"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/Cancel"
+            app:layout_constraintHorizontal_bias="0.795"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.686" />
+
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="cancel"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.684" />
+
+        <ImageView
+            android:id="@+id/ID_p2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/avatar_2" />
+
+        <ImageView
+            android:id="@+id/ID_p2_playstation_two"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
+            app:layout_constraintStart_toEndOf="@+id/ID_p2"
+            app:srcCompat="@drawable/playstation_p_two" />
+
+        <ImageView
+            android:id="@+id/ID_p2_playstation"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
+            app:layout_constraintStart_toEndOf="@+id/ID_p2"
+            app:srcCompat="@drawable/playstation_p" />
+
+        <LinearLayout
+            android:id="@+id/ID_p2_playstation_layout"
+            android:layout_width="179dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
+            app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">
+
+        </LinearLayout>
+
+        <!--<ImageView-->
+        <!--android:id="@+id/ID_p3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="32dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/ID_p2_playstation"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/avatar_3" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/ID_p3_playstation"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/ID_p3"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/ID_p3"-->
+        <!--app:srcCompat="@drawable/playstation_p" />-->
+
+        <LinearLayout
+            android:id="@+id/ID_p2_playstation_layout_right"
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ID_p2_playstation_layout_left"
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
+
+        <ImageView
+            android:id="@+id/ID_avatar"
+            android:layout_width="55dp"
+            android:layout_height="93dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <ImageView
+            android:id="@+id/ID_p1_playstation"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/ID_deck"
+            app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ID_p2_playstation"
+            app:srcCompat="@drawable/playstation" />
+
+        <ImageView
+            android:id="@+id/ID_p1_playstation_two"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/ID_deck"
+            app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/playstation_two" />
+
+        <ImageView
+            android:id="@+id/ID_stack"
+            android:layout_width="74dp"
+            android:layout_height="127dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
+            app:layout_constraintVertical_bias="0.516"
+            app:srcCompat="@drawable/stack" />
+
+        <LinearLayout
+            android:id="@+id/ID_p1_playstation_layout"
+            android:layout_width="250dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:saveEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.47000003" />
+
+        <LinearLayout
+            android:id="@+id/ID_p1_playstation_two_layout_left"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:saveEnabled="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ID_p1_playstation_two_layout_right"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@+id/ID_p1_playstation_two"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.47">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ID_p1_playstation_two_layout_right"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:saveEnabled="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
+            app:layout_constraintHorizontal_bias="0.657"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.47" />
+
+        <TextView
+            android:id="@+id/ID_player_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/benchnine"
+            android:text="P2"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
+            app:layout_constraintEnd_toEndOf="@+id/ID_p2"
+            app:layout_constraintStart_toStartOf="@+id/ID_p2" />
+
+        <TextView
+            android:id="@+id/ID_player_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/benchnine"
+            android:text="P1"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
+            app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
+            app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/colorAccent"
+        android:fitsSystemWindows="true"
         android:fontFamily="@font/benchnine"
-        android:text="P2"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_p2"
-        app:layout_constraintEnd_toEndOf="@+id/ID_p2"
-        app:layout_constraintStart_toStartOf="@+id/ID_p2" />
+        android:maxWidth="100dp">
 
-    <TextView
-        android:id="@+id/ID_player_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/benchnine"
-        android:text="P1"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
-        app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
-        app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
+        <LinearLayout
+            android:layout_width="221dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/ID_score_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/benchnine"
+                android:text="Punkte"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/ID_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/benchnine"
+                android:text="0"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/ID_phase_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/benchnine"
+                android:text="aktuelle Phase"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_score"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/ID_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="@font/benchnine"
+                android:text="3"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_more"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/ID_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="64dp"
+                android:clickable="true"
+                android:fontFamily="@font/benchnine"
+                android:text="mehr"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:id="@+id/ID_phase_closed"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/phase_closed"-->
+        <!--android:orientation="horizontal">-->
+    <!--</android.support.constraint.ConstraintLayout>-->
+</android.support.v4.widget.DrawerLayout>

@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button hostGame;
     private Button connecToHost;
     private Button testMessage;
+    private Button start;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.1.5";
     AsyncTask client;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
         testMessage = (Button) findViewById(R.id.button_sendTestMessage);
+        start = (Button) findViewById(R.id.button_start);
         connecToHost.setOnClickListener(new View.OnClickListener() {
             //            @Override
             public void onClick(View view) {
@@ -74,7 +76,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_main);
+                startGame(v);
 
+            }
+        });
         ip = (EditText) findViewById(R.id.input_Ip);
         ip.setText(DEFAULT_IP);
         port = (EditText) findViewById(R.id.input_port);
@@ -84,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
         testMessage.setVisibility(View.GONE);
-//        setContentView(R.layout.activity_main);
     }
 
     /**

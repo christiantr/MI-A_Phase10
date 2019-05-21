@@ -5,15 +5,15 @@ public class SimpleCard extends Card {
     private Colour color;
     private int number;
 
-    public SimpleCard(int id, Colour color, int number) {
-        super(id, "imagePath");
+    public SimpleCard(int id, Colour color, int number, int countCard) {
+        super(id, "imagePath", countCard);
         this.color = color;
         this.number = number;
 
     }
 
-    public SimpleCard(int id, String imagePath, Colour color, int number) {
-        super(id, imagePath);
+    public SimpleCard(int id, String imagePath, Colour color, int number, int countCard) {
+        super(id, imagePath, countCard);
         this.color = color;
         this.number = number;
     }
@@ -32,5 +32,9 @@ public class SimpleCard extends Card {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public String toString(){
+        return super.toString()+"Color: "+this.color + "; Number: "+this.number;
     }
 }

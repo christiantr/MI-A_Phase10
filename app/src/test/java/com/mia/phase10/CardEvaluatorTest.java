@@ -19,32 +19,32 @@ import static org.junit.Assert.*;
 
 public class CardEvaluatorTest {
     CardEvaluator evaluator;
-    List list1,list2;
-    Card b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,j1,j2,j3;
+    List list1, list2;
+    Card b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, j1, j2, j3;
 
 
     @Before
     public void setUp() {
         evaluator = evaluator.getInstance();
-        list1= new LinkedList();
-        list2= new LinkedList();
+        list1 = new LinkedList();
+        list2 = new LinkedList();
 
-        b1=new SimpleCard(1, Colour.BLUE,1);
-        b2=new SimpleCard(2, Colour.BLUE,2);
-        b3=new SimpleCard(3, Colour.BLUE,3);
-        b4=new SimpleCard(4, Colour.BLUE,4);
-        b5=new SimpleCard(5, Colour.BLUE,5);
-        b6=new SimpleCard(6, Colour.BLUE,6);
-        b7=new SimpleCard(7, Colour.BLUE,7);
-        b8=new SimpleCard(8, Colour.BLUE,8);
-        b9=new SimpleCard(9, Colour.BLUE,9);
-        b10=new SimpleCard(10, Colour.BLUE,10);
-        b11=new SimpleCard(11, Colour.BLUE,11);
-        b12=new SimpleCard(12, Colour.BLUE,12);
+        b1 = new SimpleCard(1, Colour.BLUE, 1, 5);
+        b2 = new SimpleCard(2, Colour.BLUE, 2, 5);
+        b3 = new SimpleCard(3, Colour.BLUE, 3, 5);
+        b4 = new SimpleCard(4, Colour.BLUE, 4, 5);
+        b5 = new SimpleCard(5, Colour.BLUE, 5, 5);
+        b6 = new SimpleCard(6, Colour.BLUE, 6, 10);
+        b7 = new SimpleCard(7, Colour.BLUE, 7, 10);
+        b8 = new SimpleCard(8, Colour.BLUE, 8, 10);
+        b9 = new SimpleCard(9, Colour.BLUE, 9, 10);
+        b10 = new SimpleCard(10, Colour.BLUE, 10, 10);
+        b11 = new SimpleCard(11, Colour.BLUE, 11, 10);
+        b12 = new SimpleCard(12, Colour.BLUE, 12, 10);
 
-        j1=new SpecialCard(1, SpecialCardValue.JOKER);
-        j2=new SpecialCard(2, SpecialCardValue.JOKER);
-        j3=new SpecialCard(3, SpecialCardValue.JOKER);
+        j1 = new SpecialCard(1, SpecialCardValue.JOKER);
+        j2 = new SpecialCard(2, SpecialCardValue.JOKER);
+        j3 = new SpecialCard(3, SpecialCardValue.JOKER);
 
     }
 
@@ -52,6 +52,7 @@ public class CardEvaluatorTest {
     public void tearDown() {
         evaluator = null;
     }
+
     @Test
     public void checkPhaseMissingArgumentFalse() {
         list1.add(b1);
@@ -61,7 +62,7 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
         list2.add(b2);
-        assertFalse(evaluator.checkPhase(Phase.PHASE_1,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_1, list1));
     }
 
     @Test
@@ -73,7 +74,7 @@ public class CardEvaluatorTest {
         list1.add(b5);
         list1.add(b6);
         list1.add(b7);
-        assertFalse(evaluator.checkPhase(Phase.PHASE_4,list1,list2));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_4, list1, list2));
     }
 
     @Test
@@ -85,12 +86,12 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
         list2.add(b2);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_1,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_1, list1, list2));
     }
 
     @Test
     public void checkPhase1False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_1,list1,list2));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_1, list1, list2));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class CardEvaluatorTest {
         list2.add(b3);
         list2.add(b4);
         list2.add(b5);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_2,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_2, list1, list2));
     }
 
     @Test
@@ -117,12 +118,12 @@ public class CardEvaluatorTest {
         list2.add(b4);
         list2.add(b5);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_2,list2,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_2, list2, list1));
     }
 
     @Test
     public void checkPhase2False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_2,list2,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_2, list2, list1));
     }
 
     @Test
@@ -137,7 +138,7 @@ public class CardEvaluatorTest {
         list2.add(b4);
         list2.add(b5);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_3,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_3, list1, list2));
     }
 
     @Test
@@ -152,11 +153,12 @@ public class CardEvaluatorTest {
         list2.add(b4);
         list2.add(b5);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_3,list2,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_3, list2, list1));
     }
+
     @Test
     public void checkPhase3False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_3,list2,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_3, list2, list1));
     }
 
     @Test
@@ -168,12 +170,12 @@ public class CardEvaluatorTest {
         list1.add(b5);
         list1.add(b6);
         list1.add(b7);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_4,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_4, list1));
     }
 
     @Test
     public void checkPhase4False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_4,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_4, list1));
     }
 
     @Test
@@ -186,12 +188,12 @@ public class CardEvaluatorTest {
         list1.add(b6);
         list1.add(b7);
         list1.add(b8);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_5,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_5, list1));
     }
 
     @Test
     public void checkPhase5False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_5,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_5, list1));
     }
 
     @Test
@@ -205,12 +207,12 @@ public class CardEvaluatorTest {
         list1.add(b7);
         list1.add(b8);
         list1.add(b9);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_6,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_6, list1));
     }
 
     @Test
     public void checkPhase6False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_6,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_6, list1));
     }
 
     @Test
@@ -224,13 +226,13 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
         list2.add(b2);
-        assertTrue(evaluator.checkPhase(Phase.PHASE_7,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_7, list1, list2));
 
     }
 
     @Test
     public void checkPhase7False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_7,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_7, list1));
     }
 
     @Test
@@ -243,7 +245,7 @@ public class CardEvaluatorTest {
         list1.add(b6);
         list1.add(b3);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_8,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_8, list1));
     }
 
     @Test
@@ -256,7 +258,7 @@ public class CardEvaluatorTest {
         list1.add(j2);
         list1.add(b3);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_8,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_8, list1));
     }
 
     @Test
@@ -266,10 +268,10 @@ public class CardEvaluatorTest {
         list1.add(j1);
         list1.add(b5);
         list1.add(b4);
-        list1.add(new SimpleCard(13,Colour.RED,3));
+        list1.add(new SimpleCard(13, Colour.RED, 3, 5));
         list1.add(b3);
 
-        assertFalse(evaluator.checkPhase(Phase.PHASE_8,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_8, list1));
     }
 
     @Test
@@ -280,7 +282,7 @@ public class CardEvaluatorTest {
         list1.add(b5);
         list1.add(b4);
 
-        assertFalse(evaluator.checkPhase(Phase.PHASE_8,list1));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_8, list1));
     }
 
     @Test
@@ -294,7 +296,7 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_9,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_9, list1, list2));
     }
 
     @Test
@@ -308,12 +310,12 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_9,list2,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_9, list2, list1));
     }
 
     @Test
     public void checkPhase9False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_9,list1,list2));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_9, list1, list2));
     }
 
     @Test
@@ -328,7 +330,7 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_10,list1,list2));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_10, list1, list2));
     }
 
     @Test
@@ -343,24 +345,28 @@ public class CardEvaluatorTest {
         list2.add(b2);
         list2.add(b2);
 
-        assertTrue(evaluator.checkPhase(Phase.PHASE_10,list2,list1));
+        assertTrue(evaluator.checkPhase(Phase.PHASE_10, list2, list1));
     }
 
     @Test
     public void checkPhase10False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_10,list1,list2));
+        assertFalse(evaluator.checkPhase(Phase.PHASE_10, list1, list2));
     }
 
     @Test
-    public void testCheckIfInARowOnlySimpleCardsTrue(){
-        list1.add(b1);
-        list1.add(b2);
-        list1.add(b3);
+    public void testCheckIfInARowOnlySimpleCardsTrue() {
+        list1.add(b4);
+        list1.add(b5);
+        list1.add(b6);
+        list1.add(b7);
+        list1.add(b8);
+        list1.add(b9);
+        list1.add(b10);
         assertTrue(evaluator.checkIfInARow(list1));
     }
 
     @Test
-    public void testCheckIfInARowOnlySimpleCardsFalse(){
+    public void testCheckIfInARowOnlySimpleCardsFalse() {
         list1.add(b1);
         list1.add(b2);
         list1.add(b2);
@@ -368,7 +374,7 @@ public class CardEvaluatorTest {
     }
 
     @Test
-    public void testCheckIfInARowWithJokerInBetween(){
+    public void testCheckIfInARowWithJokerInBetween() {
         list1.add(b1);
         list1.add(j1);
         list1.add(b3);
@@ -376,7 +382,7 @@ public class CardEvaluatorTest {
     }
 
     @Test
-    public void testCheckIfInARowWithJokerAtBeginning(){
+    public void testCheckIfInARowWithJokerAtBeginning() {
         list1.add(j1);
         list1.add(j2);
         list1.add(b3);
@@ -385,7 +391,7 @@ public class CardEvaluatorTest {
     }
 
     @Test
-    public void testCheckIfInARowWithJokers(){
+    public void testCheckIfInARowWithJokers() {
         list1.add(j1);
         list1.add(j2);
         list1.add(b3);
@@ -397,7 +403,7 @@ public class CardEvaluatorTest {
     }
 
     @Test
-    public void testCheckIfInARowWithJokersFalse(){
+    public void testCheckIfInARowWithJokersFalse() {
         list1.add(j1);
         list1.add(j2);
         list1.add(b3);
@@ -407,8 +413,9 @@ public class CardEvaluatorTest {
 
         assertFalse(evaluator.checkIfInARow(list1));
     }
+
     @Test
-    public void testCheckForEqualNumbersOnlySimpleCardsTrue(){
+    public void testCheckForEqualNumbersOnlySimpleCardsTrue() {
         list1.add(b1);
         list1.add(b1);
         list1.add(b1);
@@ -418,7 +425,7 @@ public class CardEvaluatorTest {
 
 
     @Test
-    public void testCheckForEqualNumbersOnlySimpleCardsFalse(){
+    public void testCheckForEqualNumbersOnlySimpleCardsFalse() {
         list1.add(b1);
         list1.add(b1);
         list1.add(b2);
@@ -428,7 +435,7 @@ public class CardEvaluatorTest {
 
 
     @Test
-    public void testCheckForEqualNumbersWithJoker(){
+    public void testCheckForEqualNumbersWithJoker() {
         list1.add(j1);
         list1.add(b3);
         list1.add(b3);
