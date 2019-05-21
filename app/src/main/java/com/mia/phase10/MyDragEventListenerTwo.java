@@ -17,6 +17,7 @@ import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.PlaystationType;
 
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
     public boolean onDrag(View v, DragEvent event) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        lp.height=200;
+        lp.height = 200;
 
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
@@ -71,11 +72,19 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
 
                 GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                 GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                try {
-                    GameLogicHandler.getInstance().layoffPhase(v,GameLogicHandler.getInstance().getGameData().getActivePlayerId(),vw.getId());
-                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                    e.printStackTrace();
-                }
+                String player= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getId();
+                if (v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION,player,vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT,player,vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }                }
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;

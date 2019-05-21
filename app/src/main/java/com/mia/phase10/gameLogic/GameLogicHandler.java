@@ -77,12 +77,10 @@ public class GameLogicHandler {
 
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
         try {
-            Hand hand = gameData.getPlayers().get(playerId).getHand();
-            Card c = hand.removeCard(cardId);
-
-
+            Card c = this.gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameData.getLayOffStack().addCard(c);
-            if (hand.getCardList().isEmpty()) {
+
+            if (gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty()) {
                 this.gameData.setRoundClosed(true);
                 this.gameData.setPhase(GamePhase.END_TURN_PHASE);
                 this.countCards();
@@ -99,12 +97,11 @@ public class GameLogicHandler {
         }
     }
 
-    public void layoffPhaw23se(View v, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
+    public void layoffPhase(PlaystationType t, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
 
         try {
             Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
-
-            if (v == this.gameActivity.getPlaystationP1Layout() || v == this.gameActivity.getPlaystationP1LayoutL()) {
+            if (t==PlaystationType.PLAYSTATION) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(c);
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCardsTemp().add(c);
@@ -115,7 +112,6 @@ public class GameLogicHandler {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
                 }
             }
-
             this.gameActivity.visualize();
 
         } catch (Exception c) {
@@ -172,14 +168,7 @@ public class GameLogicHandler {
         this.gameActivity.visualize();
     }
 
-    public void removeHandCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
-        try {
-            gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
-            this.gameActivity.visualize();
-        } catch (Exception c) {
-            throw new PlayerNotFoundException("Player not found!");
-        }
-    }
+
 
     public void countCards() {
         for (Player p : gameData.getPlayers().values()) {

@@ -309,41 +309,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancel.setVisibility(View.INVISIBLE);
     }
 
-   /* public void removeCardsFromPlaystationBackToHand() {
-        setVisibilityOfButtons();
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-        lp.setMargins(0, 0, 0, 0);
-
-        for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
-            ImageView cardImage = new ImageView(GameActivity.this);
-            cardImage.setLayoutParams(lp);
-            Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
-            cardImage.setImageDrawable(c);
-            cardImage.setTag(DISCARD_PILE);
-            cardImage.setOnLongClickListener(GameActivity.this);
-            cardImage.setId(card.getId());
-            deck.addView(cardImage);
-        }
-        if (playstationP1Image.getVisibility() == View.VISIBLE) {
-            playstationP1Layout.removeAllViews();
-        } else {
-            for (Card card : GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
-                ImageView cardImage = new ImageView(GameActivity.this);
-                cardImage.setLayoutParams(lp);
-                Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
-                cardImage.setImageDrawable(c);
-                cardImage.setTag(DISCARD_PILE);
-                cardImage.setOnLongClickListener(GameActivity.this);
-                cardImage.setId(card.getId());
-                deck.addView(cardImage);
-            }
-            playstationP1LayoutL.removeAllViews();
-            playstationP1LayoutR.removeAllViews();
-        }
-        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
-        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
-    }*/
-
     public void startShufflingActivity() {
         Intent shufflingActivity = new Intent(this, ShufflingActivity.class);
         startActivity(shufflingActivity);
