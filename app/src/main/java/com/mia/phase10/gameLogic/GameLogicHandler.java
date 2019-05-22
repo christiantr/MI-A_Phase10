@@ -1,6 +1,5 @@
 package com.mia.phase10.gameLogic;
 
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -8,7 +7,6 @@ import com.mia.phase10.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
-import com.mia.phase10.classes.Hand;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
@@ -17,7 +15,6 @@ import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameFlow.LayOffCardsPhase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,8 +78,8 @@ public class GameLogicHandler {
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
         try {
             if(!this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved() &&(
-                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards()!=null ||
-                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2()!=null ) )
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().isEmpty()||
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().isEmpty()) )
             { movePhaseCardsBackToHand(); }
 
             String currentP = this.gameData.getActivePlayerId();
@@ -96,7 +93,7 @@ public class GameLogicHandler {
                 this.gameData.setRoundClosed(true);
                 this.gameData.setPhase(GamePhase.END_TURN_PHASE);
                 this.countCards();
-                this.checkPhasePlayer();
+                this.setNewPhaseForPlayer(playerId);
                 startRound();
             } else {
                 this.gameData.nextPlayer();
@@ -124,25 +121,19 @@ public class GameLogicHandler {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
                 }
             }else if (t==PlaystationType.PLAYSTATION_TWO) {
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
                 this.getGameData().nextPlayer();
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(c);
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCardsTemp().add(c);
                 }
                 this.getGameData().setActivePlayerId(currentP);
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
                 this.getGameData().nextPlayer();
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(c);
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
                 }
                 this.getGameData().setActivePlayerId(currentP);
-                Toast.makeText(this.getGameActivity(), "layoffPhase:"+currentP+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
             }
             this.gameActivity.visualize();
 
@@ -160,7 +151,6 @@ public class GameLogicHandler {
             for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2()) {
                 this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
             }
-
         }
         this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().clear();
         this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().clear();
@@ -175,7 +165,6 @@ public class GameLogicHandler {
             this.gameData.nextPlayer();
             playerID=this.gameData.getActivePlayerId();
         }
-        Toast.makeText(this.getGameActivity(), "moveCardsBackToHand:"+s+"active:"+GameLogicHandler.getInstance().getGameData().getActivePlayerId(), Toast.LENGTH_SHORT).show();
         for (Card c : this.getGameData().getPlayers().get(playerID).getPhaseCardsTemp()) {
             this.getGameData().getPlayers().get(playerID).getPhaseCards().remove(c);
             this.getGameData().getPlayers().get(s).getHand().addCard(c);
@@ -222,12 +211,11 @@ public class GameLogicHandler {
         }
     }
 
-    public void checkPhasePlayer() {
-        for (Player p : gameData.getPlayers().values()) {
-            if (p.isPhaseAchieved()) {
-                p.setCurrentPhase((p.getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(p.getCurrentPhase()).ordinal() + 1] : null);
+    public void setNewPhaseForPlayer(String playerId) {
+            if ( this.gameData.getPlayers().get(playerId).isPhaseAchieved()) {
+                this.gameData.getPlayers().get(playerId).setCurrentPhase((this.gameData.getPlayers().get(playerId).getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(this.gameData.getPlayers().get(playerId).getCurrentPhase()).ordinal() + 1] : null);
             }
-        }
+
     }
 
     public GameData getGameData() {
@@ -251,10 +239,10 @@ public class GameLogicHandler {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 this.gameActivity.visualize();
-                Toast.makeText(this.getGameActivity(), "checkPhaseIf:The phase is correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
             } else {
                 movePhaseCardsBackToHand();
-                Toast.makeText(this.gameActivity, "checkPhaseIf: The phase is not correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards(),
@@ -262,11 +250,11 @@ public class GameLogicHandler {
 
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 this.gameActivity.visualize();
-                Toast.makeText(this.getGameActivity(), "checkPhaseElse: The phase is correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
 
             } else {
                 movePhaseCardsBackToHand();
-                Toast.makeText(this.gameActivity, "checkPhaseElse:The phase is not correct!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -307,14 +295,14 @@ public class GameLogicHandler {
             this.getGameData().getPlayers().get(playerID).getPhaseCardsTemp().clear();
             this.getGameData().getPlayers().get(playerID).getPhaseCards2Temp().clear();
             GameLogicHandler.getInstance().getGameData().setActivePlayerId(s);
-            Toast.makeText(this.gameActivity, "checkNewCardlist: The list is correct!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.gameActivity, "The list is correct!", Toast.LENGTH_SHORT).show();
         }
         else {
             if (next==LayOffCardsPhase.NEXTPLAYER_PHASE){
                 this.gameData.setActivePlayerId(s);
             }
             moveCardsBackToHand(s,next);
-            Toast.makeText(this.gameActivity, "\"checkNewCardlist:The list is not correct!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.gameActivity, "The list is not correct!", Toast.LENGTH_SHORT).show();
         }
 
         if (next==LayOffCardsPhase.NEXTPLAYER_PHASE){
