@@ -2,25 +2,19 @@ package com.mia.phase10;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.GameData;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.PlaystationType;
 
-import java.util.Map;
-
-import static com.mia.phase10.GameActivity.DRAWABLE;
 
 public class MyDragEventListenerTwo implements View.OnDragListener {
 
@@ -32,7 +26,7 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
     public boolean onDrag(View v, DragEvent event) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        lp.height=200;
+        lp.height = 200;
 
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
@@ -69,21 +63,42 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
 
-                GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
-                GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                Card c= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
-                if (v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v==GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()){
-                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().add(c);
-                }else{
-                    GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().add(c);
+                String player = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getId();
+
+                if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    try {
+                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, player, vw.getId());
+                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
 
-               owner.removeView(vw); //remove the dragged view
-                //caste the view into LinearLayout as our drag acceptable layout is LinearLayout
-                LinearLayout container = (LinearLayout) v;
-                vw.setLayoutParams(lp);
-                container.addView(vw);//Add the dragged view
-                vw.setVisibility(View.VISIBLE);//finally set Visibility to VISIBLE
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;

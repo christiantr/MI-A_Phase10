@@ -133,24 +133,27 @@ public class CardEvaluator {
     }
 
     private boolean checkIfPhaseEight(List<Card> list) {
-        Colour col = null;
         if (list.size() == 7) {
-            for (Card c : list) {
-                if (c instanceof SimpleCard) {
-                    if (col == null) {
-                        col = ((SimpleCard) c).getColor();
-                    } else if (((SimpleCard) c).getColor() != col) {
-                        return false;
-                    }
-                } else if (c instanceof SpecialCard) {
-                    if (((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
-                        return false;
-                    }
-                }
-            }
-            return true;
+            return checkSameColors(list);
         }
         return false;
+    }
+    public boolean checkSameColors(List<Card> list){
+        Colour col = null;
+        for (Card c : list) {
+            if (c instanceof SimpleCard) {
+                if (col == null) {
+                    col = ((SimpleCard) c).getColor();
+                } else if (((SimpleCard) c).getColor() != col) {
+                    return false;
+                }
+            } else if (c instanceof SpecialCard) {
+                if (((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private boolean checkIfPhaseNine(List<Card> list, List<Card> list2) {

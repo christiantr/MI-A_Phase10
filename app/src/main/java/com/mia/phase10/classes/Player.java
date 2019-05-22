@@ -10,19 +10,23 @@ public class Player {
     private Hand hand;
     private ArrayList<Card> phaseCards;
     private ArrayList<Card> phaseCards2;
+    private ArrayList<Card> phaseCardsTemp;
+    private ArrayList<Card> phaseCards2Temp;
     private Phase currentPhase;
     private String currentName;
-    boolean phaseAchieved;
+    private boolean phaseAchieved;
 
     public Player(String id) {
         this.id = id;
         this.hand = new Hand();
         this.points = 0;
-        this.phaseCards = new ArrayList<>();
-        this.phaseCards2 = new ArrayList<>();
-        currentPhase = Phase.PHASE_1;
-        currentName = id;
-        phaseAchieved = false;
+        this.phaseCards=new ArrayList<>();
+        this.phaseCards2=new ArrayList<>();
+        this.phaseCardsTemp=new ArrayList<>();
+        this.phaseCards2Temp=new ArrayList<>();
+        currentPhase=Phase.PHASE_1;
+        currentName=id;
+        phaseAchieved=false;
     }
 
     public String getId() {
@@ -89,4 +93,19 @@ public class Player {
         this.phaseAchieved = phaseAchieved;
     }
 
+    public ArrayList<Card> getPhaseCardsTemp() {
+        return phaseCardsTemp;
+    }
+
+    public void setPhaseCardsTemp(ArrayList<Card> phaseCardsTemp) {
+        this.phaseCardsTemp = phaseCardsTemp;
+    }
+
+    public ArrayList<Card> getPhaseCards2Temp() {
+        return phaseCards2Temp;
+    }
+
+    public void setPhaseCards2Temp(ArrayList<Card> phaseCards2Temp) {
+        this.phaseCards2Temp = phaseCards2Temp;
+    }
 }
