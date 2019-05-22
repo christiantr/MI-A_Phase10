@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;
 import com.mia.phase10.gameLogic.StackType;
@@ -310,7 +311,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void visualizePhase() {
         ImageView drawStack = findViewById(R.id.ID_stack);
         LinearLayout layoffStack = findViewById(R.id.ID_discard_layout);
-        final String currentP = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
 
         switch (GameLogicHandler.getInstance().getGameData().getPhase()) {
 
@@ -333,31 +333,33 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 layoffStack.setBackgroundColor(Color.TRANSPARENT);
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 break;
+
             case LAYOFF_PHASE:
                 stack.setOnClickListener(null);
                 discardPileLayout.setOnDragListener(myDragEventListener);
                 playstationP1Layout.setOnDragListener(myDrag);
                 playstationP1LayoutL.setOnDragListener(myDrag);
                 playstationP1LayoutR.setOnDragListener(myDrag);
+                final String currentP = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
+
 
                 if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
                     check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().checkNewCardList(currentP);
+                            GameLogicHandler.getInstance().checkNewCardList(currentP,LayOffCardsPhase.ACTIVE_PHASE);
                         }
                     });
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().moveCardsBackToHand(currentP);
+                            GameLogicHandler.getInstance().moveCardsBackToHand(currentP,LayOffCardsPhase.ACTIVE_PHASE);
                         }
                     });
 
 
                     GameLogicHandler.getInstance().getGameData().nextPlayer();
                     if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
-
                         playstationP2Layout.setOnDragListener(myDrag);
                         playstationP2LayoutL.setOnDragListener(myDrag);
                         playstationP2LayoutR.setOnDragListener(myDrag);
@@ -365,13 +367,13 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                         checkTwo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                GameLogicHandler.getInstance().checkNewCardList(currentP);
+                                GameLogicHandler.getInstance().checkNewCardList(currentP, LayOffCardsPhase.NEXTPLAYER_PHASE);
                             }
                         });
                         cancelTwo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                GameLogicHandler.getInstance().moveCardsBackToHand(currentP);
+                                GameLogicHandler.getInstance().moveCardsBackToHand(currentP,LayOffCardsPhase.NEXTPLAYER_PHASE);
                             }
                         });
                     }
