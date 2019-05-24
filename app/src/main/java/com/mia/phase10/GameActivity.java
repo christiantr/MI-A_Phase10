@@ -296,9 +296,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
     }
 
-    public void setVisibilityOfButtons() {
+    public void setVisibilityOfButtons1() {
         check.setVisibility(View.INVISIBLE);
         cancel.setVisibility(View.INVISIBLE);
+    }
+
+    public void setVisibilityOfButtons2() {
         checkTwo.setVisibility(View.INVISIBLE);
         cancelTwo.setVisibility(View.INVISIBLE);
     }

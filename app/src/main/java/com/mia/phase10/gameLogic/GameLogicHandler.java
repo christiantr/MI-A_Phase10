@@ -9,8 +9,6 @@ import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.classes.SimpleCard;
-import com.mia.phase10.classes.SpecialCard;
-import com.mia.phase10.classes.SpecialCardValue;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
@@ -178,7 +176,7 @@ public class GameLogicHandler {
     }
 
     public void movePhaseCardsBackToHand() {
-        this.gameActivity.setVisibilityOfButtons();
+        this.gameActivity.setVisibilityOfButtons1();
         for (Card c : this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards()) {
             this.getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(c);
         }
@@ -193,10 +191,11 @@ public class GameLogicHandler {
     }
 
     public void moveCardsBackToHand(String s, LayOffCardsPhase next) {
-        this.gameActivity.setVisibilityOfButtons();
         String playerID = this.gameData.getActivePlayerId();
 
-        if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
+        if (next == LayOffCardsPhase.ACTIVE_PHASE){this.gameActivity.setVisibilityOfButtons1(); }
+        else if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
+            this.gameActivity.setVisibilityOfButtons2();
             this.gameData.nextPlayer();
             playerID = this.gameData.getActivePlayerId();
         }
@@ -275,7 +274,7 @@ public class GameLogicHandler {
 
     public void checkPhase() {
         Phase p = this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentPhase();
-        this.gameActivity.setVisibilityOfButtons();
+        this.gameActivity.setVisibilityOfButtons1();
         if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
@@ -302,10 +301,11 @@ public class GameLogicHandler {
     }
 
     public void checkNewCardList(String s, LayOffCardsPhase next) {
-        this.gameActivity.setVisibilityOfButtons();
         String playerID = this.gameData.getActivePlayerId();
 
-        if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
+        if (next == LayOffCardsPhase.ACTIVE_PHASE){this.gameActivity.setVisibilityOfButtons1(); }
+        else if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
+            this.gameActivity.setVisibilityOfButtons2();
             this.gameData.nextPlayer();
             playerID = this.gameData.getActivePlayerId();
         }
