@@ -130,29 +130,41 @@ public class GameLogicHandler {
         try {
             Card c = gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             if (t == PlaystationType.PLAYSTATION) {
-
+               if (((SimpleCard) c).getNumber() <= getFirstNumberOfPhaseCards(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards())) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(0,c);
+                } else {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(c);
+                }
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCardsTemp().add(c);
                 }
             } else if (t == PlaystationType.PLAYSTATION_RIGHT) {
-
+               if (((SimpleCard) c).getNumber() <= getFirstNumberOfPhaseCards(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2())) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(0,c);
+                } else {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(c);
+                }
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
                 }
             } else if (t == PlaystationType.PLAYSTATION_TWO) {
                 this.getGameData().nextPlayer();
-
+                if (((SimpleCard) c).getNumber() <= getFirstNumberOfPhaseCards(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards())) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(0,c);
+                } else {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(c);
+                }
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCardsTemp().add(c);
                 }
                 this.getGameData().setActivePlayerId(currentP);
             } else {
                 this.getGameData().nextPlayer();
-
+                if (((SimpleCard) c).getNumber() <= getFirstNumberOfPhaseCards(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2())) {
+                    this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(0,c);
+                } else {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2().add(c);
+                }
                 if (this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).isPhaseAchieved()) {
                     this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards2Temp().add(c);
                 }
