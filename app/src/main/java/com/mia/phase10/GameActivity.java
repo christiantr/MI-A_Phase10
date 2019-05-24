@@ -131,9 +131,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
+    //Visualizing Data from GameData (GUI drawing ONLY here)
     public void visualize() {
-        GameLogicHandler.getInstance().getGameActivity().makePlaystationLayoutVisible(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase());
-        //Visualizing Data from GameData (GUI drawing ONLY here)
+        makePlaystationLayoutVisible();
         player1.setText(player1Name);
         player2.setText(player2Name);
         player1.invalidate();
@@ -145,8 +145,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
         this.score.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() + "");
         visualizePhase();
-
-        //Visualizing playstation of other player
 
         this.getPlaystationP1Layout().removeAllViews();
         this.getPlaystationP1LayoutL().removeAllViews();
@@ -180,31 +178,43 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         discardPileLayout.addView(cardImage);
     }
 
-    public void makePlaystationLayoutVisible(Phase p) {
+    public void makePlaystationLayoutVisible() {
+        String activeID= GameLogicHandler.getInstance().getGameData().getActivePlayerId();
+        Phase p=GameLogicHandler.getInstance().getGameData().getPlayers().get(activeID).getCurrentPhase();
         if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
             playstationP1ImageSeperated.setVisibility(View.INVISIBLE);
-            playstationP2ImageSeperated.setVisibility(View.INVISIBLE);
             playstationP1LayoutL.setVisibility(View.INVISIBLE);
             playstationP1LayoutR.setVisibility(View.INVISIBLE);
-            playstationP2LayoutL.setVisibility(View.INVISIBLE);
-            playstationP2LayoutR.setVisibility(View.INVISIBLE);
             playstationP1Image.setVisibility(View.VISIBLE);
-            playstationP2Image.setVisibility(View.VISIBLE);
             playstationP1Layout.setVisibility(View.VISIBLE);
-            playstationP2Layout.setVisibility(View.VISIBLE);
 
         } else {
             playstationP1Image.setVisibility(View.INVISIBLE);
-            playstationP2Image.setVisibility(View.INVISIBLE);
             playstationP1Layout.setVisibility(View.INVISIBLE);
-            playstationP2Layout.setVisibility(View.INVISIBLE);
             playstationP1ImageSeperated.setVisibility(View.VISIBLE);
-            playstationP2ImageSeperated.setVisibility(View.VISIBLE);
             playstationP1LayoutL.setVisibility(View.VISIBLE);
             playstationP1LayoutR.setVisibility(View.VISIBLE);
+        }
+
+        GameLogicHandler.getInstance().getGameData().nextPlayer();
+        p=GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
+
+        if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
+            playstationP2ImageSeperated.setVisibility(View.INVISIBLE);
+            playstationP2LayoutL.setVisibility(View.INVISIBLE);
+            playstationP2LayoutR.setVisibility(View.INVISIBLE);
+            playstationP2Image.setVisibility(View.VISIBLE);
+            playstationP2Layout.setVisibility(View.VISIBLE);
+
+        } else {
+            playstationP2Image.setVisibility(View.INVISIBLE);
+            playstationP2Layout.setVisibility(View.INVISIBLE);
+            playstationP2ImageSeperated.setVisibility(View.VISIBLE);
             playstationP2LayoutL.setVisibility(View.VISIBLE);
             playstationP2LayoutR.setVisibility(View.VISIBLE);
         }
+
+        GameLogicHandler.getInstance().getGameData().setActivePlayerId(activeID);
     }
 
     public void showHandCards() {
@@ -296,9 +306,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         }
     }
 
-    public void setVisibilityOfButtons() {
+    public void setVisibilityOfButtons1() {
         check.setVisibility(View.INVISIBLE);
         cancel.setVisibility(View.INVISIBLE);
+    }
+
+    public void setVisibilityOfButtons2() {
         checkTwo.setVisibility(View.INVISIBLE);
         cancelTwo.setVisibility(View.INVISIBLE);
     }

@@ -31,7 +31,6 @@ public class GameData {
         this.drawStack = drawStack;
         this.players = players;
         this.activePlayerId = activePlayerId;
-
     }
 
     public CardStack getLayOffStack() {
