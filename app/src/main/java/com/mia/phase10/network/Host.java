@@ -8,18 +8,14 @@ import com.mia.phase10.network.threads.ConnectionListener;
 import com.mia.phase10.network.threads.Connections;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.SocketException;
 
 public class Host extends AsyncTask {
 
     private static final int SERVER_PORT = 9999;
     private ServerSocket serverSocket;
-    private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+
 
     private final static String TAG = "HOST";
     private Connections connections;
@@ -29,7 +25,7 @@ public class Host extends AsyncTask {
     private void startServer(int port) {
         Log.i(TAG, "Host start");
         active = true;
-        connections = Connections.emptyList();
+        connections = Connections.emptyList(this);
         connectionListener = new ConnectionListener(connections);
 
         try {
@@ -43,21 +39,24 @@ public class Host extends AsyncTask {
             }
 
 
+        } catch (SocketException se) {
+            Log.i(TAG, "");
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         }
 
     }
 
-    private void closeServer() {
+    public void closeServer() {
+        active = false;
         try {
-            active = false;
             serverSocket.close();
-            in.close();
+
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
         }
+        Log.i(TAG, "Host closed!\n");
     }
 
     @Override
