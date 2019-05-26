@@ -24,17 +24,23 @@ public class Host extends AsyncTask {
     private final static String TAG = "HOST";
     private Connections connections;
     private ConnectionListener connectionListener;
+    private boolean active;
 
     private void startServer(int port) {
         Log.i(TAG, "Host start");
+        active = true;
         connections = Connections.emptyList();
         connectionListener = new ConnectionListener(connections);
+
         try {
             serverSocket = new ServerSocket(port);
-            Connection connection = Connection.establishConnection(serverSocket.accept(), connectionListener);
-            connections.addConnection(connection);
-            Thread conn = new Thread(connection);
-            conn.start();
+
+            while (active) {
+                Connection connection = Connection.establishConnection(serverSocket.accept(), connectionListener);
+                connections.addConnection(connection);
+                Thread conn = new Thread(connection);
+                conn.start();
+            }
 
 
         } catch (IOException e) {
@@ -45,6 +51,7 @@ public class Host extends AsyncTask {
 
     private void closeServer() {
         try {
+            active = false;
             serverSocket.close();
             in.close();
 

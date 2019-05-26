@@ -20,7 +20,7 @@ public class Connection implements Runnable {
     private boolean active;
 
     public static Connection establishConnection(Socket socket, ConnectionListener connectionListener) {
-
+        Log.i(TAG, String.format("Establish connection with %s\n", socket.getInetAddress().toString()));
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
