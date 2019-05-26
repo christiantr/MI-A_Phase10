@@ -1,17 +1,20 @@
 package com.mia.phase10.network.threads;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Connections {
     private List<Connection> connections;
+    private final static String TAG = "Connections";
 
     private Connections(List<Connection> connections) {
         this.connections = connections;
     }
 
-    public void addConnection(Connection connection){
+    public void addConnection(Connection connection) {
         this.connections.add(connection);
     }
 
@@ -24,5 +27,15 @@ public class Connections {
         for (Connection connection : connections) {
             connection.sendObject(obj);
         }
+
+
     }
+
+    public void sendObjectToAllAndCloseAll(Serializable obj) {
+        for (Connection connection : connections) {
+            connection.sendObjectAndCloseConnection(obj);
+        }
+        Log.i(TAG, "All connections closed.\n");
+    }
+
 }
