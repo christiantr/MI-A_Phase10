@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
@@ -45,6 +47,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private LinearLayout playstationP2LayoutR;
     private Button check;
     private Button cancel;
+    private Button cheat;
     private ImageButton checkTwo;
     private ImageButton cancelTwo;
     // private ConstraintLayout phaseClosed;
@@ -84,6 +87,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         myDragEventListener = new MyDragEventListener();
         myDrag = new MyDragEventListenerTwo();
 
+        cheat.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            public void onClick(View v) {
+                setCheatButtonListener();
+            }
+        });
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
@@ -92,12 +101,41 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         });
     }
 
+    public void setCheatButtonListener(){
+            Card card = GameLogicHandler.getInstance().cheat();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
+        cardImage.setLayoutParams(lp);
+        Drawable c = getResources().getDrawable(getResources().getIdentifier(card.getImagePath(), DRAWABLE, getPackageName()));
+        cardImage.setImageDrawable(c);
+        cardImage.setTag(DISCARD_PILE);
+        cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
+        cardImage.setId(card.getId());
+        stack.setImageDrawable(c);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                resetStackView();
+            }
+        }, 2000);
+    }
+
+    public void resetStackView(){
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        lp.setMargins(0, 0, 0, 0);
+        ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
+        cardImage.setLayoutParams(lp);
+        Drawable c = getResources().getDrawable(getResources().getIdentifier("stack", DRAWABLE, getPackageName()));
+        cardImage.setImageDrawable(c);
+        cardImage.setTag(DISCARD_PILE);
+        cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
+        stack.setImageDrawable(c);
+    }
+
     public void setStackListener() {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        ImageView cardImage = new ImageView(GameActivity.this);
-        Card drawStackCard = null;
-        String imagePath = "";
         try {
             GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.DRAW_STACK);
         } catch (EmptyCardStackException e) {
@@ -128,6 +166,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancel = findViewById(R.id.Cancel);
         checkTwo = findViewById(R.id.check);
         cancelTwo = findViewById(R.id.cross);
+        cheat = findViewById(R.id.btnCheat);
         // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
@@ -524,5 +563,13 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public ImageButton getCancelTwo() {
         return cancelTwo;
+    }
+
+    public ImageView getStack(){
+        return stack;
+    }
+
+    public void showMessage(String text){
+        Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 }

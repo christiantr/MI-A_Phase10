@@ -350,6 +350,14 @@
             app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
             app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
 
+        <Button
+            android:id="@+id/btnCheat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHEAT"
+            tools:layout_editor_absoluteX="322dp"
+            tools:layout_editor_absoluteY="253dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

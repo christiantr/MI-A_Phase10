@@ -5,6 +5,7 @@ import com.mia.phase10.gameLogic.Phase;
 import java.util.ArrayList;
 
 public class Player {
+    private  boolean cheatUncovered;
     private String id;
     private int points;
     private Hand hand;
@@ -15,6 +16,7 @@ public class Player {
     private Phase currentPhase;
     private String currentName;
     private boolean phaseAchieved;
+    private boolean cheated;
 
     public Player(String id) {
         this.id = id;
@@ -27,6 +29,24 @@ public class Player {
         currentPhase=Phase.PHASE_1;
         currentName=id;
         phaseAchieved=false;
+        cheated = false;
+        cheatUncovered = false;
+    }
+
+    public boolean hasCheated() {
+        return cheated;
+    }
+
+    public void setCheated(boolean cheated) {
+        this.cheated = cheated;
+    }
+
+    public boolean isCheatUncovered() {
+        return cheatUncovered;
+    }
+
+    public void setCheatUncovered(boolean cheatUncovered) {
+        this.cheatUncovered = cheatUncovered;
     }
 
     public String getId() {

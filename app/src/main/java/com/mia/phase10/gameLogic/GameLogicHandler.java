@@ -61,6 +61,8 @@ public class GameLogicHandler {
         //this.gameActivity.startShufflingActivity();
         this.gameData.setRoundClosed(false);
         for (Player p : this.gameData.getPlayers().values()) {
+            p.setCheated(false);
+            p.setCheatUncovered(false);
             p.getHand().getCardList().clear();
             for (int i = 0; i < 10; i++) {
                 Card c = this.gameData.getDrawStack().drawCard();
@@ -110,6 +112,11 @@ public class GameLogicHandler {
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
+    }
+
+    public Card cheat(){
+        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCheated(true);
+        return this.gameData.getDrawStack().getFirstCard();
     }
 
     public int getFirstNumberOfPhaseCards(List<Card> list) {
