@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
-import com.mia.phase10.network.TextTransportObject;
+import com.mia.phase10.network.transport.ControlObject;
+import com.mia.phase10.network.transport.TransportObject;
 
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         testMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Serializable obj = new TextTransportObject("Test message");
+//                Serializable obj = new TextTransportObject("Test message");
+//                TransportObject obj = TransportObject.makeTextTransportObject("Test message");
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
                 ((Client) client).sendObject(obj);
 
             }

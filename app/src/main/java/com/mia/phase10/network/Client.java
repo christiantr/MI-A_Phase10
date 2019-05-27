@@ -4,6 +4,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mia.phase10.network.threads.SentObjectThread;
+import com.mia.phase10.network.transport.ControlCommand;
+import com.mia.phase10.network.transport.ControlObject;
+import com.mia.phase10.network.transport.ObjectContentType;
+import com.mia.phase10.network.transport.TransportObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -65,7 +69,6 @@ public class Client extends AsyncTask {
         if (local) {
             Log.i(TAG, "Try locahost");
 
-//            InetAddress localhost = InetAddress.getLoopbackAddress();
             InetAddress localhost = InetAddress.getByName(null);
 
             if (localhost != null) {
@@ -87,8 +90,18 @@ public class Client extends AsyncTask {
 
         while (active) {
             try {
-                Object received = in.readObject();
-                Log.i(TAG, ((TextTransportObject) received).toString());
+                TransportObject received = (TransportObject) in.readObject();
+                ObjectContentType objectContentType = received.getObjectContentType();
+
+                if (objectContentType.equals(ObjectContentType.TEXT)) {
+                    Log.i(TAG, received.getPayload().toString());
+                }
+
+                if (objectContentType.equals(ObjectContentType.CONTROLINFO)) {
+                    handleControlObject(received);
+                }
+
+
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
             }
@@ -103,6 +116,31 @@ public class Client extends AsyncTask {
     public void sendObject(Serializable obj) {
         Thread sent = new Thread(new SentObjectThread(out, obj));
         sent.start();
+
+    }
+
+    private void handleControlObject(TransportObject obj) {
+        ControlObject controlObject = (ControlObject) obj.getPayload();
+        if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
+            closeConnection();
+        }
+
+
+    }
+
+    private void closeConnection() {
+        Log.i(TAG, "Closing connection to Host.\n");
+        active = false;
+        try {
+            out.close();
+            in.close();
+            socket.close();
+
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+        Log.i(TAG, "Connection to Host closed!\n");
+
 
     }
 }

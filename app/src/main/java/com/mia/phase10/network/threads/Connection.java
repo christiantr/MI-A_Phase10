@@ -2,6 +2,8 @@ package com.mia.phase10.network.threads;
 
 import android.util.Log;
 
+import com.mia.phase10.network.transport.TransportObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class Connection implements Runnable {
     private boolean active;
 
     public static Connection establishConnection(Socket socket, ConnectionListener connectionListener) {
-
+        Log.i(TAG, String.format("Establish connection with %s\n", socket.getInetAddress().toString()));
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
@@ -62,7 +64,7 @@ public class Connection implements Runnable {
             try {
                 Object inObject = in.readObject();
                 Log.i(TAG, String.format("Received: %s", inObject.toString()));
-                connectionListener.onReceivedObject((Serializable) inObject);
+                connectionListener.onReceivedObject((TransportObject) inObject);
 
             } catch (IOException i) {
                 Log.e(TAG, i.toString());
@@ -80,4 +82,27 @@ public class Connection implements Runnable {
         sent.start();
 
     }
+
+    public void sendObjectAndCloseConnection(Serializable obj) {
+        active = false;
+        Thread sent = new Thread(new SentObjectThread(out, obj));
+        sent.start();
+        try {
+            sent.join();
+        } catch (InterruptedException e1) {
+            Log.e(TAG, e1.toString());
+        }
+        try {
+            in.close();
+            out.close();
+            socket.close();
+            Log.i(TAG, String.format("Connection to: %s closed.\n", socket.getInetAddress().toString()));
+
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
 }
+
+
