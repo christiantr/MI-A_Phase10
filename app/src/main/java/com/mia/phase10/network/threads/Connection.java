@@ -2,6 +2,7 @@ package com.mia.phase10.network.threads;
 
 import android.util.Log;
 
+import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.transport.TransportObject;
 
 import java.io.BufferedInputStream;
@@ -20,8 +21,14 @@ public class Connection implements Runnable {
     private final static String TAG = "CONNECTION";
     private ConnectionListener connectionListener;
     private boolean active;
+    private ConnectionDetails connectionDetails;
+    private static int numbering = 0;
 
-    public static Connection establishConnection(Socket socket, ConnectionListener connectionListener) {
+
+    public static Connection establishConnection(Socket socket, ConnectionListener connectionListener
+
+    ) {
+        numbering++;
         Log.i(TAG, String.format("Establish connection with %s\n", socket.getInetAddress().toString()));
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
@@ -41,20 +48,25 @@ public class Connection implements Runnable {
             Log.e(TAG, e.toString());
         }
         Log.i(TAG, String.format("Connection created for: %s", socket.getInetAddress().toString()));
-        return new Connection(socket, out, in, connectionListener, true);
+        ;
+        return new Connection(socket, out, in, connectionListener,
+                ConnectionDetails.makeNext(),
+                true);
     }
 
 
-    public Connection(Socket socket,
-                      ObjectOutputStream out,
-                      ObjectInputStream in,
-                      ConnectionListener connectionListener,
-                      boolean active) {
+    private Connection(Socket socket,
+                       ObjectOutputStream out,
+                       ObjectInputStream in,
+                       ConnectionListener connectionListener,
+                       ConnectionDetails connectionDetails,
+                       boolean active) {
         this.socket = socket;
         this.out = out;
         this.in = in;
         this.connectionListener = connectionListener;
         this.active = active;
+        this.connectionDetails = connectionDetails;
     }
 
     @Override
@@ -103,6 +115,13 @@ public class Connection implements Runnable {
         }
     }
 
+    public ConnectionDetails getConnectionDetails() {
+        return connectionDetails;
+    }
+
+    public void setConnectionDetails(ConnectionDetails connectionDetails) {
+        this.connectionDetails = connectionDetails;
+    }
 }
 
 

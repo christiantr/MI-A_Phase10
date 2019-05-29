@@ -1,6 +1,8 @@
 package com.mia.phase10.network.transport;
 
 
+import com.mia.phase10.network.ConnectionDetails;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +32,10 @@ public class TransportObject implements Serializable {
         return new TransportObject(BroadcastType.BROADCAST_ALL, ObjectContentType.CONTROLINFO, controlObject);
     }
 
+    public static TransportObject ofControlObjectToThis(ControlObject controlObject) {
+        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.CONTROLINFO, controlObject);
+    }
+
     public BroadcastType getBroadcastType() {
         return broadcastType;
     }
@@ -42,5 +48,15 @@ public class TransportObject implements Serializable {
         return payload;
     }
 
+
+    public static TransportObject tellUserName(ConnectionDetails connectionDetails) {
+        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.USERNAME, connectionDetails);
+    }
+
+    public static TransportObject setUserName(ConnectionDetails connectionDetails) {
+
+        return new TransportObject(BroadcastType.HOSTONLY, ObjectContentType.USERNAME, connectionDetails);
+
+    }
 
 }
