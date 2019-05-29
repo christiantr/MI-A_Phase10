@@ -1,6 +1,8 @@
 package com.mia.phase10.network.transport;
 
 
+import com.mia.phase10.network.UserDisplayName;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +32,10 @@ public class TransportObject implements Serializable {
         return new TransportObject(BroadcastType.BROADCAST_ALL, ObjectContentType.CONTROLINFO, controlObject);
     }
 
+    public static TransportObject ofControlObjectToThis(ControlObject controlObject) {
+        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.CONTROLINFO, controlObject);
+    }
+
     public BroadcastType getBroadcastType() {
         return broadcastType;
     }
@@ -40,6 +46,11 @@ public class TransportObject implements Serializable {
 
     public Serializable getPayload() {
         return payload;
+    }
+
+
+    public static TransportObject tellUserName(UserDisplayName userDisplayName) {
+        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.USERNAME, userDisplayName);
     }
 
 

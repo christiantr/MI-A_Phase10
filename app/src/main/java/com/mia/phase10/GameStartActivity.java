@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mia.phase10.network.Client;
+import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.transport.ControlObject;
@@ -37,6 +38,7 @@ public class GameStartActivity extends AppCompatActivity {
     private Button connecToHost;
     private Button testMessage;
     private Button start;
+    private EditText username;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
@@ -58,6 +60,7 @@ public class GameStartActivity extends AppCompatActivity {
         textConnection1 = (TextView) findViewById(R.id.textView_connection1);
         textConnection2 = (TextView) findViewById(R.id.textView_connection2);
         textConnection3 = (TextView) findViewById(R.id.textView_connection3);
+        username = (EditText) findViewById(R.id.editText_username);
 
         connecToHost.setOnClickListener(new View.OnClickListener() {
             //            @Override
@@ -72,9 +75,13 @@ public class GameStartActivity extends AppCompatActivity {
 
                 client = Client.atAddress(hostIpAddress, SERVER_PORT);
                 client.execute();
-                testMessage.setVisibility(View.VISIBLE);
+//                testMessage.setVisibility(View.VISIBLE);
                 connecToHost.setVisibility(View.GONE);
                 ip.setVisibility(View.GONE);
+                testMessage.setVisibility(View.VISIBLE);
+
+
+
             }
         });
 
@@ -110,6 +117,8 @@ public class GameStartActivity extends AppCompatActivity {
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
         textConnection3.setVisibility(View.GONE);
+
+        username.setVisibility(View.GONE);
 
     }
 
@@ -179,19 +188,28 @@ public class GameStartActivity extends AppCompatActivity {
 
     }
 
-    public void addNewConnection() {
+    public void addNewConnection(ConnectionDetails connectionDetails) {
         Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
-        if (numberOfConnections == 0) {
+
+        if (connectionDetails.getUserID().getUserId() == 1) {
             Log.i(TAG, "First connection");
 
-            this.textConnection1.setText("User 1");
+            this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
 
-        } else if (numberOfConnections == 1) {
+        }
+        if (connectionDetails.getUserID().getUserId() == 2) {
             Log.i(TAG, "Second connection");
 
-            this.textConnection2.setText("User 2");
+            this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection2.setVisibility(View.VISIBLE);
+        }
+
+        if (connectionDetails.getUserID().getUserId() == 3) {
+            Log.i(TAG, "Second connection");
+
+            this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());
+            this.textConnection3.setVisibility(View.VISIBLE);
         }
 
 //

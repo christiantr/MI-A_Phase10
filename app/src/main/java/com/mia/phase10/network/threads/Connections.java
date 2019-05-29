@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.network.Host;
+import com.mia.phase10.network.transport.TransportObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,13 +28,14 @@ public class Connections {
         this.activity = activity;
     }
 
-    public void addConnection(Connection connection) {
+    public void addConnection(final Connection connection) {
         this.connections.add(connection);
+        connection.sendObject(TransportObject.tellUserName(connection.getConnectionDetails().getUserDisplayName()));
         Log.i(TAG, "Connection Added");
 //
         GameStartActivity.runOnUI(new Runnable() {
             public void run() {
-                ( (GameStartActivity) activity).addNewConnection();
+                ((GameStartActivity) activity).addNewConnection(connection.getConnectionDetails());
             }
         });
 

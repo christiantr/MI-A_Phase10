@@ -101,6 +101,10 @@ public class Client extends AsyncTask {
                     handleControlObject(received);
                 }
 
+                if (objectContentType.equals(ObjectContentType.USERNAME)) {
+                    handleUsernameObject(received);
+                }
+
 
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
@@ -126,6 +130,11 @@ public class Client extends AsyncTask {
         }
 
 
+    }
+
+    private void handleUsernameObject(TransportObject obj) {
+        UserDisplayName userDisplayName = (UserDisplayName) obj.getPayload();
+        Log.i(TAG, String.format("Username %s \n", userDisplayName.getName()));
     }
 
     private void closeConnection() {

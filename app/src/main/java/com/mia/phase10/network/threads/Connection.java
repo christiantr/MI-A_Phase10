@@ -50,7 +50,7 @@ public class Connection implements Runnable {
         Log.i(TAG, String.format("Connection created for: %s", socket.getInetAddress().toString()));
         ;
         return new Connection(socket, out, in, connectionListener,
-                new ConnectionDetails(String.format("User %d", numbering)),
+                ConnectionDetails.makeNext(),
                 true);
     }
 
@@ -115,6 +115,9 @@ public class Connection implements Runnable {
         }
     }
 
+    public ConnectionDetails getConnectionDetails() {
+        return connectionDetails;
+    }
 }
 
 
