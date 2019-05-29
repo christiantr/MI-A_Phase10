@@ -15,7 +15,8 @@ public class Host extends AsyncTask {
 
     private static final int SERVER_PORT = 9999;
     private ServerSocket serverSocket;
-
+    private static final int MAX_CLIENTS = 3;
+    private int numberOfConnectedClients;
 
     private final static String TAG = "HOST";
     private Connections connections;
@@ -23,6 +24,7 @@ public class Host extends AsyncTask {
     private boolean active;
 
     private void startServer(int port) {
+        numberOfConnectedClients = 0;
         Log.i(TAG, "Host start");
         active = true;
         connections = Connections.emptyList(this);
@@ -31,11 +33,12 @@ public class Host extends AsyncTask {
         try {
             serverSocket = new ServerSocket(port);
 
-            while (active) {
+            while (active && numberOfConnectedClients <= MAX_CLIENTS) {
                 Connection connection = Connection.establishConnection(serverSocket.accept(), connectionListener);
                 connections.addConnection(connection);
                 Thread conn = new Thread(connection);
                 conn.start();
+                numberOfConnectedClients++;
             }
 
 

@@ -75,7 +75,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         } catch (EmptyCardStackException e) {
             e.printStackTrace();
         }
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
 
     }
 
