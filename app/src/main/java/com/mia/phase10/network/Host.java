@@ -33,8 +33,8 @@ public class Host extends AsyncTask {
         numberOfConnectedClients = 0;
         Log.i(TAG, "Host start");
         active = true;
-        connections = Connections.emptyList(this,activity);
-        connectionListener = new ConnectionListener(connections);
+        connections = Connections.emptyList(this, activity);
+        connectionListener = new ConnectionListener(activity, connections);
 
         try {
             serverSocket = new ServerSocket(port);
