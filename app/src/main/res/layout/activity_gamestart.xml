@@ -68,5 +68,20 @@
             android:layout_height="wrap_content"
             android:text="Start" />
 
+        <TextView
+            android:id="@+id/textView_connection1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView_connection2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView_connection3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

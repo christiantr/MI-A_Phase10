@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +23,15 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class GameStartActivity extends AppCompatActivity {
-    private final String TAG = "MAIN";
+    private final String TAG = "GameStartActivity";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
     private EditText ip;
     private EditText port;
     private TextView hostPortIp;
+    private TextView textConnection1;
+    private TextView textConnection2;
+    private TextView textConnection3;
     private Button joinGame;
     private Button hostGame;
     private Button connecToHost;
@@ -35,6 +40,7 @@ public class GameStartActivity extends AppCompatActivity {
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
+    private int numberOfConnections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +48,17 @@ public class GameStartActivity extends AppCompatActivity {
 //        StrictMode.setThreadPolicy(policy);
 
         super.onCreate(savedInstanceState);
+        numberOfConnections = 0;
         setContentView(R.layout.activity_gamestart);
         hostGame = (Button) findViewById(R.id.button_hostGame);
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
         testMessage = (Button) findViewById(R.id.button_sendTestMessage);
         start = (Button) findViewById(R.id.button_start);
+        textConnection1 = (TextView) findViewById(R.id.textView_connection1);
+        textConnection2 = (TextView) findViewById(R.id.textView_connection2);
+        textConnection3 = (TextView) findViewById(R.id.textView_connection3);
+
         connecToHost.setOnClickListener(new View.OnClickListener() {
             //            @Override
             public void onClick(View view) {
@@ -95,6 +106,11 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
         testMessage.setVisibility(View.GONE);
+//
+        textConnection1.setVisibility(View.GONE);
+        textConnection2.setVisibility(View.GONE);
+        textConnection3.setVisibility(View.GONE);
+
     }
 
     /**
@@ -104,12 +120,14 @@ public class GameStartActivity extends AppCompatActivity {
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
-        AsyncTask server = new Host();
+        AsyncTask server = new Host(this);
         server.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         showIpAddress();
 
         Log.i(TAG, "Starting Client at Host.\n");
+
         AsyncTask client = Client.atLocal(SERVER_PORT);
+
         Log.i(TAG, "local");
         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -159,6 +177,46 @@ public class GameStartActivity extends AppCompatActivity {
         hostPortIp.setVisibility(View.VISIBLE);
 
 
+    }
+
+    public void addNewConnection() {
+        Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
+        if (numberOfConnections == 0) {
+            Log.i(TAG, "First connection");
+
+            this.textConnection1.setText("User 1");
+            this.textConnection1.setVisibility(View.VISIBLE);
+
+        } else if (numberOfConnections == 1) {
+            Log.i(TAG, "Second connection");
+
+            this.textConnection2.setText("User 2");
+            this.textConnection2.setVisibility(View.VISIBLE);
+        }
+
+//
+//
+//        if (numberOfConnections == 2) {
+//            Log.i(TAG, "Third connection");
+//
+//            this.textConnection3.setText("User 3");
+//            this.textConnection3.setVisibility(View.VISIBLE);
+//
+//        }
+
+        numberOfConnections++;
+        Log.i(TAG, String.format("Number of connections: %d \n", numberOfConnections));
+
+    }
+
+    public static Handler UIHandler;
+
+    static {
+        UIHandler = new Handler(Looper.getMainLooper());
+    }
+
+    public static void runOnUI(Runnable runnable) {
+        UIHandler.post(runnable);
     }
 
 }

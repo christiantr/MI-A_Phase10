@@ -1,5 +1,6 @@
 package com.mia.phase10.network;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,12 +23,17 @@ public class Host extends AsyncTask {
     private Connections connections;
     private ConnectionListener connectionListener;
     private boolean active;
+    private Activity activity;
+
+    public Host(Activity activity) {
+        this.activity = activity;
+    }
 
     private void startServer(int port) {
         numberOfConnectedClients = 0;
         Log.i(TAG, "Host start");
         active = true;
-        connections = Connections.emptyList(this);
+        connections = Connections.emptyList(this,activity);
         connectionListener = new ConnectionListener(connections);
 
         try {
