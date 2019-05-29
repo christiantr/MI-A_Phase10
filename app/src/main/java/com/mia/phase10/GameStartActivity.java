@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,7 @@ import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
-import com.mia.phase10.network.transport.ControlObject;
+import com.mia.phase10.network.UserDisplayName;
 import com.mia.phase10.network.transport.TransportObject;
 
 import java.net.InetAddress;
@@ -43,6 +44,7 @@ public class GameStartActivity extends AppCompatActivity {
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
     private int numberOfConnections;
+    private ConnectionDetails connectionDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +67,7 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setOnClickListener(new View.OnClickListener() {
             //            @Override
             public void onClick(View view) {
-                Log.i("TAG", "Connect button clicked");
-                InetAddress hostIpAddress = null;
-                try {
-                    hostIpAddress = InetAddress.getByName(ip.getText().toString());
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-
-                client = Client.atAddress(hostIpAddress, SERVER_PORT);
-                client.execute();
-//                testMessage.setVisibility(View.VISIBLE);
-                connecToHost.setVisibility(View.GONE);
-                ip.setVisibility(View.GONE);
-                testMessage.setVisibility(View.VISIBLE);
-
+                clickJoinGameButton(view);
 
 
             }
@@ -90,7 +78,7 @@ public class GameStartActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Serializable obj = new TextTransportObject("Test message");
 //                TransportObject obj = TransportObject.makeTextTransportObject("Test message");
-                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+                TransportObject obj = TransportObject.makeTextTransportObject("Hello");
                 ((Client) client).sendObject(obj);
 
             }
@@ -104,6 +92,22 @@ public class GameStartActivity extends AppCompatActivity {
 
             }
         });
+
+
+        username.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    changeUserName(v);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
         ip = (EditText) findViewById(R.id.input_Ip);
         ip.setText(DEFAULT_IP);
         port = (EditText) findViewById(R.id.input_port);
@@ -112,7 +116,7 @@ public class GameStartActivity extends AppCompatActivity {
         port.setVisibility(View.GONE);
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
-        testMessage.setVisibility(View.GONE);
+        testMessage.setVisibility(View.VISIBLE);
 //
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
@@ -120,6 +124,35 @@ public class GameStartActivity extends AppCompatActivity {
 
         username.setVisibility(View.GONE);
 
+    }
+
+
+    private void changeUserName(View view) {
+        Log.i(TAG, client.toString());
+        String newusername = username.getText().toString();
+        Log.i(TAG, String.format("username manually set to %s \n", newusername));
+        ConnectionDetails newConnectionDetails = this.connectionDetails.changeDisplayName(new UserDisplayName(newusername));
+        TransportObject obj = TransportObject.setUserName(newConnectionDetails);
+        ((Client) client).sendObject(obj);
+
+    }
+
+    private void clickJoinGameButton(View view) {
+        Log.i("TAG", "Connect button clicked");
+        InetAddress hostIpAddress = null;
+        try {
+            hostIpAddress = InetAddress.getByName(ip.getText().toString());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        client = Client.atAddress(hostIpAddress, SERVER_PORT, this);
+        Log.i(TAG, client.toString());
+        client.execute();
+//                testMessage.setVisibility(View.VISIBLE);
+        connecToHost.setVisibility(View.GONE);
+        ip.setVisibility(View.GONE);
+        testMessage.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -135,7 +168,7 @@ public class GameStartActivity extends AppCompatActivity {
 
         Log.i(TAG, "Starting Client at Host.\n");
 
-        AsyncTask client = Client.atLocal(SERVER_PORT);
+        client = Client.atLocal(SERVER_PORT, this);
 
         Log.i(TAG, "local");
         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -188,7 +221,15 @@ public class GameStartActivity extends AppCompatActivity {
 
     }
 
-    public void addNewConnection(ConnectionDetails connectionDetails) {
+    public void setUsername(ConnectionDetails connectionDetails) {
+        Log.i(TAG, String.format("Username set to: %s\n", connectionDetails.getUserDisplayName().getName()));
+        this.connectionDetails = connectionDetails;
+        this.username.setText(connectionDetails.getUserDisplayName().getName());
+        this.username.setVisibility(View.VISIBLE);
+    }
+
+
+    public void changeConnectionDetails(ConnectionDetails connectionDetails) {
         Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
 
         if (connectionDetails.getUserID().getUserId() == 1) {

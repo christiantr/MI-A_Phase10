@@ -118,6 +118,10 @@ public class Connection implements Runnable {
     public ConnectionDetails getConnectionDetails() {
         return connectionDetails;
     }
+
+    public void setConnectionDetails(ConnectionDetails connectionDetails) {
+        this.connectionDetails = connectionDetails;
+    }
 }
 
 

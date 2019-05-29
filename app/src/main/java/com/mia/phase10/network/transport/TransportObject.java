@@ -1,7 +1,7 @@
 package com.mia.phase10.network.transport;
 
 
-import com.mia.phase10.network.UserDisplayName;
+import com.mia.phase10.network.ConnectionDetails;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -49,9 +49,14 @@ public class TransportObject implements Serializable {
     }
 
 
-    public static TransportObject tellUserName(UserDisplayName userDisplayName) {
-        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.USERNAME, userDisplayName);
+    public static TransportObject tellUserName(ConnectionDetails connectionDetails) {
+        return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.USERNAME, connectionDetails);
     }
 
+    public static TransportObject setUserName(ConnectionDetails connectionDetails) {
+
+        return new TransportObject(BroadcastType.HOSTONLY, ObjectContentType.USERNAME, connectionDetails);
+
+    }
 
 }

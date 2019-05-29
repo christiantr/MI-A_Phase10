@@ -2,6 +2,7 @@ package com.mia.phase10.network.threads;
 
 import android.util.Log;
 
+import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.transport.BroadcastType;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.ObjectContentType;
@@ -31,6 +32,10 @@ public class ConnectionListener {
             handleControlObject(obj);
         }
 
+        if (objectContentType.equals(ObjectContentType.USERNAME) && broadcastType.equals(BroadcastType.HOSTONLY)) {
+            handleUsernameChange(obj);
+        }
+
 
     }
 
@@ -47,6 +52,24 @@ public class ConnectionListener {
             case CLOSECONNECTIONS:
                 connections.sendObjectToAllAndCloseAll(obj);
         }
+
+
+    }
+
+    private void handleUsernameChange(TransportObject obj) {
+        ConnectionDetails connectionDetails = (ConnectionDetails) obj.getPayload();
+        Log.i(TAG, String.format("new details: id %d  name %s \n", connectionDetails.getUserID().getUserId(),
+                connectionDetails.getUserDisplayName().getName()));
+
+        Connection connection = connections.getConnectionById(connectionDetails.getUserID());
+        if (connection != null) {
+            Log.i(TAG, connection.toString());
+            connection.setConnectionDetails(connectionDetails);
+
+            connection.sendObject(TransportObject.tellUserName(connectionDetails));
+            Log.i(TAG, String.format("User &d informed about new name", connection.getConnectionDetails().getUserID().getUserId()));
+        }
+
 
     }
 

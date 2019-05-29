@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.network.Host;
+import com.mia.phase10.network.UserID;
 import com.mia.phase10.network.transport.TransportObject;
 
 import java.io.Serializable;
@@ -30,12 +31,12 @@ public class Connections {
 
     public void addConnection(final Connection connection) {
         this.connections.add(connection);
-        connection.sendObject(TransportObject.tellUserName(connection.getConnectionDetails().getUserDisplayName()));
+        connection.sendObject(TransportObject.tellUserName(connection.getConnectionDetails()));
         Log.i(TAG, "Connection Added");
 //
         GameStartActivity.runOnUI(new Runnable() {
             public void run() {
-                ((GameStartActivity) activity).addNewConnection(connection.getConnectionDetails());
+                ((GameStartActivity) activity).changeConnectionDetails(connection.getConnectionDetails());
             }
         });
 
@@ -62,4 +63,18 @@ public class Connections {
         host.closeServer();
     }
 
+    public Connection getConnectionById(UserID userID) {
+        Log.i(TAG, String.format("%d,\n", userID.getUserId()));
+
+        for (Connection connection : connections) {
+            Log.i(TAG, String.format("%s\n", connection.getConnectionDetails().getUserID().toString()));
+            if (connection.getConnectionDetails().getUserID().equals(userID)) {
+                Log.i(TAG, "Connection found");
+
+                return connection;
+            }
+        }
+        return null;
+
+    }
 }

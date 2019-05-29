@@ -1,6 +1,8 @@
 package com.mia.phase10.network;
 
-public class ConnectionDetails {
+import java.io.Serializable;
+
+public class ConnectionDetails implements Serializable {
     private final UserID userID;
     private UserDisplayName userDisplayName;
 
@@ -22,5 +24,9 @@ public class ConnectionDetails {
 
     public UserDisplayName getUserDisplayName() {
         return userDisplayName;
+    }
+
+    public ConnectionDetails changeDisplayName(UserDisplayName userDisplayName) {
+        return new ConnectionDetails(this.userID, userDisplayName);
     }
 }
