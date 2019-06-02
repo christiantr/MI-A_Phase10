@@ -360,7 +360,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     }
                 });
 
-                layoffStack.setBackgroundColor(Color.TRANSPARENT);
+                layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 break;
 
