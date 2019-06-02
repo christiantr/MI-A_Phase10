@@ -48,6 +48,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private Button check;
     private Button cancel;
     private Button cheat;
+    private Button cheatExpose;
     private ImageButton checkTwo;
     private ImageButton cancelTwo;
     // private ConstraintLayout phaseClosed;
@@ -93,6 +94,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 setCheatButtonListener();
             }
         });
+        cheatExpose.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            public void onClick(View v) {
+                setCheatExposeButtonListener();
+            }
+        });
         stack.setOnClickListener(new View.OnClickListener() {
             //@Override
             public void onClick(View v) {
@@ -101,8 +108,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         });
     }
 
+    public void setCheatExposeButtonListener(){
+        GameLogicHandler.getInstance().exposeCheat();
+    }
+
     public void setCheatButtonListener(){
-            Card card = GameLogicHandler.getInstance().cheat();
+        Card card = GameLogicHandler.getInstance().cheat();
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
         ImageView cardImage = new ImageView(GameLogicHandler.getInstance().getGameActivity());
@@ -167,6 +178,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         checkTwo = findViewById(R.id.check);
         cancelTwo = findViewById(R.id.cross);
         cheat = findViewById(R.id.btnCheat);
+        cheatExpose = findViewById(R.id.btnCheatExpose);
         // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 

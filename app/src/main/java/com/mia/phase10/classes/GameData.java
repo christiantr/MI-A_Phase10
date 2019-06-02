@@ -41,6 +41,14 @@ public class GameData {
         return layOffStack;
     }
 
+    public String getPreviousPlayer() {
+        return previousPlayer;
+    }
+
+    public void setPreviousPlayer(String previousPlayer) {
+        this.previousPlayer = previousPlayer;
+    }
+
     public void setLayOffStack(CardStack layOffStack) {
         this.layOffStack = layOffStack;
     }
@@ -121,6 +129,7 @@ public class GameData {
                 activePlayerId = playerList.get(0);
             }
         }
+        this.getPlayers().get(activePlayerId).setCheated(false);
        /* Iterator<Player> iter = this.players.values().iterator();
         int index =0;
 

@@ -354,9 +354,21 @@
             android:id="@+id/btnCheat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
             android:text="CHEAT"
-            tools:layout_editor_absoluteX="322dp"
-            tools:layout_editor_absoluteY="253dp" />
+            app:layout_constraintBottom_toTopOf="@+id/ID_stack"
+            app:layout_constraintStart_toEndOf="@+id/ID_discard_layout" />
+
+        <Button
+            android:id="@+id/btnCheatExpose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="expose"
+            app:layout_constraintBottom_toTopOf="@+id/btnCheat"
+            app:layout_constraintStart_toEndOf="@+id/ID_discard_layout" />
 
     </android.support.constraint.ConstraintLayout>
 
