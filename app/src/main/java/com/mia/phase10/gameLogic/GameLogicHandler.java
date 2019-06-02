@@ -78,8 +78,8 @@ public class GameLogicHandler {
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
         this.setPlayerNames();
-        this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
-        //this.gameData.getLayOffStack().addCard(new SpecialCard(97,"card_expose",SpecialCardValue.EXPOSE,10));
+        //this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
+        this.gameData.getLayOffStack().addCard(new SpecialCard(97,"card_expose",SpecialCardValue.EXPOSE,10));
         this.gameActivity.visualize();
     }
 
@@ -239,6 +239,7 @@ public class GameLogicHandler {
                 }
                 card = this.gameData.getDrawStack().drawCard();
                 this.gameData.getPlayers().get(playerId).getHand().addCard(card);
+                this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
                 break;
             case LAYOFF_STACK:
                 boolean isExposeCard=false;
@@ -248,11 +249,15 @@ public class GameLogicHandler {
                 }
                 if (!isExposeCard){
                  this.gameData.getPlayers().get(playerId).getHand().addCard(card);
+                    this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
                 }
-                else this.gameData.getLayOffStack().addCard(card);
-
+                else{
+                    this.gameData.getLayOffStack().addCard(card);
+                    this.gameData.setPhase(GamePhase.DRAW_PHASE);
+                }
+                break;
         }
-        this.gameData.setPhase(GamePhase.LAYOFF_PHASE);
+
         this.gameActivity.visualize();
     }
 

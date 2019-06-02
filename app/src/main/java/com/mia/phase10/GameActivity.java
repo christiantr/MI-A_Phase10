@@ -359,7 +359,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     }
                 });
 
-                layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                if(!GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath().equals("card_expose")){
+                layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));}
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
                 break;
 
