@@ -9,6 +9,8 @@ import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.classes.SimpleCard;
+import com.mia.phase10.classes.SpecialCard;
+import com.mia.phase10.classes.SpecialCardValue;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
@@ -77,6 +79,7 @@ public class GameLogicHandler {
         this.gameData.nextPlayer();
         this.setPlayerNames();
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
+        //this.gameData.getLayOffStack().addCard(new SpecialCard(97,"card_expose",SpecialCardValue.EXPOSE,10));
         this.gameActivity.visualize();
     }
 
@@ -227,19 +230,26 @@ public class GameLogicHandler {
         switch (stackType) {
 
             case DRAW_STACK:
-                if (gameData.getDrawStack().getCardList().size() == 1) {
-                    for (int i = 0; i < gameData.getLayOffStack().getCardList().size() - 2; i++) {
-                        Card c = gameData.getLayOffStack().getCardList().remove(i);
-                        gameData.getDrawStack().getCardList().add(c);
+                if (this.gameData.getDrawStack().getCardList().size() == 1) {
+                    for (int i = 0; i < this.gameData.getLayOffStack().getCardList().size() - 2; i++) {
+                        Card c = this.gameData.getLayOffStack().getCardList().remove(i);
+                        this.gameData.getDrawStack().getCardList().add(c);
                     }
-                    gameData.getDrawStack().mixStack();
+                    this.gameData.getDrawStack().mixStack();
                 }
-                card = gameData.getDrawStack().drawCard();
+                card = this.gameData.getDrawStack().drawCard();
                 this.gameData.getPlayers().get(playerId).getHand().addCard(card);
                 break;
             case LAYOFF_STACK:
-                card = gameData.getLayOffStack().drawLastCard();
-                this.gameData.getPlayers().get(playerId).getHand().addCard(card);
+                boolean isExposeCard=false;
+                card = this.gameData.getLayOffStack().drawLastCard();
+                if (card instanceof SpecialCard && ((SpecialCard) card).getValue()== SpecialCardValue.EXPOSE){
+                    isExposeCard=true;
+                }
+                if (!isExposeCard){
+                 this.gameData.getPlayers().get(playerId).getHand().addCard(card);
+                }
+                else this.gameData.getLayOffStack().addCard(card);
 
         }
         this.gameData.setPhase(GamePhase.LAYOFF_PHASE);

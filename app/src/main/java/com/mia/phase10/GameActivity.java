@@ -103,7 +103,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void setStackListener(StackType stackType) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        Toast.makeText(GameActivity.this, "You clicked the Stack", Toast.LENGTH_SHORT).show();
         try {
             GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), stackType);
         } catch (EmptyCardStackException e) {
