@@ -117,6 +117,8 @@ public class GameData {
         if (activePlayerId.equals("")) {
             this.activePlayerId = playerList.get(0);
         } else {
+            do {
+                this.getPlayers().get(activePlayerId).setExposed(false);
                 for (String name : playerList) {
 
                     if (name.equals(activePlayerId)) {
@@ -129,6 +131,7 @@ public class GameData {
                 } else {
                     activePlayerId = playerList.get(0);
                 }
+            } while (this.getPlayers().get(activePlayerId).isExposed());
         }
         this.getPlayers().get(activePlayerId).setCheated(false);
        /* Iterator<Player> iter = this.players.values().iterator();

@@ -66,14 +66,14 @@ public class MyDragEventListener implements View.OnDragListener {
 
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
-                /*Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+                Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
                 if(c.getImagePath().equals("card_expose")){
                     try {
                         GameLogicHandler.getInstance().exposePlayer(vw.getId());
                     }catch (EmptyHandException | CardNotFoundException e) {
                         e.printStackTrace();
                     }
-                    return true;}*/
+                    return true;}
 
                 try {
                     GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());

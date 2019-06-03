@@ -426,7 +426,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                         setStackListener(StackType.LAYOFF_STACK);
                     }
                 });
-                Toast.makeText(GameActivity.this, GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath(), Toast.LENGTH_SHORT).show();
 
                 if(!GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath().equals("card_expose")){
                     layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
