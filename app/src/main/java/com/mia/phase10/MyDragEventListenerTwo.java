@@ -64,8 +64,8 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
 
-                /*Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
-                if(c.getImagePath().equals("card_expose")){return false;}*/
+                Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+                if(c.getImagePath().equals("card_expose")){return false;}
 
                 String player = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
 

@@ -38,6 +38,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private TextView phase;
     private LinearLayout phases;
     private TextView more;
+    private ImageView playerImage;
     private ImageView playstationP1Image;
     private ImageView playstationP1ImageSeperated;
     private ImageView playstationP2Image;
@@ -157,7 +158,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void setStackListener(StackType stackType) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
-        Toast.makeText(GameActivity.this, "You clicked the Stack", Toast.LENGTH_SHORT).show();
         try {
             GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), stackType);
         } catch (EmptyCardStackException e) {
@@ -178,6 +178,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         phase = findViewById(R.id.ID_phase);
         phases = findViewById(R.id.ID_phases);
         more = findViewById(R.id.ID_more);
+        playerImage=findViewById(R.id.ID_p2);
         playstationP1Image = findViewById(R.id.ID_p1_playstation);
         playstationP2Image = findViewById(R.id.ID_p2_playstation);
         playstationP1ImageSeperated = findViewById(R.id.ID_p1_playstation_two);
@@ -425,9 +426,13 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                         setStackListener(StackType.LAYOFF_STACK);
                     }
                 });
+                Toast.makeText(GameActivity.this, GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath(), Toast.LENGTH_SHORT).show();
 
-                layoffStack.setBackgroundColor(Color.TRANSPARENT);
+                if(!GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath().equals("card_expose")){
+                    layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                } else layoffStack.setBackgroundColor(Color.TRANSPARENT);
                 drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                playerImage.setBackgroundColor(Color.TRANSPARENT);
                 break;
 
             case LAYOFF_PHASE:
@@ -499,11 +504,27 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
                 drawStack.setBackgroundColor(Color.TRANSPARENT);
                 layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
-
+                playerImage.setBackgroundColor(Color.TRANSPARENT);
                 break;
             case END_TURN_PHASE:
                 break;
         }
+    }
+
+    public void visualizeExposingPlayer(){
+        getDiscardPileLayout().setOnDragListener(null);
+        getPlaystationP1Layout().setOnDragListener(null);
+        getPlaystationP1LayoutL().setOnDragListener(null);
+        getPlaystationP1LayoutR().setOnDragListener(null);
+        getPlaystationP2Layout().setOnDragListener(null);
+        getPlaystationP2LayoutL().setOnDragListener(null);
+        getPlaystationP2LayoutR().setOnDragListener(null);
+        getStack().setOnClickListener(null);
+        getDiscardPileLayoutButton().setOnClickListener(null);
+        playerImage.setBackgroundColor(Color.rgb(0, 255, 224));
+        findViewById(R.id.ID_discard_layout).setBackgroundColor(Color.TRANSPARENT);
+
+
     }
 
     @Override
@@ -618,6 +639,14 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public ImageView getStack(){
         return stack;
+    }
+
+    public LinearLayout getDiscardPileLayoutButton() {
+        return discardPileLayoutButton;
+    }
+
+    public void setDiscardPileLayoutButton(LinearLayout discardPileLayoutButton) {
+        this.discardPileLayoutButton = discardPileLayoutButton;
     }
 
     public void showMessage(String text){
