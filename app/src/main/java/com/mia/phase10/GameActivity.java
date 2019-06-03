@@ -60,6 +60,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     MyDragEventListener myDragEventListener;
     MyDragEventListenerTwo myDrag;
+    private LinearLayout.LayoutParams lp;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -212,8 +213,16 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             playstationP1LayoutR.setVisibility(View.VISIBLE);
         }
 
-        GameLogicHandler.getInstance().getGameData().nextPlayer();
-        p = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase();
+        String next;
+        if(activeID.equals(getPlayer1Name())){
+            next=getPlayer2Name();
+        }
+        else {
+            next=getPlayer1Name();
+        }
+
+        p=GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getCurrentPhase();
+
 
         if (p == Phase.PHASE_4 || p == Phase.PHASE_5 || p == Phase.PHASE_6 || p == Phase.PHASE_8) {
             playstationP2ImageSeperated.setVisibility(View.INVISIBLE);
@@ -229,8 +238,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             playstationP2LayoutL.setVisibility(View.VISIBLE);
             playstationP2LayoutR.setVisibility(View.VISIBLE);
         }
-
-        GameLogicHandler.getInstance().getGameData().setActivePlayerId(activeID);
     }
 
     public void showHandCards() {
@@ -384,19 +391,25 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                     check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().checkNewCardList(currentP, LayOffCardsPhase.ACTIVE_PHASE);
+                            GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.ACTIVE_PHASE);
+
                         }
                     });
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            GameLogicHandler.getInstance().moveCardsBackToHand(currentP, LayOffCardsPhase.ACTIVE_PHASE);
+                            GameLogicHandler.getInstance().moveCardsBackToHand(LayOffCardsPhase.ACTIVE_PHASE);
                         }
                     });
 
+                    String next;
+                    if(currentP.equals(getPlayer1Name())){
+                        next=getPlayer2Name();
+                    }
+                    else {
+                        next=getPlayer1Name(); }
 
-                    GameLogicHandler.getInstance().getGameData().nextPlayer();
-                    if (GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).isPhaseAchieved()) {
+                    if (GameLogicHandler.getInstance().getGameData().getPlayers().get(next).isPhaseAchieved()) {
                         playstationP2Layout.setOnDragListener(myDrag);
                         playstationP2LayoutL.setOnDragListener(myDrag);
                         playstationP2LayoutR.setOnDragListener(myDrag);
@@ -404,17 +417,17 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                         checkTwo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                GameLogicHandler.getInstance().checkNewCardList(currentP, LayOffCardsPhase.NEXTPLAYER_PHASE);
+                                GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.NEXTPLAYER_PHASE);
                             }
                         });
                         cancelTwo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                GameLogicHandler.getInstance().moveCardsBackToHand(currentP, LayOffCardsPhase.NEXTPLAYER_PHASE);
+                                GameLogicHandler.getInstance().moveCardsBackToHand(LayOffCardsPhase.NEXTPLAYER_PHASE);
+
                             }
                         });
                     }
-                    GameLogicHandler.getInstance().getGameData().setActivePlayerId(currentP);
 
                 } else {
                     check.setOnClickListener(new View.OnClickListener() {
