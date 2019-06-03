@@ -61,6 +61,8 @@ public class GameLogicHandler {
         this.gameActivity.startShufflingActivity();
         this.gameData.setRoundClosed(false);
         for (Player p : this.gameData.getPlayers().values()) {
+            p.setCheated(false);
+            p.setCheatUncovered(false);
             p.getHand().getCardList().clear();
             for (int i = 0; i < 10; i++) {
                 Card c = this.gameData.getDrawStack().drawCard();
@@ -112,6 +114,11 @@ public class GameLogicHandler {
         }
     }
 
+    public Card cheat(){
+        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCheated(true);
+        return this.gameData.getDrawStack().getFirstCard();
+    }
+
     public int getFirstNumberOfPhaseCards(List<Card> list) {
         int number = 0;
         boolean firstNumber = false;
@@ -121,6 +128,21 @@ public class GameLogicHandler {
             }
         }
         return -1;
+    }
+
+    public void exposeCheat(){
+        if(!this.gameData.getPreviousPlayer().isEmpty()){
+            if(this.gameData.getPlayers().get(gameData.getPreviousPlayer()).hasCheated()){
+                //player cheated!
+                this.gameData.getPlayers().get(gameData.getPreviousPlayer()).setCheatUncovered(true);
+                this.gameData.getPlayers().get(gameData.getPreviousPlayer()).setPoints(5);
+                this.gameActivity.showMessage("Congrats: you exposed "+this.gameData.getPreviousPlayer());
+            }else{
+                //player did not cheat
+                this.gameData.getPlayers().get(gameData.getActivePlayerId()).setPoints(5);
+                this.gameActivity.showMessage("OOOHH: player didn't cheat --> 5 points for you");
+            }
+        }
     }
 
     public void layoffPhase(PlaystationType t, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {

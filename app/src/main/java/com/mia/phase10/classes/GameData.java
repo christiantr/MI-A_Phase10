@@ -1,6 +1,8 @@
 package com.mia.phase10.classes;
 //this class contains all game data needed for displaying the current status to clients.
 
+import android.os.Build;
+
 import com.mia.phase10.gameFlow.GamePhase;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class GameData {
     private CardStack drawStack;
     private Map<String,Player> players;
     private String activePlayerId;
+    private String previousPlayer;
     private GamePhase phase;
     private boolean roundClosed;
 
@@ -25,6 +28,7 @@ public class GameData {
         this.drawStack = new CardStack();
         this.players = new HashMap<String, Player>();
         this.activePlayerId = "";
+        this.previousPlayer = "";
     };
     public GameData(CardStack layOffStack, CardStack drawStack, Map<String, Player> players, String activePlayerId) {
         this.layOffStack = layOffStack;
@@ -35,6 +39,14 @@ public class GameData {
 
     public CardStack getLayOffStack() {
         return layOffStack;
+    }
+
+    public String getPreviousPlayer() {
+        return previousPlayer;
+    }
+
+    public void setPreviousPlayer(String previousPlayer) {
+        this.previousPlayer = previousPlayer;
     }
 
     public void setLayOffStack(CardStack layOffStack) {
@@ -88,13 +100,15 @@ public class GameData {
     public void nextPlayer(){
         Set<String> playerSet = this.players.keySet();
         ArrayList<String> playerList = new ArrayList<String>(playerSet);
-        playerList.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        });
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            playerList.sort(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return o1.compareTo(o2);
+                }
+            });
+        }
+        this.previousPlayer = this.activePlayerId;
         int found=-1;
         int index = 0;
         if(activePlayerId.equals("")){
@@ -115,6 +129,7 @@ public class GameData {
                 activePlayerId = playerList.get(0);
             }
         }
+        this.getPlayers().get(activePlayerId).setCheated(false);
        /* Iterator<Player> iter = this.players.values().iterator();
         int index =0;
 
