@@ -373,7 +373,7 @@
             app:layout_constraintHorizontal_bias="0.963"
             app:layout_constraintStart_toEndOf="@+id/ID_deck"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.945" />
+            app:layout_constraintVertical_bias="0.033" />
 
         <Button
             android:id="@+id/btnCheatExpose"
@@ -385,10 +385,10 @@
             android:text="expose"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnCheat"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.975"
             app:layout_constraintStart_toEndOf="@+id/ID_deck"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.945" />
+            app:layout_constraintVertical_bias="0.033" />
 
 
     </android.support.constraint.ConstraintLayout>

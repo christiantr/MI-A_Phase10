@@ -56,12 +56,12 @@ public class CardStack {
         }
 
         //generating SpecialCards
-        for(int i=0; i<4; i++){
-            cardList.add(new SpecialCard(count, "card_joker", SpecialCardValue.EXPOSE,  0));
+        for(int i=0; i<8; i++){
+            cardList.add(new SpecialCard(count, "card_joker", SpecialCardValue.JOKER,  0));
             count ++;
         }
         for(int i=0; i<4; i++){
-            cardList.add(new SpecialCard(count, "card_expose",SpecialCardValue.JOKER, 0));
+            cardList.add(new SpecialCard(count, "card_expose",SpecialCardValue.EXPOSE, 0));
             count ++;
         }
 
