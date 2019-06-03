@@ -78,8 +78,8 @@ public class GameLogicHandler {
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
         this.setPlayerNames();
-        //this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
-        this.gameData.getLayOffStack().addCard(new SpecialCard(97,"card_expose",SpecialCardValue.EXPOSE,10));
+        this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
+        //this.gameData.getLayOffStack().addCard(new SpecialCard(97,"card_expose",SpecialCardValue.EXPOSE,10));
         this.gameActivity.visualize();
     }
 
@@ -381,6 +381,10 @@ public class GameLogicHandler {
 
     private boolean isARow(String playerID) {
         return CardEvaluator.getInstance().checkIfInARow(GameLogicHandler.getInstance().getGameData().getPlayers().get(playerID).getPhaseCards());
+    }
+
+    public void exposePlayer(){
+
     }
 
     public void setPlayerNames() {

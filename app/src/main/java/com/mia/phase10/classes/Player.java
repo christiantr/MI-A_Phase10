@@ -15,6 +15,8 @@ public class Player {
     private Phase currentPhase;
     private String currentName;
     private boolean phaseAchieved;
+    private boolean isExposed;
+
 
     public Player(String id) {
         this.id = id;
@@ -24,9 +26,10 @@ public class Player {
         this.phaseCards2=new ArrayList<>();
         this.phaseCardsTemp=new ArrayList<>();
         this.phaseCards2Temp=new ArrayList<>();
-        currentPhase=Phase.PHASE_1;
-        currentName=id;
-        phaseAchieved=false;
+        this.currentPhase=Phase.PHASE_1;
+        this.currentName=id;
+        this.phaseAchieved=false;
+        this.isExposed=false;
     }
 
     public String getId() {
@@ -107,5 +110,13 @@ public class Player {
 
     public void setPhaseCards2Temp(ArrayList<Card> phaseCards2Temp) {
         this.phaseCards2Temp = phaseCards2Temp;
+    }
+
+    public boolean isExposed() {
+        return isExposed;
+    }
+
+    public void setExposed(boolean exposed) {
+        isExposed = exposed;
     }
 }
