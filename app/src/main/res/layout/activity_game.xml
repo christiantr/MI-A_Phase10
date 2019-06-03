@@ -61,9 +61,7 @@
             android:gravity="center|right|left"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ID_avatar">
-
-        </LinearLayout>
+            app:layout_constraintStart_toEndOf="@+id/ID_avatar"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_discard_layout"
@@ -97,6 +95,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.686" />
+
+        <LinearLayout
+            android:id="@+id/ID_discard_layout_button"
+            android:layout_width="74dp"
+            android:layout_height="127dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_discard_layout"
+            app:layout_constraintEnd_toStartOf="@+id/ID_stack"
+            app:layout_constraintStart_toEndOf="@+id/ID_p1_playstation_two"
+            app:layout_constraintTop_toTopOf="@+id/ID_discard_layout"></LinearLayout>
 
         <Button
             android:id="@+id/Cancel"
@@ -157,9 +167,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">
-
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <!--<ImageView-->
         <!--android:id="@+id/ID_p3"-->
@@ -191,7 +199,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_p2_playstation_layout_left"
@@ -203,7 +211,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">></LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <ImageView
             android:id="@+id/ID_avatar"
@@ -225,28 +233,22 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toTopOf="@+id/ID_deck"
+            app:layout_constraintBottom_toTopOf="@+id/ID_avatar"
             app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ID_p2_playstation"
+            app:layout_constraintTop_toBottomOf="@+id/ID_p2"
             app:srcCompat="@drawable/playstation" />
 
         <ImageView
             android:id="@+id/ID_p1_playstation_two"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toTopOf="@+id/ID_deck"
-            app:layout_constraintEnd_toStartOf="@+id/ID_discard_layout"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ID_p2_playstation"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/ID_p1_playstation"
+            app:layout_constraintEnd_toEndOf="@+id/ID_p1_playstation"
+            app:layout_constraintStart_toStartOf="@+id/ID_p1_playstation"
+            app:layout_constraintTop_toTopOf="@+id/ID_p1_playstation"
             app:srcCompat="@drawable/playstation_two" />
 
         <ImageView
@@ -301,9 +303,7 @@
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="@+id/ID_p1_playstation_two"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47">
-
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.47"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_p1_playstation_two_layout_right"
@@ -324,7 +324,7 @@
             app:layout_constraintHorizontal_bias="0.657"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47" />
+            app:layout_constraintVertical_bias="0.47"></LinearLayout>
 
         <TextView
             android:id="@+id/ID_player_2"
@@ -349,7 +349,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
             app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
             app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
-
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -359,23 +358,24 @@
         android:background="@color/colorAccent"
         android:fitsSystemWindows="true"
         android:fontFamily="@font/benchnine"
-        android:maxWidth="100dp">
+        android:maxWidth="130dp">
 
         <LinearLayout
-            android:layout_width="221dp"
+            android:layout_width="130dp"
             android:layout_height="0dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/ID_score_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="0dp"
                 android:fontFamily="@font/benchnine"
                 android:text="Punkte"
                 android:textColor="@android:color/white"
@@ -387,7 +387,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/benchnine"
                 android:text="0"
                 android:textColor="@android:color/white"
@@ -397,9 +397,281 @@
             <TextView
                 android:id="@+id/ID_phase_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="4dp"
+                android:ellipsize="start"
+                android:fontFamily="@font/benchnine"
+                android:text="Phasen"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/ID_score"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ID_phases"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="2 Drillinge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="1 Drilling + 1 Viererfolge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="1 Vierling + 1 Viererfolge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="1 Siebenerfolge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="Achterfolge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="Neunerfolge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="2 Vierlinge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="7 Karten in einer Farbe"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="1 Fünfling + 1 Zwilling"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@android:drawable/presence_online" />
+
+                    <TextView
+                        android:id="@+id/PHASE_10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:fontFamily="@font/benchnine"
+                        android:text="1 Fünfling + 1 Drilling"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ID_phase_label3"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="0dp"
+                android:ellipsize="start"
                 android:fontFamily="@font/benchnine"
                 android:text="aktuelle Phase"
                 android:textColor="@android:color/white"
@@ -411,21 +683,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/benchnine"
                 android:text="3"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toTopOf="@+id/ID_more"
                 app:layout_constraintStart_toStartOf="parent" />
 
+
             <TextView
                 android:id="@+id/ID_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="64dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="5dp"
                 android:clickable="true"
                 android:fontFamily="@font/benchnine"
+                android:paddingTop="0dp"
                 android:text="mehr"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -434,10 +708,10 @@
     </android.support.constraint.ConstraintLayout>
 
     <!--<android.support.constraint.ConstraintLayout-->
-        <!--android:id="@+id/ID_phase_closed"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/phase_closed"-->
-        <!--android:orientation="horizontal">-->
+    <!--android:id="@+id/ID_phase_closed"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@drawable/phase_closed"-->
+    <!--android:orientation="horizontal">-->
     <!--</android.support.constraint.ConstraintLayout>-->
 </android.support.v4.widget.DrawerLayout>

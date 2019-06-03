@@ -1,9 +1,15 @@
 package com.mia.phase10.network;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.network.threads.SentObjectThread;
+import com.mia.phase10.network.transport.ControlCommand;
+import com.mia.phase10.network.transport.ControlObject;
+import com.mia.phase10.network.transport.ObjectContentType;
+import com.mia.phase10.network.transport.TransportObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,23 +30,25 @@ public class Client extends AsyncTask {
     private ObjectInputStream in;
     private boolean active;
     private final boolean local;
+    private final Activity activity;
 
 
-    private Client(InetAddress serverIp, int serverPort, boolean local) {
+    private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.local = local;
+        this.activity = activity;
 
     }
 
-    public static Client atAddress(InetAddress serverIp, int serverPort) {
-        return new Client(serverIp, serverPort, false);
+    public static Client atAddress(InetAddress serverIp, int serverPort, Activity activity) {
+        return new Client(serverIp, serverPort, false, activity);
     }
 
-    public static Client atLocal(int serverPort) {
+    public static Client atLocal(int serverPort, Activity activity) {
         Log.i(TAG, "local");
-        return new Client(null, serverPort, true);
+        return new Client(null, serverPort, true, activity);
     }
 
     @Override
@@ -65,7 +73,6 @@ public class Client extends AsyncTask {
         if (local) {
             Log.i(TAG, "Try locahost");
 
-//            InetAddress localhost = InetAddress.getLoopbackAddress();
             InetAddress localhost = InetAddress.getByName(null);
 
             if (localhost != null) {
@@ -87,8 +94,22 @@ public class Client extends AsyncTask {
 
         while (active) {
             try {
-                Object received = in.readObject();
-                Log.i(TAG, ((TextTransportObject) received).toString());
+                TransportObject received = (TransportObject) in.readObject();
+                ObjectContentType objectContentType = received.getObjectContentType();
+
+                if (objectContentType.equals(ObjectContentType.TEXT)) {
+                    Log.i(TAG, received.getPayload().toString());
+                }
+
+                if (objectContentType.equals(ObjectContentType.CONTROLINFO)) {
+                    handleControlObject(received);
+                }
+
+                if (objectContentType.equals(ObjectContentType.USERNAME)) {
+                    handleUsernameObject(received);
+                }
+
+
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
             }
@@ -103,6 +124,41 @@ public class Client extends AsyncTask {
     public void sendObject(Serializable obj) {
         Thread sent = new Thread(new SentObjectThread(out, obj));
         sent.start();
+
+    }
+
+    private void handleControlObject(TransportObject obj) {
+        ControlObject controlObject = (ControlObject) obj.getPayload();
+        if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
+            closeConnection();
+        }
+
+
+    }
+
+    private void handleUsernameObject(TransportObject obj) {
+        final ConnectionDetails connectionDetails = (ConnectionDetails) obj.getPayload();
+        Log.i(TAG, String.format("Username %s \n", connectionDetails.getUserDisplayName().getName()));
+        GameStartActivity.runOnUI(new Runnable() {
+            public void run() {
+                ((GameStartActivity) activity).setUsername(connectionDetails);            }
+        });
+
+    }
+
+    private void closeConnection() {
+        Log.i(TAG, "Closing connection to Host.\n");
+        active = false;
+        try {
+            out.close();
+            in.close();
+            socket.close();
+
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+        Log.i(TAG, "Connection to Host closed!\n");
+
 
     }
 }
