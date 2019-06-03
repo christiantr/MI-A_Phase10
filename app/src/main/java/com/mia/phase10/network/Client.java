@@ -1,8 +1,10 @@
 package com.mia.phase10.network;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.network.threads.SentObjectThread;
 import com.mia.phase10.network.transport.ControlCommand;
 import com.mia.phase10.network.transport.ControlObject;
@@ -28,23 +30,25 @@ public class Client extends AsyncTask {
     private ObjectInputStream in;
     private boolean active;
     private final boolean local;
+    private final Activity activity;
 
 
-    private Client(InetAddress serverIp, int serverPort, boolean local) {
+    private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.local = local;
+        this.activity = activity;
 
     }
 
-    public static Client atAddress(InetAddress serverIp, int serverPort) {
-        return new Client(serverIp, serverPort, false);
+    public static Client atAddress(InetAddress serverIp, int serverPort, Activity activity) {
+        return new Client(serverIp, serverPort, false, activity);
     }
 
-    public static Client atLocal(int serverPort) {
+    public static Client atLocal(int serverPort, Activity activity) {
         Log.i(TAG, "local");
-        return new Client(null, serverPort, true);
+        return new Client(null, serverPort, true, activity);
     }
 
     @Override
@@ -101,6 +105,10 @@ public class Client extends AsyncTask {
                     handleControlObject(received);
                 }
 
+                if (objectContentType.equals(ObjectContentType.USERNAME)) {
+                    handleUsernameObject(received);
+                }
+
 
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
@@ -125,6 +133,16 @@ public class Client extends AsyncTask {
             closeConnection();
         }
 
+
+    }
+
+    private void handleUsernameObject(TransportObject obj) {
+        final ConnectionDetails connectionDetails = (ConnectionDetails) obj.getPayload();
+        Log.i(TAG, String.format("Username %s \n", connectionDetails.getUserDisplayName().getName()));
+        GameStartActivity.runOnUI(new Runnable() {
+            public void run() {
+                ((GameStartActivity) activity).setUsername(connectionDetails);            }
+        });
 
     }
 
