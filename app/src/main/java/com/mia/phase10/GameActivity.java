@@ -35,6 +35,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private TextView player2;
     private TextView score;
     private TextView phase;
+    private LinearLayout phases;
+    private TextView more;
     private ImageView playstationP1Image;
     private ImageView playstationP1ImageSeperated;
     private ImageView playstationP2Image;
@@ -121,6 +123,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         player2 = findViewById(R.id.ID_player_2);
         score = findViewById(R.id.ID_score);
         phase = findViewById(R.id.ID_phase);
+        phases = findViewById(R.id.ID_phases);
+        more = findViewById(R.id.ID_more);
         playstationP1Image = findViewById(R.id.ID_p1_playstation);
         playstationP2Image = findViewById(R.id.ID_p2_playstation);
         playstationP1ImageSeperated = findViewById(R.id.ID_p1_playstation_two);
@@ -150,6 +154,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         View mainView = findViewById(R.id.drawerLayout);
         mainView.invalidate();
         this.phase.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().toString());
+        LinearLayout phaseLinearLayout = (LinearLayout) this.phases.getChildAt(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().ordinal());
+        TextView phaseTextView = (TextView) phaseLinearLayout.getChildAt(1);
+        phaseTextView.setTextColor(Color.parseColor("#CDDC39"));
         this.score.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() + "");
         visualizePhase();
 
@@ -196,7 +203,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             playstationP1LayoutR.setVisibility(View.INVISIBLE);
             playstationP1Image.setVisibility(View.VISIBLE);
             playstationP1Layout.setVisibility(View.VISIBLE);
-
         } else {
             playstationP1Image.setVisibility(View.INVISIBLE);
             playstationP1Layout.setVisibility(View.INVISIBLE);
