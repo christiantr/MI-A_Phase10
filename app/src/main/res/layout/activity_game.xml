@@ -61,8 +61,7 @@
             android:gravity="center|right|left"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ID_avatar">
-        </LinearLayout>
+            app:layout_constraintStart_toEndOf="@+id/ID_avatar"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_discard_layout"
@@ -107,8 +106,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_discard_layout"
             app:layout_constraintEnd_toStartOf="@+id/ID_stack"
             app:layout_constraintStart_toEndOf="@+id/ID_p1_playstation_two"
-            app:layout_constraintTop_toTopOf="@+id/ID_discard_layout">
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_discard_layout"></LinearLayout>
 
         <Button
             android:id="@+id/Cancel"
@@ -169,8 +167,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_p2_playstation"
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <!--<ImageView-->
         <!--android:id="@+id/ID_p3"-->
@@ -202,8 +199,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_p2_playstation_layout_left"
@@ -215,8 +211,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ID_p2_playstation"
             app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="@+id/ID_p2_playstation"
-            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation">
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="@+id/ID_p2_playstation"></LinearLayout>
 
         <ImageView
             android:id="@+id/ID_avatar"
@@ -308,8 +303,7 @@
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="@+id/ID_p1_playstation_two"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47">
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.47"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/ID_p1_playstation_two_layout_right"
@@ -330,8 +324,7 @@
             app:layout_constraintHorizontal_bias="0.657"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47">
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.47"></LinearLayout>
 
         <TextView
             android:id="@+id/ID_player_2"
@@ -356,7 +349,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
             app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
             app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
-
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -716,10 +708,10 @@
     </android.support.constraint.ConstraintLayout>
 
     <!--<android.support.constraint.ConstraintLayout-->
-        <!--android:id="@+id/ID_phase_closed"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/phase_closed"-->
-        <!--android:orientation="horizontal">-->
+    <!--android:id="@+id/ID_phase_closed"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@drawable/phase_closed"-->
+    <!--android:orientation="horizontal">-->
     <!--</android.support.constraint.ConstraintLayout>-->
 </android.support.v4.widget.DrawerLayout>
