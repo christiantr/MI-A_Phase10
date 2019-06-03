@@ -51,6 +51,7 @@ public class GameDataTest {
         gameData.addPlayer(new Player("Player2"));
 
         gameData.nextPlayer();
+        gameData.nextPlayer();
         assertEquals("Player1",gameData.getActivePlayerId());
         gameData.nextPlayer();
         assertEquals("Player2",gameData.getActivePlayerId());

@@ -16,7 +16,8 @@ public class Player {
     private String currentName;
     private boolean phaseAchieved;
     private boolean isExposed;
-
+    private boolean cheated;
+    private  boolean cheatUncovered;
 
     public Player(String id) {
         this.id = id;
@@ -30,6 +31,24 @@ public class Player {
         this.currentName=id;
         this.phaseAchieved=false;
         this.isExposed=false;
+        this.cheated = false;
+        this.cheatUncovered = false;
+    }
+
+    public boolean hasCheated() {
+        return cheated;
+    }
+
+    public void setCheated(boolean cheated) {
+        this.cheated = cheated;
+    }
+
+    public boolean isCheatUncovered() {
+        return cheatUncovered;
+    }
+
+    public void setCheatUncovered(boolean cheatUncovered) {
+        this.cheatUncovered = cheatUncovered;
     }
 
     public String getId() {
@@ -45,7 +64,7 @@ public class Player {
     }
 
     public void setPoints(int points) {
-        this.points = points;
+        this.points += points;
     }
 
     public Hand getHand() {

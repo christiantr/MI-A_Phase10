@@ -107,8 +107,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ID_stack"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.504">
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.504"></LinearLayout>
 
         <Button
             android:id="@+id/Cancel"
@@ -359,6 +358,38 @@
             app:layout_constraintBottom_toBottomOf="@+id/ID_avatar"
             app:layout_constraintEnd_toEndOf="@+id/ID_avatar"
             app:layout_constraintStart_toStartOf="@+id/ID_avatar" />
+
+        <Button
+            android:id="@+id/btnCheat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="CHEAT"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.963"
+            app:layout_constraintStart_toEndOf="@+id/ID_deck"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.945" />
+
+        <Button
+            android:id="@+id/btnCheatExpose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="expose"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnCheat"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/ID_deck"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.945" />
+
 
     </android.support.constraint.ConstraintLayout>
 
