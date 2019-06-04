@@ -69,8 +69,11 @@ public class MyDragEventListener implements View.OnDragListener {
                 Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
                 if(c.getImagePath().equals("card_expose")){
                     try {
-                        GameLogicHandler.getInstance().exposePlayer(vw.getId());
-                    }catch (EmptyHandException | CardNotFoundException e) {
+                        if(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().size()==1){
+                            GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());
+                        }
+                        else {GameLogicHandler.getInstance().exposePlayer(vw.getId());}
+                    }catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                         e.printStackTrace();
                     }
                     return true;}

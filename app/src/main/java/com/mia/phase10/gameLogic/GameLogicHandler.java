@@ -66,7 +66,7 @@ public class GameLogicHandler {
         this.gameData.getDrawStack().getCardList().clear();
         this.gameData.getDrawStack().generateCardStack();
         this.getGameData().getDrawStack().mixStack();
-        //this.gameActivity.startShufflingActivity();
+        this.gameActivity.startShufflingActivity();
         this.gameData.setRoundClosed(false);
         for (Player p : this.gameData.getPlayers().values()) {
             p.setCheated(false);
