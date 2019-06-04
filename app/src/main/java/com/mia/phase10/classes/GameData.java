@@ -119,6 +119,8 @@ public class GameData {
         } else {
             do {
                 this.getPlayers().get(activePlayerId).setExposed(false);
+                found =-1;
+                index=0;
                 for (String name : playerList) {
 
                     if (name.equals(activePlayerId)) {
