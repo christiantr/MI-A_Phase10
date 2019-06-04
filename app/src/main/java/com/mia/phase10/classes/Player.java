@@ -5,7 +5,6 @@ import com.mia.phase10.gameLogic.Phase;
 import java.util.ArrayList;
 
 public class Player {
-    private  boolean cheatUncovered;
     private String id;
     private int points;
     private Hand hand;
@@ -16,7 +15,9 @@ public class Player {
     private Phase currentPhase;
     private String currentName;
     private boolean phaseAchieved;
+    private boolean isExposed;
     private boolean cheated;
+    private  boolean cheatUncovered;
 
     public Player(String id) {
         this.id = id;
@@ -26,11 +27,12 @@ public class Player {
         this.phaseCards2=new ArrayList<>();
         this.phaseCardsTemp=new ArrayList<>();
         this.phaseCards2Temp=new ArrayList<>();
-        currentPhase=Phase.PHASE_1;
-        currentName=id;
-        phaseAchieved=false;
-        cheated = false;
-        cheatUncovered = false;
+        this.currentPhase=Phase.PHASE_1;
+        this.currentName=id;
+        this.phaseAchieved=false;
+        this.isExposed=false;
+        this.cheated = false;
+        this.cheatUncovered = false;
     }
 
     public boolean hasCheated() {
@@ -127,5 +129,13 @@ public class Player {
 
     public void setPhaseCards2Temp(ArrayList<Card> phaseCards2Temp) {
         this.phaseCards2Temp = phaseCards2Temp;
+    }
+
+    public boolean isExposed() {
+        return isExposed;
+    }
+
+    public void setExposed(boolean exposed) {
+        isExposed = exposed;
     }
 }

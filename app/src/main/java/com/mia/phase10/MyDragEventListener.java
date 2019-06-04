@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
@@ -65,8 +66,20 @@ public class MyDragEventListener implements View.OnDragListener {
 
                 ImageView vw = (ImageView) event.getLocalState();
                 ViewGroup owner = (ViewGroup) vw.getParent();
+                Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+                if(c.getImagePath().equals("card_expose")){
+                    try {
+                        if(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().size()==1){
+                            GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());
+                        }
+                        else {GameLogicHandler.getInstance().exposePlayer(vw.getId());}
+                    }catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return true;}
+
                 try {
-                    GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId()); //delete card of hand
+                    GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());
                 } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
                     e.printStackTrace();
                 }
