@@ -55,6 +55,9 @@ public class ConnectionListener {
         switch (controlObject.getControlCommand()) {
             case CLOSECONNECTIONS:
                 connections.sendObjectToAllAndCloseAll(obj);
+                break;
+            case STARTGAME:
+                connections.sendObjectToAll(obj.getPayload());
         }
 
 
