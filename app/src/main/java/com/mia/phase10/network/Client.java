@@ -31,10 +31,10 @@ public class Client extends AsyncTask {
     private ObjectInputStream in;
     private boolean active;
     private final boolean local;
-    private final GameStartActivity activity;
+    private final Activity activity;
 
 
-    private Client(InetAddress serverIp, int serverPort, boolean local, GameStartActivity activity) {
+    private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
@@ -43,7 +43,7 @@ public class Client extends AsyncTask {
 
     }
 
-    public static Client atAddress(InetAddress serverIp, int serverPort, GameStartActivity activity) {
+    public static Client atAddress(InetAddress serverIp, int serverPort, Activity activity) {
         return new Client(serverIp, serverPort, false, activity);
     }
 
@@ -138,7 +138,10 @@ public class Client extends AsyncTask {
             closeConnection();
         }
         if(controlObject.getControlCommand().equals(ControlCommand.STARTGAME)){
-            activity.startGame();
+            GameStartActivity.runOnUI(new Runnable() {
+                public void run() {
+                    ((GameStartActivity) activity).startGame();            }
+            });
         }
 
 
