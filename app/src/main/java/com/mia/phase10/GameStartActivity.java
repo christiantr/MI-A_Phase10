@@ -14,11 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mia.phase10.classes.Player;
+import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.UserDisplayName;
+import com.mia.phase10.network.transport.ControlCommand;
+import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
 
 import java.net.InetAddress;
@@ -26,6 +30,7 @@ import java.net.UnknownHostException;
 
 public class GameStartActivity extends AppCompatActivity {
     private final String TAG = "GameStartActivity";
+    public static final String USERNAME  = "username";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
     private EditText ip;
@@ -87,9 +92,9 @@ public class GameStartActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_main);
-                startGame(v);
-
+               // setContentView(R.layout.activity_main);
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
+                ((Client) client).sendObject(obj);
             }
         });
 
@@ -159,6 +164,7 @@ public class GameStartActivity extends AppCompatActivity {
      * Called when the user uses the "Client Game" button
      */
     public void startHost(View view) {
+        GameLogicHandler.getInstance().initializeGame();
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
@@ -194,13 +200,15 @@ public class GameStartActivity extends AppCompatActivity {
     /**
      * Called when the user taps the Send button
      */
-    public void startGame(View view) {
+    public void startGame() {
+
         Intent intent = new Intent(this, GameActivity.class);
         EditText firstPlayer = (EditText) findViewById(R.id.ID_first_player);
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
-        intent.putExtra(FIRST_PLAYER, firstPlayer.getText().toString());
-        intent.putExtra(SECOND_PLAYER, secondPlayer.getText().toString());
+        intent.putExtra(USERNAME, username.getText().toString());
+       // intent.putExtra("Client",client);
         startActivity(intent);
+
     }
 
     private void showIpAddress() {
@@ -237,13 +245,15 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
-
+            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
         }
         if (connectionDetails.getUserID().getUserId() == 2) {
             Log.i(TAG, "Second connection");
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection2.setVisibility(View.VISIBLE);
+            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+
         }
 
         if (connectionDetails.getUserID().getUserId() == 3) {
@@ -251,6 +261,8 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection3.setVisibility(View.VISIBLE);
+            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+
         }
 
 //

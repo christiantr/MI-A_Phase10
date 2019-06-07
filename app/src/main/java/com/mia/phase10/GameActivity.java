@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     private LinearLayout deck;
     private ImageView stack;
-
+    private static final String USERNAME = "username";
     private LinearLayout discardPileLayout;
     private LinearLayout discardPileLayoutButton;
     private TextView player1;
@@ -73,17 +73,30 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         // Initialize View and set Listeners
         findViewByIDObjects();
         initializeListeners();
-
+        setPlayers();
         //preparing gameData
-        GameLogicHandler.getInstance().initializeGame();
-        GameLogicHandler.getInstance().addPlayer(new Player("player_1"));
-        GameLogicHandler.getInstance().addPlayer(new Player("player_2"));
+
+
         GameLogicHandler.getInstance().setGameActivity(this);
         try {
             GameLogicHandler.getInstance().startRound();
         } catch (EmptyCardStackException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void setPlayers(){
+        Intent intent = getIntent();
+        player1ID = intent.getStringExtra(USERNAME);
+        //currently only two players!
+        //int count = 1;
+        for(Player p: GameLogicHandler.getInstance().getGameData().getPlayers().values()){
+         if(!p.getId().equals(player1ID)){
+             player2ID = p.getId();
+         }
+        }
+
 
     }
 

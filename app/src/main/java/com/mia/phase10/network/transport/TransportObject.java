@@ -1,6 +1,8 @@
 package com.mia.phase10.network.transport;
 
 
+import com.mia.phase10.classes.GameData;
+import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.ConnectionDetails;
 
 import java.io.Serializable;
@@ -34,6 +36,10 @@ public class TransportObject implements Serializable {
 
     public static TransportObject ofControlObjectToThis(ControlObject controlObject) {
         return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.CONTROLINFO, controlObject);
+    }
+
+    public static TransportObject makeGameDataTranportObect(){
+        return new TransportObject(BroadcastType.BROADCAST_ALL, ObjectContentType.GAMEDATA, GameLogicHandler.getInstance().getGameState());
     }
 
     public BroadcastType getBroadcastType() {

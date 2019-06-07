@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;
 import com.mia.phase10.network.transport.ControlCommand;
 import com.mia.phase10.network.transport.ControlObject;
@@ -30,10 +31,10 @@ public class Client extends AsyncTask {
     private ObjectInputStream in;
     private boolean active;
     private final boolean local;
-    private final Activity activity;
+    private final GameStartActivity activity;
 
 
-    private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
+    private Client(InetAddress serverIp, int serverPort, boolean local, GameStartActivity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
@@ -42,11 +43,11 @@ public class Client extends AsyncTask {
 
     }
 
-    public static Client atAddress(InetAddress serverIp, int serverPort, Activity activity) {
+    public static Client atAddress(InetAddress serverIp, int serverPort, GameStartActivity activity) {
         return new Client(serverIp, serverPort, false, activity);
     }
 
-    public static Client atLocal(int serverPort, Activity activity) {
+    public static Client atLocal(int serverPort, GameStartActivity activity) {
         Log.i(TAG, "local");
         return new Client(null, serverPort, true, activity);
     }
@@ -109,6 +110,10 @@ public class Client extends AsyncTask {
                     handleUsernameObject(received);
                 }
 
+                if(objectContentType.equals(ObjectContentType.GAMEDATA)){
+                    GameLogicHandler.getInstance().setGameState((String) received.getPayload());
+                }
+
 
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
@@ -131,6 +136,9 @@ public class Client extends AsyncTask {
         ControlObject controlObject = (ControlObject) obj.getPayload();
         if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
             closeConnection();
+        }
+        if(controlObject.getControlCommand().equals(ControlCommand.STARTGAME)){
+            activity.startGame();
         }
 
 
