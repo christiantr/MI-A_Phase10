@@ -3,7 +3,9 @@ package com.mia.phase10.gameLogic;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.strictmode.CleartextNetworkViolation;
 import android.view.View;
+import android.view.animation.CycleInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameFlow.LayOffCardsPhase;
+import com.mia.phase10.network.Client;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
     private GameData gameData;
     private GameActivity gameActivity;
+    private Client client;
 
     //private constructor.
     private GameLogicHandler() {
@@ -534,6 +538,14 @@ public class GameLogicHandler {
         } else {
             this.gameActivity.visualize();
         }
+    }
+
+    public void setClient(Client client){
+        this.client = client;
+    }
+
+    public void setGameData(GameData gameData){
+        this.gameData=gameData;
     }
 
 

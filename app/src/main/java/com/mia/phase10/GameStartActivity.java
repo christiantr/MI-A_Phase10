@@ -93,8 +93,9 @@ public class GameStartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // setContentView(R.layout.activity_main);
+                ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
                 TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
-                ((Client) client).sendObject(obj);
+             //   ((Client) client).sendObject(obj);
             }
         });
 
@@ -158,6 +159,7 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         ip.setVisibility(View.GONE);
         testMessage.setVisibility(View.VISIBLE);
+        GameLogicHandler.getInstance().setClient((Client) client);
     }
 
     /**
@@ -178,7 +180,7 @@ public class GameStartActivity extends AppCompatActivity {
 
         Log.i(TAG, "local");
         client.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        GameLogicHandler.getInstance().setClient((Client) client);
 
     }
 
@@ -246,6 +248,7 @@ public class GameStartActivity extends AppCompatActivity {
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
             GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+
         }
         if (connectionDetails.getUserID().getUserId() == 2) {
             Log.i(TAG, "Second connection");

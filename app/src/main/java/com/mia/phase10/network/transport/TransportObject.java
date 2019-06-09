@@ -38,8 +38,8 @@ public class TransportObject implements Serializable {
         return new TransportObject(BroadcastType.THISCLIENT, ObjectContentType.CONTROLINFO, controlObject);
     }
 
-    public static TransportObject makeGameDataTranportObect(){
-        return new TransportObject(BroadcastType.BROADCAST_ALL, ObjectContentType.GAMEDATA, GameLogicHandler.getInstance().getGameState());
+    public static TransportObject makeGameDataTransportObject(){
+        return new TransportObject(BroadcastType.BROADCAST_ALL, ObjectContentType.GAMEDATA, GameLogicHandler.getInstance().getGameData());
     }
 
     public BroadcastType getBroadcastType() {

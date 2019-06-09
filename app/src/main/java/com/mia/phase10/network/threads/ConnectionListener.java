@@ -28,7 +28,7 @@ public class ConnectionListener {
         BroadcastType broadcastType = obj.getBroadcastType();
         ObjectContentType objectContentType = obj.getObjectContentType();
 
-        if (broadcastType.equals(BroadcastType.BROADCAST_ALL) && objectContentType.equals(ObjectContentType.TEXT)) {
+        if (broadcastType.equals(BroadcastType.BROADCAST_ALL) && (objectContentType.equals(ObjectContentType.TEXT) || objectContentType.equals(ObjectContentType.GAMEDATA))) {
             sendToAllClients(obj);
         }
 
@@ -57,7 +57,7 @@ public class ConnectionListener {
                 connections.sendObjectToAllAndCloseAll(obj);
                 break;
             case STARTGAME:
-                connections.sendObjectToAll(obj.getPayload());
+                connections.sendObjectToAll(obj);
         }
 
 

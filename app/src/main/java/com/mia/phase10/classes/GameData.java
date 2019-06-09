@@ -5,6 +5,7 @@ import android.os.Build;
 
 import com.mia.phase10.gameFlow.GamePhase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class GameData {
+public class GameData implements Serializable {
 
     private CardStack layOffStack;
     private CardStack drawStack;

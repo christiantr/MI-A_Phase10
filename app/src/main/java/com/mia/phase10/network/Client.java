@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.classes.GameData;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;
 import com.mia.phase10.network.transport.ControlCommand;
@@ -111,7 +112,7 @@ public class Client extends AsyncTask {
                 }
 
                 if(objectContentType.equals(ObjectContentType.GAMEDATA)){
-                    GameLogicHandler.getInstance().setGameState((String) received.getPayload());
+                    GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
                 }
 
 
