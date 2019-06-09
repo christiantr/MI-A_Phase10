@@ -36,7 +36,6 @@ public class Client extends AsyncTask {
     private final Activity activity;
 
 
-
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
@@ -113,9 +112,8 @@ public class Client extends AsyncTask {
                     handleUsernameObject(received);
                 }
 
-                if(objectContentType.equals(ObjectContentType.GAMEDATA)){
+                if (objectContentType.equals(ObjectContentType.GAMEDATA)) {
                     handleGamedata(received);
-
 
 
                 }
@@ -133,11 +131,15 @@ public class Client extends AsyncTask {
     }
 
     private void handleGamedata(TransportObject received) {
+        Log.i(TAG, "New Gamedata to handle by Client.");
         GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
-        gameActivity = GameLogicHandler.getInstance().getGameActivity();
-        GameLogicHandler.getInstance().getGameActivity().runOnUI(new Runnable() {
+
+        final GameActivity gameActivity = GameLogicHandler.getInstance().getGameActivity();
+        if(gameActivity==null) Log.e(TAG, "Game activity null ref");
+        gameActivity.runOnUI(new Runnable() {
             public void run() {
-                gameActivity.visualize();            }
+                gameActivity.visualize();
+            }
         });
     }
 
@@ -152,10 +154,11 @@ public class Client extends AsyncTask {
         if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
             closeConnection();
         }
-        if(controlObject.getControlCommand().equals(ControlCommand.STARTGAME)){
+        if (controlObject.getControlCommand().equals(ControlCommand.STARTGAME)) {
             GameStartActivity.runOnUI(new Runnable() {
                 public void run() {
-                    ((GameStartActivity) activity).startGame();            }
+                    ((GameStartActivity) activity).startGame();
+                }
             });
         }
 
@@ -167,7 +170,8 @@ public class Client extends AsyncTask {
         Log.i(TAG, String.format("Username %s \n", connectionDetails.getUserDisplayName().getName()));
         GameStartActivity.runOnUI(new Runnable() {
             public void run() {
-                ((GameStartActivity) activity).setUsername(connectionDetails);            }
+                ((GameStartActivity) activity).setUsername(connectionDetails);
+            }
         });
 
     }
