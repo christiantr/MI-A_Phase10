@@ -95,7 +95,7 @@ public class GameStartActivity extends AppCompatActivity {
                // setContentView(R.layout.activity_main);
                 ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
                 TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
-             //   ((Client) client).sendObject(obj);
+                ((Client) client).sendObject(obj);
             }
         });
 

@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
-public enum Colour {
+import java.io.Serializable;
+
+public enum Colour implements Serializable {
     BLUE, GREEN, RED, YELLOW
 }

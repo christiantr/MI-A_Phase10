@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
-public enum SpecialCardValue {
+import java.io.Serializable;
+
+public enum SpecialCardValue implements Serializable {
     JOKER,EXPOSE
 }
