@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mia.phase10.GameActivity;
 import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.gameLogic.GameLogicHandler;
@@ -33,6 +34,7 @@ public class Client extends AsyncTask {
     private boolean active;
     private final boolean local;
     private final Activity activity;
+
 
 
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
@@ -112,7 +114,10 @@ public class Client extends AsyncTask {
                 }
 
                 if(objectContentType.equals(ObjectContentType.GAMEDATA)){
-                    GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
+                    handleGamedata(received);
+
+
+
                 }
 
 
@@ -125,6 +130,15 @@ public class Client extends AsyncTask {
 //
 
 
+    }
+
+    private void handleGamedata(TransportObject received) {
+        GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
+        gameActivity = GameLogicHandler.getInstance().getGameActivity();
+        GameLogicHandler.getInstance().getGameActivity().runOnUI(new Runnable() {
+            public void run() {
+                gameActivity.visualize();            }
+        });
     }
 
     public void sendObject(Serializable obj) {

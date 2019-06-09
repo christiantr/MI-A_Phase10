@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
@@ -93,7 +94,17 @@ public class GameStartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                // setContentView(R.layout.activity_main);
+                try {
+                    GameLogicHandler.getInstance().startRound();
+                } catch (EmptyCardStackException e) {
+                    e.printStackTrace();
+                }
                 ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
                 ((Client) client).sendObject(obj);
             }

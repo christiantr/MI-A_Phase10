@@ -26,6 +26,7 @@ import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.network.Client;
+import com.mia.phase10.network.transport.TransportObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +71,7 @@ public class GameLogicHandler {
         this.gameData.getDrawStack().getCardList().clear();
         this.gameData.getDrawStack().generateCardStack();
         this.getGameData().getDrawStack().mixStack();
-        this.gameActivity.startShufflingActivity();
+        //this.gameActivity.startShufflingActivity();
         this.gameData.setRoundClosed(false);
         for (Player p : this.gameData.getPlayers().values()) {
             p.setCheated(false);
@@ -90,9 +91,9 @@ public class GameLogicHandler {
 
         this.gameData.setPhase(GamePhase.DRAW_PHASE);
         this.gameData.nextPlayer();
-        this.setPlayerNames();
+        //this.setPlayerNames();
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
-        this.gameActivity.visualize();
+       // this.gameActivity.visualize();
     }
 
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
@@ -118,13 +119,15 @@ public class GameLogicHandler {
                 startRound();
             } else {
                 this.gameData.nextPlayer();
-                this.setPlayerNames();
+               // this.setPlayerNames();
                 this.gameData.setPhase(GamePhase.DRAW_PHASE);
                 this.gameActivity.visualize();
             }
         } catch (Exception c) {
             throw new PlayerNotFoundException("Player not found!");
         }
+
+        sendGameState();
     }
 
     public Card cheat() {
@@ -141,6 +144,10 @@ public class GameLogicHandler {
             }
         }
         return -1;
+    }
+
+    public void sendGameState(){
+        ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
     }
 
     public void exposeCheat() {
@@ -549,7 +556,7 @@ public class GameLogicHandler {
     }
 
 
-    public void setPlayerNames() {
+  /*  public void setPlayerNames() {
         this.gameActivity.setPlayer1ID(this.gameData.getActivePlayerId());
         String player2 = "";
         for (Player p : gameData.getPlayers().values()) {
@@ -560,13 +567,13 @@ public class GameLogicHandler {
         this.gameActivity.setPlayer2ID(player2);
 
 
-        /*this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
+        *//*this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
         this.getGameActivity().setPlayer1ID(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
         this.gameData.nextPlayer();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
         this.getGameActivity().setPlayer2ID(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
-        this.gameData.nextPlayer();*/
+        this.gameData.nextPlayer();*//*
 
 
-    }
+    }*/
 }
