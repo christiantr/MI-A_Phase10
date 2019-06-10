@@ -134,11 +134,13 @@ public class Client extends AsyncTask {
 
     private void handleGamedata(TransportObject received) {
         GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
-        gameActivity = GameLogicHandler.getInstance().getGameActivity();
-        GameLogicHandler.getInstance().getGameActivity().runOnUI(new Runnable() {
-            public void run() {
-                gameActivity.visualize();            }
-        });
+        GameActivity gameActivity = GameLogicHandler.getInstance().getGameActivity();
+        if (gameActivity!=null) {
+            gameActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    GameLogicHandler.getInstance().getGameActivity().visualize();            }
+            } );
+        }
     }
 
     public void sendObject(Serializable obj) {

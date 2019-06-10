@@ -252,8 +252,15 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             }
         }
         else{
-            ProgressDialog.show(this, "Bitte warten",
-                    "Spieler "+GameLogicHandler.getInstance().getGameData().getActivePlayerId()+" ist am Zug!", true);
+                if(progressDialog == null){
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+
+                }else if(!progressDialog.isShowing()) {
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+                }
+
         }
     }
 
