@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="395dp"
-        android:layout_height="715dp"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
         <EditText
             android:id="@+id/editText_username"
+            style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -22,28 +32,35 @@
 
         <Button
             android:id="@+id/button_hostGame"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startHost"
-            android:text="Host Game" />
+            android:text="Host Game"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_joinGame"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startClient"
-            android:text="Join Game" />
+            android:text="Join Game"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView_IpAndPort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="TextView"
+            android:textColor="#48809A"
             android:visibility="invisible" />
 
         <EditText
             android:id="@+id/input_Ip"
-            android:layout_width="wrap_content"
+            style="@android:style/Widget.AutoCompleteTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
@@ -52,44 +69,62 @@
 
         <EditText
             android:id="@+id/input_port"
-            android:layout_width="wrap_content"
+            style="@android:style/Widget.AutoCompleteTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
             tools:visibility="invisible" />
 
         <Button
-            android:id="@+id/button_connectToHost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Connect" />
-
-        <Button
-            android:id="@+id/button_sendTestMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SendMessage" />
-
-        <Button
             android:id="@+id/button_start"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start" />
+            android:text="Start"
+            android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textView_connection1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_connection2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/button_connectToHost"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connect"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textView_connection3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/button_sendTestMessage"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SendMessage"
+                android:textSize="12sp" />
 
+            <TextView
+                android:id="@+id/textView_connection1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#48809A" />
+
+            <TextView
+                android:id="@+id/textView_connection2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#48809A" />
+
+            <TextView
+                android:id="@+id/textView_connection3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#48809A" />
+        </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

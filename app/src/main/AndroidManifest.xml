@@ -27,6 +27,9 @@
         <activity
             android:name=".GameStartActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".GameRulesActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

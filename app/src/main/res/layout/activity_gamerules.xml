@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="horizontal"
+    tools:context=".GameRulesActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:fitsSystemWindows="true"
+        android:fontFamily="@font/benchnine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/ID_titel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Spielablauf – So wird Phase 10 gespielt"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/ID_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Phase 10 wird über mehrere Runden gespielt. Dabei müssen alle zehn Phasen chronologisch von der ersten zur zehnten Phase erfolgreich absolviert werden. Ist ein Spieler am Zug, so"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/ID_phases"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@android:drawable/presence_online" />
+
+                        <TextView
+                            android:id="@+id/PHASE_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="@font/benchnine"
+                            android:text="muss er eine Karte aufnehmen – dabei kann er frei wählen, ob er die Karte vom verdeckten Nachziehstapel nimmt oder aber die offene, oberste Karte des Ablegestapels."
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@android:drawable/presence_online" />
+
+                        <TextView
+                            android:id="@+id/PHASE_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="@font/benchnine"
+                            android:text="kann er seine aktuell erforderliche Phase auslegen."
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@android:drawable/presence_online" />
+
+                        <TextView
+                            android:id="@+id/PHASE_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="@font/benchnine"
+                            android:text="muss er als letzte Aktion eine Karte aus seiner Hand wieder ausspielen."
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ID_titel_aim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:paddingTop="15dp"
+                    android:text="Ziel jeder Runde"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ID_subtitle_aim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Ziel jeder Runde ist es, die jeweilige Phase – die immer aus einer Kombination verschiedener Karten besteht – zu beenden und alle Karten loszuwerden. Eine einzelne Spielrunde endet, sobald der erste Spieler seine aktuelle Phase geschafft hat und keine Karte mehr auf der Hand hat. "
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/ID_titel_phase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:paddingTop="15dp"
+                    android:text="Phase geschafft!"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ID_subtitle_pahse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Hat ein Spieler seine Phase geschafft, so darf er sich in der nächsten Runde der darauf folgenden Phase widmen."
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/ID_titel_winner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:paddingTop="15dp"
+                    android:text="Sieger des Spieles"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ID_subtitle_winner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/benchnine"
+                    android:text="Sieger des Spiels ist derjenige, der zuerst alle 10 Phasen erfolgreich beendet hat. Sollten zwei Spieler in der gleichen Spielrunde ihre zehnte Phase schaffen, gewinnt derjenige, mit den wenigsten Minuspunkte."
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
