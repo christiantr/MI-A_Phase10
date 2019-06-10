@@ -466,9 +466,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 });
 
                 if (!GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getImagePath().equals("card_expose")) {
-                    layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                    layoffStack.setBackgroundColor(0x83462BA0);
                 } else layoffStack.setBackgroundColor(Color.TRANSPARENT);
-                drawStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                drawStack.setBackgroundColor(0x83462BA0);
                 playerImage.setBackgroundColor(Color.TRANSPARENT);
                 break;
 
@@ -540,7 +540,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 }
 
                 drawStack.setBackgroundColor(Color.TRANSPARENT);
-                layoffStack.setBackgroundColor(Color.rgb(0, 255, 224));
+                layoffStack.setBackgroundColor(0x83462BA0);
                 playerImage.setBackgroundColor(Color.TRANSPARENT);
                 break;
             case END_TURN_PHASE:
