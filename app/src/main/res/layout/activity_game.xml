@@ -80,6 +80,7 @@
 
         <Button
             android:id="@+id/checkPhase"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
@@ -88,6 +89,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="check"
+            android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/Cancel"
@@ -111,6 +113,7 @@
 
         <Button
             android:id="@+id/Cancel"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
@@ -119,6 +122,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="cancel"
+            android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -361,13 +365,15 @@
 
         <Button
             android:id="@+id/btnCheat"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="CHEAT"
+            android:text="cheat"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.963"
@@ -377,12 +383,14 @@
 
         <Button
             android:id="@+id/btnCheatExpose"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="expose"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnCheat"
             app:layout_constraintHorizontal_bias="0.975"
