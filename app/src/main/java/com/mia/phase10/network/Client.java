@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mia.phase10.GameActivity;
 import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.classes.GameData;
+import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;
 import com.mia.phase10.network.transport.ControlCommand;
 import com.mia.phase10.network.transport.ControlObject;
@@ -33,6 +36,7 @@ public class Client extends AsyncTask {
     private final Activity activity;
 
 
+
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
 //        this.mHandler = mHandler;
         this.serverPort = serverPort;
@@ -46,7 +50,7 @@ public class Client extends AsyncTask {
         return new Client(serverIp, serverPort, false, activity);
     }
 
-    public static Client atLocal(int serverPort, Activity activity) {
+    public static Client atLocal(int serverPort, GameStartActivity activity) {
         Log.i(TAG, "local");
         return new Client(null, serverPort, true, activity);
     }
@@ -109,6 +113,13 @@ public class Client extends AsyncTask {
                     handleUsernameObject(received);
                 }
 
+                if(objectContentType.equals(ObjectContentType.GAMEDATA)){
+                    handleGamedata(received);
+
+
+
+                }
+
 
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, e.toString());
@@ -116,9 +127,20 @@ public class Client extends AsyncTask {
         }
 
 
-//
 
 
+
+    }
+
+    private void handleGamedata(TransportObject received) {
+        GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
+        GameActivity gameActivity = GameLogicHandler.getInstance().getGameActivity();
+        if (gameActivity!=null) {
+            gameActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    GameLogicHandler.getInstance().getGameActivity().visualize();            }
+            } );
+        }
     }
 
     public void sendObject(Serializable obj) {
@@ -131,6 +153,12 @@ public class Client extends AsyncTask {
         ControlObject controlObject = (ControlObject) obj.getPayload();
         if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
             closeConnection();
+        }
+        if(controlObject.getControlCommand().equals(ControlCommand.STARTGAME)){
+            GameStartActivity.runOnUI(new Runnable() {
+                public void run() {
+                    ((GameStartActivity) activity).startGame();            }
+            });
         }
 
 

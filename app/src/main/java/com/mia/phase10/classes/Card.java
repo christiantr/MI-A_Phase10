@@ -1,6 +1,8 @@
 package com.mia.phase10.classes;
 
-public abstract class Card {
+import java.io.Serializable;
+
+public abstract class Card implements Serializable {
     protected int id;
     protected String imagePath;
     protected int countCard;

@@ -2,11 +2,12 @@ package com.mia.phase10.classes;
 
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CardStack {
+public class CardStack implements Serializable {
 
     private List<Card> cardList;
 

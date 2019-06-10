@@ -1,6 +1,7 @@
 package com.mia.phase10;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -28,8 +30,9 @@ import com.mia.phase10.gameLogic.StackType;
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private LinearLayout deck;
+    ProgressDialog progressDialog;
     private ImageView stack;
-
+    private static final String USERNAME = "username";
     private LinearLayout discardPileLayout;
     private LinearLayout discardPileLayoutButton;
     private TextView player1;
@@ -73,17 +76,26 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         // Initialize View and set Listeners
         findViewByIDObjects();
         initializeListeners();
-
+        setPlayers();
         //preparing gameData
-        GameLogicHandler.getInstance().initializeGame();
-        GameLogicHandler.getInstance().addPlayer(new Player("player_1"));
-        GameLogicHandler.getInstance().addPlayer(new Player("player_2"));
+
+
         GameLogicHandler.getInstance().setGameActivity(this);
-        try {
-            GameLogicHandler.getInstance().startRound();
-        } catch (EmptyCardStackException e) {
-            e.printStackTrace();
+        visualize();
+
+    }
+
+    private void setPlayers(){
+        Intent intent = getIntent();
+        player1ID = intent.getStringExtra(USERNAME);
+        //currently only two players!
+        //int count = 1;
+        for(Player p: GameLogicHandler.getInstance().getGameData().getPlayers().values()){
+         if(!p.getId().equals(player1ID)){
+             player2ID = p.getId();
+         }
         }
+
 
     }
 
@@ -232,6 +244,24 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         showPlaystation2Cards();
         showPlaystation2RCards();
         showLayOffStack();
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)){
+            try {
+                progressDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+                if(progressDialog == null){
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+
+                }else if(!progressDialog.isShowing()) {
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+                }
+
+        }
     }
 
     private void showLayOffStack() {
@@ -650,5 +680,15 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public void showMessage(String text){
         Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    public static Handler UIHandler;
+
+    static {
+        UIHandler = new Handler(Looper.getMainLooper());
+    }
+
+    public static void runOnUI(Runnable runnable) {
+        UIHandler.post(runnable);
     }
 }

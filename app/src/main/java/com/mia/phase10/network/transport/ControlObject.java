@@ -13,6 +13,10 @@ public class ControlObject implements Serializable {
 
     }
 
+    public static ControlObject StartGame(){
+        return new ControlObject(ControlCommand.STARTGAME);
+    }
+
     public static ControlObject CloseConnections() {
         return new ControlObject(ControlCommand.CLOSECONNECTIONS);
     }

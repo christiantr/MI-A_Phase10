@@ -1,6 +1,8 @@
 package com.mia.phase10.classes;
 
-public class SimpleCard extends Card {
+import java.io.Serializable;
+
+public class SimpleCard extends Card implements Serializable {
 
     private Colour color;
     private int number;

@@ -2,9 +2,10 @@ package com.mia.phase10.classes;
 
 import com.mia.phase10.gameLogic.Phase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable {
     private String id;
     private int points;
     private Hand hand;

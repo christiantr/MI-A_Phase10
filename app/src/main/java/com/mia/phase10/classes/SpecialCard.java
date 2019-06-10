@@ -1,6 +1,8 @@
 package com.mia.phase10.classes;
 
-public class SpecialCard extends Card {
+import java.io.Serializable;
+
+public class SpecialCard extends Card implements Serializable {
 
     private SpecialCardValue value;
 
