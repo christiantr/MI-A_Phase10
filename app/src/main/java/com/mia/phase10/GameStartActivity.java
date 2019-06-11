@@ -50,6 +50,7 @@ public class GameStartActivity extends AppCompatActivity {
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -282,5 +283,25 @@ public class GameStartActivity extends AppCompatActivity {
     public static void runOnUI(Runnable runnable) {
         UIHandler.post(runnable);
     }
+
+
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "Close Gamestart Activity");
+        if (client != null) {
+            TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(obj);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.onPause();
+        System.exit(0);
+
+
+    }
+
 
 }

@@ -186,6 +186,7 @@ public class Client extends AsyncTask {
             Log.e(TAG, e.toString());
         }
         Log.i(TAG, "Connection to Host closed!\n");
+        activity.finish();
 
 
     }
