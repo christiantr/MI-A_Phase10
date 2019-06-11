@@ -31,7 +31,7 @@ import java.net.UnknownHostException;
 
 public class GameStartActivity extends AppCompatActivity {
     private final String TAG = "GameStartActivity";
-    public static final String USERNAME  = "username";
+    public static final String USERNAME = "username";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
     private EditText ip;
@@ -74,8 +74,6 @@ public class GameStartActivity extends AppCompatActivity {
             //            @Override
             public void onClick(View view) {
                 clickJoinGameButton(view);
-
-
             }
         });
 
@@ -93,7 +91,7 @@ public class GameStartActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // setContentView(R.layout.activity_main);
+                // setContentView(R.layout.activity_main);
                 try {
                     GameLogicHandler.getInstance().startRound();
                 } catch (EmptyCardStackException e) {
@@ -219,7 +217,7 @@ public class GameStartActivity extends AppCompatActivity {
         EditText firstPlayer = (EditText) findViewById(R.id.ID_first_player);
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
         intent.putExtra(USERNAME, username.getText().toString());
-       // intent.putExtra("Client",client);
+        // intent.putExtra("Client",client);
         startActivity(intent);
 
     }

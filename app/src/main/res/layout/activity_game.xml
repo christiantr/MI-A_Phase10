@@ -80,6 +80,7 @@
 
         <Button
             android:id="@+id/checkPhase"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
@@ -88,6 +89,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="check"
+            android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/Cancel"
@@ -111,6 +113,7 @@
 
         <Button
             android:id="@+id/Cancel"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
@@ -119,6 +122,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:text="cancel"
+            android:textSize="14sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -361,13 +365,15 @@
 
         <Button
             android:id="@+id/btnCheat"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="CHEAT"
+            android:text="cheat"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.963"
@@ -377,12 +383,14 @@
 
         <Button
             android:id="@+id/btnCheatExpose"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="expose"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnCheat"
             app:layout_constraintHorizontal_bias="0.975"
@@ -404,50 +412,47 @@
 
         <LinearLayout
             android:layout_width="130dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:gravity="center_vertical"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/ID_score_label"
+                android:id="@+id/ID_titel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="0dp"
                 android:fontFamily="@font/benchnine"
                 android:text="Punkte"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/ID_more"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/ID_more" />
 
             <TextView
                 android:id="@+id/ID_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/benchnine"
                 android:text="0"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/ID_more"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/ID_more" />
 
             <TextView
                 android:id="@+id/ID_phase_label"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="4dp"
                 android:ellipsize="start"
                 android:fontFamily="@font/benchnine"
                 android:text="Phasen"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/ID_score"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/ID_score" />
 
             <LinearLayout
                 android:id="@+id/ID_phases"
@@ -549,7 +554,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:fontFamily="@font/benchnine"
-                        android:text="1 Siebenerfolge"
+                        android:text="Siebenerfolge"
                         android:textColor="#FFFFFF"
                         android:textSize="10sp"
                         android:textStyle="normal" />
@@ -703,49 +708,18 @@
                         android:textColor="#FFFFFF"
                         android:textSize="10sp"
                         android:textStyle="normal" />
+
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/ID_phase_label3"
-                android:layout_width="match_parent"
-                android:layout_height="22dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="0dp"
-                android:ellipsize="start"
-                android:fontFamily="@font/benchnine"
-                android:text="aktuelle Phase"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/ID_score"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/ID_phase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/benchnine"
-                android:text="3"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/ID_more"
-                app:layout_constraintStart_toStartOf="parent" />
-
-
-            <TextView
+            <Button
                 android:id="@+id/ID_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginBottom="5dp"
-                android:clickable="true"
-                android:fontFamily="@font/benchnine"
-                android:paddingTop="0dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
                 android:text="mehr"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="12sp" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
