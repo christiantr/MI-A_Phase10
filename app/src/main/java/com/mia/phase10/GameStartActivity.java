@@ -22,7 +22,6 @@ import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.UserDisplayName;
-import com.mia.phase10.network.transport.ControlCommand;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
 
@@ -43,7 +42,6 @@ public class GameStartActivity extends AppCompatActivity {
     private Button joinGame;
     private Button hostGame;
     private Button connecToHost;
-    private Button testMessage;
     private Button start;
     private EditText username;
     private static final int SERVER_PORT = 9999;
@@ -63,7 +61,6 @@ public class GameStartActivity extends AppCompatActivity {
         hostGame = (Button) findViewById(R.id.button_hostGame);
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
-        testMessage = (Button) findViewById(R.id.button_sendTestMessage);
         start = (Button) findViewById(R.id.button_start);
         textConnection1 = (TextView) findViewById(R.id.textView_connection1);
         textConnection2 = (TextView) findViewById(R.id.textView_connection2);
@@ -77,16 +74,6 @@ public class GameStartActivity extends AppCompatActivity {
             }
         });
 
-        testMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Serializable obj = new TextTransportObject("Test message");
-//                TransportObject obj = TransportObject.makeTextTransportObject("Test message");
-                TransportObject obj = TransportObject.makeTextTransportObject("Hello");
-                ((Client) client).sendObject(obj);
-
-            }
-        });
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +118,7 @@ public class GameStartActivity extends AppCompatActivity {
         port.setVisibility(View.GONE);
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
-        testMessage.setVisibility(View.VISIBLE);
+        start.setVisibility(View.GONE);
 //
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
@@ -167,7 +154,7 @@ public class GameStartActivity extends AppCompatActivity {
 //                testMessage.setVisibility(View.VISIBLE);
         connecToHost.setVisibility(View.GONE);
         ip.setVisibility(View.GONE);
-        testMessage.setVisibility(View.VISIBLE);
+//        testMessage.setVisibility(View.VISIBLE);
         GameLogicHandler.getInstance().setClient((Client) client);
     }
 
@@ -277,18 +264,12 @@ public class GameStartActivity extends AppCompatActivity {
 
         }
 
-//
-//
-//        if (numberOfConnections == 2) {
-//            Log.i(TAG, "Third connection");
-//
-//            this.textConnection3.setText("User 3");
-//            this.textConnection3.setVisibility(View.VISIBLE);
-//
-//        }
 
         numberOfConnections++;
         Log.i(TAG, String.format("Number of connections: %d \n", numberOfConnections));
+        if (numberOfConnections >= 2) {
+            start.setVisibility(View.VISIBLE);
+        }
 
     }
 

@@ -97,14 +97,6 @@
                 android:text="Connect"
                 android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/button_sendTestMessage"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SendMessage"
-                android:textSize="12sp" />
-
             <TextView
                 android:id="@+id/textView_connection1"
                 android:layout_width="match_parent"
