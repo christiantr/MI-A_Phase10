@@ -23,6 +23,7 @@ public class GameData implements Serializable {
     private GamePhase phase;
     private boolean roundClosed;
     private final String TAG = "GAMEDATA";
+    private boolean gameClosed;
 
     public GameData() {
         this.layOffStack = new CardStack();
@@ -100,6 +101,14 @@ public class GameData implements Serializable {
 
     public void setRoundClosed(boolean roundClosed) {
         this.roundClosed = roundClosed;
+    }
+
+    public boolean isGameClosed() {
+        return gameClosed;
+    }
+
+    public void setGameClosed(boolean gameClosed) {
+        this.gameClosed = gameClosed;
     }
 
     public void nextPlayer() {

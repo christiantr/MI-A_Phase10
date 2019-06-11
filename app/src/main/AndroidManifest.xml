@@ -30,6 +30,9 @@
         <activity
             android:name=".GameRulesActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".GameEndActivity"
+            android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

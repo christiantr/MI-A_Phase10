@@ -421,7 +421,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/ID_titel"
+                android:id="@+id/ID_spielende"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -474,7 +474,7 @@
                         android:src="@android:drawable/presence_online" />
 
                     <TextView
-                        android:id="@+id/PHASE_1"
+                        android:id="@+id/ID_PHASE_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"

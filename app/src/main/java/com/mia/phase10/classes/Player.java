@@ -18,7 +18,7 @@ public class Player implements Serializable {
     private boolean phaseAchieved;
     private boolean isExposed;
     private boolean cheated;
-    private  boolean cheatUncovered;
+    private boolean cheatUncovered;
 
     public Player(String id) {
         this.id = id;
@@ -28,7 +28,7 @@ public class Player implements Serializable {
         this.phaseCards2=new ArrayList<>();
         this.phaseCardsTemp=new ArrayList<>();
         this.phaseCards2Temp=new ArrayList<>();
-        this.currentPhase=Phase.PHASE_1;
+        this.currentPhase = Phase.PHASE_1;
         this.currentName=id;
         this.phaseAchieved=false;
         this.isExposed=false;

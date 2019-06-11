@@ -33,7 +33,7 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/ID_titel"
+                    android:id="@+id/ID_spielende"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -53,7 +53,7 @@
                     android:textSize="18sp" />
 
                 <LinearLayout
-                    android:id="@+id/ID_phases"
+                    android:id="@+id/ID_loser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -71,7 +71,7 @@
                             android:src="@android:drawable/presence_online" />
 
                         <TextView
-                            android:id="@+id/PHASE_1"
+                            android:id="@+id/ID_loser_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
