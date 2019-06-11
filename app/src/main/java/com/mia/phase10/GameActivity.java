@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;
@@ -218,6 +219,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     //Visualizing Data from GameData (GUI drawing ONLY here)
     public void visualize() {
+        moveBackgroundToTheBack();
         makePlaystationLayoutVisible();
         player1.setText(player1ID);
         player2.setText(player2ID);
@@ -255,7 +257,12 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if(GameLogicHandler.getInstance().getGameData().getPhase()==GamePhase.START_PHASE){
+                startShufflingActivity();
+            }
         } else {
+            moveBackgroundToFront();
+
             if (progressDialog == null) {
                 progressDialog = ProgressDialog.show(this, "Bitte warten",
                         "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
@@ -266,6 +273,64 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             }
 
         }
+    }
+
+    private void moveBackgroundToTheBack(){
+        stack.setVisibility(View.VISIBLE);
+        deck.setVisibility(View.VISIBLE);
+        discardPileLayout.setVisibility(View.VISIBLE);
+        discardPileLayoutButton.setVisibility(View.VISIBLE);
+
+        this.findViewById(R.id.ID_avatar).setVisibility(View.VISIBLE);
+        playerImage.setVisibility(View.VISIBLE);
+        this.findViewById(R.id.ID_player_1).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.ID_player_2).setVisibility(View.VISIBLE);
+
+        playstationP1Image.setVisibility(View.VISIBLE);
+        playstationP2Image.setVisibility(View.VISIBLE);
+        playstationP1ImageSeperated.setVisibility(View.VISIBLE);
+        playstationP2ImageSeperated.setVisibility(View.VISIBLE);
+
+        this.getPlaystationP1Layout().removeAllViews();
+        this.getPlaystationP1LayoutL().removeAllViews();
+        this.getPlaystationP1LayoutR().removeAllViews();
+        this.getPlaystationP2Layout().removeAllViews();
+        this.getPlaystationP2LayoutL().removeAllViews();
+        this.getPlaystationP2LayoutR().removeAllViews();
+        this.getDeck().removeAllViews();
+        this.getDiscardPileLayout().removeAllViews();
+
+        cheat.setVisibility(View.VISIBLE);
+        cheatExpose.setVisibility(View.VISIBLE);
+    }
+
+    private void moveBackgroundToFront(){
+        stack.setVisibility(View.INVISIBLE);
+        deck.setVisibility(View.INVISIBLE);
+        discardPileLayout.setVisibility(View.INVISIBLE);
+        discardPileLayoutButton.setVisibility(View.INVISIBLE);
+
+        this.findViewById(R.id.ID_avatar).setVisibility(View.INVISIBLE);
+        playerImage.setVisibility(View.INVISIBLE);
+        this.findViewById(R.id.ID_player_1).setVisibility(View.INVISIBLE);
+        this.findViewById(R.id.ID_player_2).setVisibility(View.INVISIBLE);
+
+        playstationP1Image.setVisibility(View.INVISIBLE);
+        playstationP2Image.setVisibility(View.INVISIBLE);
+        playstationP1ImageSeperated.setVisibility(View.INVISIBLE);
+        playstationP2ImageSeperated.setVisibility(View.INVISIBLE);
+
+        this.getPlaystationP1Layout().removeAllViews();
+        this.getPlaystationP1LayoutL().removeAllViews();
+        this.getPlaystationP1LayoutR().removeAllViews();
+        this.getPlaystationP2Layout().removeAllViews();
+        this.getPlaystationP2LayoutL().removeAllViews();
+        this.getPlaystationP2LayoutR().removeAllViews();
+        this.getDeck().removeAllViews();
+        this.getDiscardPileLayout().removeAllViews();
+
+        cheat.setVisibility(View.INVISIBLE);
+        cheatExpose.setVisibility(View.INVISIBLE);
     }
 
     private void showLayOffStack() {
@@ -545,6 +610,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 break;
             case END_TURN_PHASE:
                 break;
+            /*case START_PHASE:
+                startShufflingActivity();
+                break;*/
         }
     }
 
