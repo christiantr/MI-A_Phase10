@@ -35,4 +35,8 @@ public class UserID implements Serializable {
     public int hashCode() {
         return Objects.hash(userId);
     }
+
+    public int compare(UserID other) {
+        return Integer.compare(other.userId, this.userId);
+    }
 }

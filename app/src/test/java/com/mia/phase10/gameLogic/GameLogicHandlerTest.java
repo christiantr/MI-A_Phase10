@@ -28,7 +28,7 @@ public class GameLogicHandlerTest {
         assertFalse(GameLogicHandler.getInstance().getGameData().getDrawStack().getCardList().isEmpty());
     }*/
 
-    @Test
+   /* @Test
     public void checkAddPlayer(){
         GameLogicHandler.getInstance().addPlayer(new Player("Player1"));
         GameLogicHandler.getInstance().addPlayer(new Player("Player2"));
