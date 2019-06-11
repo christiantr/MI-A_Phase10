@@ -19,6 +19,7 @@ import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
+import com.mia.phase10.network.ConnectionDetailsList;
 import com.mia.phase10.network.Host;
 import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.UserDisplayName;
@@ -49,6 +50,8 @@ public class GameStartActivity extends AppCompatActivity {
     AsyncTask client;
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
+    private ConnectionDetailsList connectionDetailsList;
+    private boolean isHost = false;
 
 
     @Override
@@ -79,6 +82,12 @@ public class GameStartActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "Start Game.");
+
+                for (ConnectionDetails details : connectionDetailsList.getList()) {
+                    GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
+                    Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
+                }
                 // setContentView(R.layout.activity_main);
                 try {
                     GameLogicHandler.getInstance().startRound();
@@ -163,6 +172,8 @@ public class GameStartActivity extends AppCompatActivity {
      * Called when the user uses the "Client Game" button
      */
     public void startHost(View view) {
+        isHost = true;
+        connectionDetailsList = connectionDetailsList.empty();
         GameLogicHandler.getInstance().initializeGame();
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
@@ -201,10 +212,13 @@ public class GameStartActivity extends AppCompatActivity {
      */
     public void startGame() {
 
+
         Intent intent = new Intent(this, GameActivity.class);
         EditText firstPlayer = (EditText) findViewById(R.id.ID_first_player);
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
-        intent.putExtra(USERNAME, username.getText().toString());
+//        intent.putExtra(USERNAME, username.getText().toString());
+        intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
+
         // intent.putExtra("Client",client);
         startActivity(intent);
 
@@ -238,13 +252,13 @@ public class GameStartActivity extends AppCompatActivity {
 
     public void changeConnectionDetails(ConnectionDetails connectionDetails) {
         Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
-
+        connectionDetailsList.update(connectionDetails);
         if (connectionDetails.getUserID().getUserId() == 1) {
             Log.i(TAG, "First connection");
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
-            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
         if (connectionDetails.getUserID().getUserId() == 2) {
@@ -252,7 +266,7 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection2.setVisibility(View.VISIBLE);
-            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -261,7 +275,7 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection3.setVisibility(View.VISIBLE);
-            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
+//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -285,23 +299,23 @@ public class GameStartActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        Log.i(TAG, "Close Gamestart Activity");
-        if (client != null) {
-            TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
-            ((Client) client).sendObject(obj);
-        }
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        super.onPause();
-        System.exit(0);
-
-
-    }
+//    @Override
+//    protected void onStop() {
+//        Log.i(TAG, "Close Gamestart Activity");
+//        if (client != null) {
+//            TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+//            ((Client) client).sendObject(obj);
+//        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        super.onStop();
+//        System.exit(0);
+//
+//
+//    }
 
 
 }

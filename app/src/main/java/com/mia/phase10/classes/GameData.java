@@ -2,6 +2,7 @@ package com.mia.phase10.classes;
 //this class contains all game data needed for displaying the current status to clients.
 
 import android.os.Build;
+import android.util.Log;
 
 import com.mia.phase10.gameFlow.GamePhase;
 
@@ -9,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class GameData implements Serializable {
     private String previousPlayer;
     private GamePhase phase;
     private boolean roundClosed;
-
+    private final String TAG = "GAMEDATA";
 
     public GameData() {
         this.layOffStack = new CardStack();
@@ -82,6 +82,7 @@ public class GameData implements Serializable {
     }
 
     public void addPlayer(Player player) {
+        Log.i(TAG, String.format("Player %s added to gamesdata.\n", player.getId()));
         this.players.put(player.getId(), player);
     }
 
@@ -120,8 +121,8 @@ public class GameData implements Serializable {
         } else {
             do {
                 this.getPlayers().get(activePlayerId).setExposed(false);
-                found =-1;
-                index=0;
+                found = -1;
+                index = 0;
                 for (String name : playerList) {
 
                     if (name.equals(activePlayerId)) {
