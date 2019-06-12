@@ -113,10 +113,9 @@ public class GameLogicHandler {
 
             if (this.gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty()) {
                 this.gameData.setRoundClosed(true);
-                this.gameData.setPhase(GamePhase.END_TURN_PHASE);
+                this.gameData.setPhase(GamePhase.START_PHASE);
                 this.countCards();
                 this.setNewPhaseForPlayer(playerId);
-                //this.gameActivity.visualize(GamePhase.START_PHASE);
                 startRound();
             } else {
                 this.gameData.nextPlayer();

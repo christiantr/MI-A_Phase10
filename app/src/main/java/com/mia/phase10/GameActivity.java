@@ -1,16 +1,20 @@
 package com.mia.phase10;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +31,11 @@ import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;
 import com.mia.phase10.gameLogic.StackType;
+import com.mia.phase10.network.Client;
+import com.mia.phase10.network.transport.ControlObject;
+import com.mia.phase10.network.transport.TransportObject;
+
+import static com.mia.phase10.GameStartActivity.TAG2;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -64,10 +73,13 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     static final String DISCARD_PILE = "DISCARD PILE";
     static final String DRAWABLE = "drawable";
+    private final String TAG = "GameActivity";
 
     MyDragEventListener myDragEventListener;
     MyDragEventListenerTwo myDrag;
     private LinearLayout.LayoutParams lp;
+
+    protected static AsyncTask client;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -85,6 +97,44 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     }
 
+    @Override
+    public void onBackPressed() {
+        GameLogicHandler.getInstance().getGameData().setExit(true);
+        GameLogicHandler.getInstance().sendGameState();
+    }
+
+    protected void showAlert(){
+        Log.i(TAG, "ReturnButton GameStartActivity.");
+        AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
+        alertShuttingDown.setCancelable(false);
+        alertShuttingDown.setTitle("Ein Spieler hat das Spiel verlassen!\nSpiel wird beendet!");
+        alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitApp();
+            }
+        });
+        alertShuttingDown.setIcon(android.R.drawable.ic_dialog_info);
+        alertShuttingDown.show();
+    }
+
+
+    protected void exitApp(){
+        Log.i(TAG, "Close GameStartActivity.");
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(object);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+
     private void setPlayers() {
         Intent intent = getIntent();
         player1ID = intent.getStringExtra(USERNAME);
@@ -95,8 +145,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 player2ID = p.getId();
             }
         }
-
-
     }
 
     private void initializeListeners() {
@@ -219,6 +267,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     //Visualizing Data from GameData (GUI drawing ONLY here)
     public void visualize() {
+        if( GameLogicHandler.getInstance().getGameData().isExit()){
+            showAlert();
+        }
         moveBackgroundToTheBack();
         makePlaystationLayoutVisible();
         player1.setText(player1ID);
@@ -610,9 +661,9 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 break;
             case END_TURN_PHASE:
                 break;
-            /*case START_PHASE:
+            case START_PHASE:
                 startShufflingActivity();
-                break;*/
+                break;
         }
     }
 

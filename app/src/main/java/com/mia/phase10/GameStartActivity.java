@@ -1,5 +1,8 @@
 package com.mia.phase10;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -13,9 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
@@ -31,6 +36,8 @@ import java.net.UnknownHostException;
 
 public class GameStartActivity extends AppCompatActivity {
     private final String TAG = "GameStartActivity";
+    protected static String TAG2 = "";
+
     public static final String USERNAME = "username";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
@@ -45,9 +52,11 @@ public class GameStartActivity extends AppCompatActivity {
     private Button connecToHost;
     private Button start;
     private EditText username;
+    ProgressDialog progressDialog;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
+    AsyncTask server;
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
     private ConnectionDetailsList connectionDetailsList;
@@ -59,85 +68,125 @@ public class GameStartActivity extends AppCompatActivity {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
 
-        super.onCreate(savedInstanceState);
-        numberOfConnections = 0;
-        setContentView(R.layout.activity_gamestart);
-        hostGame = (Button) findViewById(R.id.button_hostGame);
-        joinGame = (Button) findViewById(R.id.button_joinGame);
-        connecToHost = (Button) findViewById(R.id.button_connectToHost);
-        start = (Button) findViewById(R.id.button_start);
-        textConnection1 = (TextView) findViewById(R.id.textView_connection1);
-        textConnection2 = (TextView) findViewById(R.id.textView_connection2);
-        textConnection3 = (TextView) findViewById(R.id.textView_connection3);
-        username = (EditText) findViewById(R.id.editText_username);
+            super.onCreate(savedInstanceState);
+            numberOfConnections = 0;
+            setContentView(R.layout.activity_gamestart);
+            hostGame = (Button) findViewById(R.id.button_hostGame);
+            joinGame = (Button) findViewById(R.id.button_joinGame);
+            connecToHost = (Button) findViewById(R.id.button_connectToHost);
+            start = (Button) findViewById(R.id.button_start);
+            textConnection1 = (TextView) findViewById(R.id.textView_connection1);
+            textConnection2 = (TextView) findViewById(R.id.textView_connection2);
+            textConnection3 = (TextView) findViewById(R.id.textView_connection3);
+            username = (EditText) findViewById(R.id.editText_username);
 
-        connecToHost.setOnClickListener(new View.OnClickListener() {
-            //            @Override
-            public void onClick(View view) {
-                clickJoinGameButton(view);
-            }
-        });
-
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Start Game.");
-
-                for (ConnectionDetails details : connectionDetailsList.getList()) {
-                    GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
-                    Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
+            connecToHost.setOnClickListener(new View.OnClickListener() {
+                //            @Override
+                public void onClick(View view) {
+                    clickJoinGameButton(view);
                 }
-                // setContentView(R.layout.activity_main);
-                try {
-                    GameLogicHandler.getInstance().startRound();
-                } catch (EmptyCardStackException e) {
-                    e.printStackTrace();
+            });
+
+
+            start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG, "Start Game.");
+
+                    for (ConnectionDetails details : connectionDetailsList.getList()) {
+                        GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
+                        Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
+                    }
+                    // setContentView(R.layout.activity_main);
+                    try {
+                        GameLogicHandler.getInstance().startRound();
+                    } catch (EmptyCardStackException e) {
+                        e.printStackTrace();
+                    }
+                    ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
+                    ((Client) client).sendObject(obj);
                 }
-                ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            });
+
+
+            username.setOnKeyListener(new View.OnKeyListener() {
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // If the event is a key-down event on the "enter" button
+                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        // Perform action on key press
+                        changeUserName(v);
+                        return true;
+                    }
+                    return false;
                 }
-                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
-                ((Client) client).sendObject(obj);
-            }
-        });
+            });
 
 
-        username.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // Perform action on key press
-                    changeUserName(v);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-        ip = (EditText) findViewById(R.id.input_Ip);
-        ip.setText(DEFAULT_IP);
-        port = (EditText) findViewById(R.id.input_port);
-        hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
-        ip.setVisibility(View.GONE);
-        port.setVisibility(View.GONE);
-        connecToHost.setVisibility(View.GONE);
-        hostPortIp.setVisibility(View.GONE);
-        start.setVisibility(View.GONE);
+            ip = (EditText) findViewById(R.id.input_Ip);
+            ip.setText(DEFAULT_IP);
+            port = (EditText) findViewById(R.id.input_port);
+            hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
+            ip.setVisibility(View.GONE);
+            port.setVisibility(View.GONE);
+            connecToHost.setVisibility(View.GONE);
+            hostPortIp.setVisibility(View.GONE);
+            start.setVisibility(View.GONE);
 //
-        textConnection1.setVisibility(View.GONE);
-        textConnection2.setVisibility(View.GONE);
-        textConnection3.setVisibility(View.GONE);
+            textConnection1.setVisibility(View.GONE);
+            textConnection2.setVisibility(View.GONE);
+            textConnection3.setVisibility(View.GONE);
 
-        username.setVisibility(View.GONE);
+            username.setVisibility(View.GONE);
+
 
     }
 
+    /*@Override
+    protected void onUserLeaveHint() {
+        Toast.makeText(this, "Home button pressed!",Toast.LENGTH_LONG).show();
+        super.onUserLeaveHint();
+        onStop(TAG2);
+
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "ReturnButton GameStartActivity.");
+        AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
+        alertShuttingDown.setCancelable(false);
+        alertShuttingDown.setTitle("Ein Spieler hat das Spiel verlassen!\nSpiel wird beendet!");
+        alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitApp();
+            }
+        });
+        alertShuttingDown.setIcon(android.R.drawable.ic_dialog_info);
+        alertShuttingDown.show();
+    }
+
+    protected void exitApp() {
+        Log.i(TAG, "Close GameStartActivity.");
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(object);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.onStop();
+        overridePendingTransition(0, 0);
+        finish();
+    }
 
     private void changeUserName(View view) {
         Log.i(TAG, client.toString());
@@ -178,7 +227,7 @@ public class GameStartActivity extends AppCompatActivity {
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
-        AsyncTask server = new Host(this);
+        server = new Host(this);
         server.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         showIpAddress();
 
@@ -218,8 +267,9 @@ public class GameStartActivity extends AppCompatActivity {
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
 //        intent.putExtra(USERNAME, username.getText().toString());
         intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
-
-        // intent.putExtra("Client",client);
+        GameActivity.client=client;
+        //intent.putExtra("Client",client);
+        finish();
         startActivity(intent);
 
     }
@@ -258,7 +308,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
         if (connectionDetails.getUserID().getUserId() == 2) {
@@ -266,7 +315,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection2.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -275,7 +323,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection3.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -299,23 +346,7 @@ public class GameStartActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    protected void onStop() {
-//        Log.i(TAG, "Close Gamestart Activity");
-//        if (client != null) {
-//            TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
-//            ((Client) client).sendObject(obj);
-//        }
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        super.onStop();
-//        System.exit(0);
-//
-//
-//    }
+
 
 
 }
