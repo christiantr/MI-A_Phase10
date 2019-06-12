@@ -33,7 +33,7 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/ID_spielende"
+                    android:id="@+id/ID_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
@@ -53,7 +53,7 @@
                     android:textSize="18sp" />
 
                 <LinearLayout
-                    android:id="@+id/ID_loser"
+                    android:id="@+id/ID_rules"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
