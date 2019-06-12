@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
         HandTest.class,
         PlayerTest.class,
         GameDataTest.class,
-        //GameLogicHandlerTest.class
+        GameLogicHandlerTest.class
 })
 
 

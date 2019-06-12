@@ -22,19 +22,19 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().initializeGame();
     }
 
-    /*@Test
+    @Test
     public void checkInitializeGame(){
         assertTrue(GameLogicHandler.getInstance().getGameData().getLayOffStack().getCardList().isEmpty());
         assertFalse(GameLogicHandler.getInstance().getGameData().getDrawStack().getCardList().isEmpty());
-    }*/
+    }
 
-   /* @Test
+    @Test
     public void checkAddPlayer(){
         GameLogicHandler.getInstance().addPlayer(new Player("Player1"));
         GameLogicHandler.getInstance().addPlayer(new Player("Player2"));
         assertEquals(2, GameLogicHandler.getInstance().getGameData().getPlayers().size());
     }
-/*
+
     @Test
     public void checkStartRound(){
         GameLogicHandler.getInstance().addPlayer(new Player("Player1"));
@@ -47,15 +47,16 @@ public class GameLogicHandlerTest {
         }
     }
 
-    @Test
+   /* @Test
     public void checkDrawCard(){
         GameLogicHandler.getInstance().addPlayer(new Player("Player1"));
         GameLogicHandler.getInstance().addPlayer(new Player("Player2"));
         try {
             GameLogicHandler.getInstance().drawCard("Player1", StackType.DRAW_STACK);
             assertEquals(1,GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().getCardList().size());
-        } catch (EmptyCardStackException e) {
             fail();
+        } catch (EmptyCardStackException e) {
+
         }
 
     }
@@ -68,6 +69,7 @@ public class GameLogicHandlerTest {
         try {
             GameLogicHandler.getInstance().startRound();
             GameLogicHandler.getInstance().layoffCard("Player1",11);
+            fail();
         } catch (EmptyCardStackException e) {
             fail();
         } catch (CardNotFoundException e) {
@@ -77,6 +79,6 @@ public class GameLogicHandlerTest {
         } catch (EmptyHandException e) {
             fail();
         }
-    }
-*/
+    }*/
+
 }
