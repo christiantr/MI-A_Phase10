@@ -83,7 +83,6 @@ public class GameData implements Serializable {
     }
 
     public void addPlayer(Player player) {
-        Log.i(TAG, String.format("Player %s added to gamesdata.\n", player.getId()));
         this.players.put(player.getId(), player);
     }
 

@@ -13,6 +13,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+        CardEvaluatorTest.class,
+        ShufflingActivityTest.class,
         CardStackTest.class,
         CardUnitTest.class,
         HandTest.class,

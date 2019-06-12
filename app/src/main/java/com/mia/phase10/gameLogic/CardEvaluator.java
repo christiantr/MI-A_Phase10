@@ -9,7 +9,7 @@ import com.mia.phase10.classes.SpecialCardValue;
 import java.util.List;
 
 public class CardEvaluator {
-    private static volatile CardEvaluator evaluatorInstance = new CardEvaluator();
+    private static CardEvaluator evaluatorInstance = new CardEvaluator();
 
     private CardEvaluator() {
     }

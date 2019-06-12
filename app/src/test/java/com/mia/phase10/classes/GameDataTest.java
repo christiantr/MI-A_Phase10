@@ -14,12 +14,12 @@ public class GameDataTest {
         gameData = new GameData();
     }
 
-    /*@Test
+    @Test
     public void checkAddPlayer() {
         int size = gameData.getPlayers().size();
         gameData.addPlayer(new Player("Player1"));
         assertEquals(size + 1, gameData.getPlayers().size());
-    }*/
+    }
 
     @Test
     public void checkActivePlayer() {
@@ -45,7 +45,7 @@ public class GameDataTest {
         assertEquals(stack.getCardList(), gameData.getLayOffStack().getCardList());
     }
 
-   /* @Test
+   @Test
     public void checkNextPlayer(){
         gameData.addPlayer(new Player("Player1"));
         gameData.addPlayer(new Player("Player2"));
@@ -60,6 +60,6 @@ public class GameDataTest {
         gameData.nextPlayer();
         assertEquals("Player2",gameData.getActivePlayerId());
 
-    }*/
+    }
 
 }
