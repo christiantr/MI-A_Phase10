@@ -2,18 +2,12 @@ package com.mia.phase10.gameLogic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.strictmode.CleartextNetworkViolation;
 import android.view.View;
-import android.view.animation.CycleInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mia.phase10.GameActivity;
-import com.mia.phase10.GameEndActivity;
-import com.mia.phase10.GameRulesActivity;
 import com.mia.phase10.R;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
