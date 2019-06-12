@@ -2,10 +2,7 @@ package com.mia.phase10.gameLogic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.strictmode.CleartextNetworkViolation;
 import android.view.View;
-import android.view.animation.CycleInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -60,7 +57,6 @@ public class GameLogicHandler {
         CardStack layOffStack = new CardStack();
 
         this.gameData = new GameData(layOffStack, drawStack, new HashMap<String, Player>(), "");
-
     }
 
     public void addPlayer(Player player) {
@@ -93,7 +89,7 @@ public class GameLogicHandler {
         this.gameData.nextPlayer();
         //this.setPlayerNames();
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
-       // this.gameActivity.visualize();
+        // this.gameActivity.visualize();
     }
 
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
@@ -111,7 +107,10 @@ public class GameLogicHandler {
             Card c = this.gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameData.getLayOffStack().addCard(c);
 
-            if (this.gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty()) {
+            if (this.gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty() && this.gameData.getPlayers().get(playerId).getCurrentPhase() == Phase.PHASE_10) {
+                this.gameData.setGameClosed(true);
+                this.setNewPhaseForPlayer(playerId);
+            } else if (this.gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty()) {
                 this.gameData.setRoundClosed(true);
                 this.gameData.setPhase(GamePhase.END_TURN_PHASE);
                 this.countCards();
@@ -120,7 +119,7 @@ public class GameLogicHandler {
                 startRound();
             } else {
                 this.gameData.nextPlayer();
-               // this.setPlayerNames();
+                // this.setPlayerNames();
                 this.gameData.setPhase(GamePhase.DRAW_PHASE);
                 this.gameActivity.visualize();
             }
@@ -147,7 +146,7 @@ public class GameLogicHandler {
         return -1;
     }
 
-    public void sendGameState(){
+    public void sendGameState() {
         ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
     }
 
@@ -392,7 +391,6 @@ public class GameLogicHandler {
         if (this.gameData.getPlayers().get(playerId).isPhaseAchieved()) {
             this.gameData.getPlayers().get(playerId).setCurrentPhase((this.gameData.getPlayers().get(playerId).getCurrentPhase()).ordinal() < Phase.values().length - 1 ? Phase.values()[(this.gameData.getPlayers().get(playerId).getCurrentPhase()).ordinal() + 1] : null);
         }
-
     }
 
     public GameData getGameData() {
@@ -535,25 +533,25 @@ public class GameLogicHandler {
     private void choosePlayerToExpose(int id) throws CardNotFoundException, PlayerNotFoundException, EmptyHandException {
         Card c = this.gameData.getLayOffStack().drawLastCard();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getHand().addCard(c);
-        boolean b=this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-        Toast.makeText(this.gameActivity,this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).getId() , Toast.LENGTH_SHORT).show();
-        Toast.makeText(this.gameActivity,""+b , Toast.LENGTH_SHORT).show();
+        boolean b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
+        Toast.makeText(this.gameActivity, this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
         if (!this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed()) {
             this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).setExposed(true);
-            b=this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-            Toast.makeText(this.gameActivity,""+b , Toast.LENGTH_SHORT).show();
+            b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
+            Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
             layoffCard(this.gameData.getActivePlayerId(), id);
         } else {
             this.gameActivity.visualize();
         }
     }
 
-    public void setClient(Client client){
+    public void setClient(Client client) {
         this.client = client;
     }
 
-    public void setGameData(GameData gameData){
-        this.gameData=gameData;
+    public void setGameData(GameData gameData) {
+        this.gameData = gameData;
     }
 
 

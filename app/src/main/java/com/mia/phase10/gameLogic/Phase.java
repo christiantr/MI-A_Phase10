@@ -11,4 +11,5 @@ public enum Phase {
     PHASE_8,
     PHASE_9,
     PHASE_10,
+    WIN
 }
