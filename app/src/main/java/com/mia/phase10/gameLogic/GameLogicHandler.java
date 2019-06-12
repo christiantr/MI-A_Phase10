@@ -89,7 +89,7 @@ public class GameLogicHandler {
             p.setExposed(false);
         }
 
-        this.gameData.setPhase(GamePhase.DRAW_PHASE);
+        this.gameData.setPhase(GamePhase.START_PHASE);
         this.gameData.nextPlayer();
         //this.setPlayerNames();
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
@@ -116,6 +116,7 @@ public class GameLogicHandler {
                 this.gameData.setPhase(GamePhase.END_TURN_PHASE);
                 this.countCards();
                 this.setNewPhaseForPlayer(playerId);
+                //this.gameActivity.visualize(GamePhase.START_PHASE);
                 startRound();
             } else {
                 this.gameData.nextPlayer();

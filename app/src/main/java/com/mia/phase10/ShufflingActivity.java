@@ -14,6 +14,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.mia.phase10.gameFlow.GamePhase;
+import com.mia.phase10.gameLogic.GameLogicHandler;
+
 public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;
     private Sensor accelerometer;
@@ -99,6 +102,8 @@ public class ShufflingActivity extends AppCompatActivity {
                 sManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
                 bar.incrementProgressBy(25);
                 if(shuffleCount==4){
+                    GameLogicHandler.getInstance().getGameData().setPhase(GamePhase.DRAW_PHASE);
+                    GameLogicHandler.getInstance().getGameActivity().visualize();
                     finish();
                 }
             }
