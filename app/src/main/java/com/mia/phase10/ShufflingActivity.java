@@ -1,6 +1,7 @@
 package com.mia.phase10;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -74,6 +75,13 @@ public class ShufflingActivity extends AppCompatActivity {
     protected void onPause() {
         sManager.unregisterListener(listener);
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        /*super.onBackPressed();
+        Intent i=new Intent(this,ShufflingActivity.class);
+        startActivity(i);*/
     }
 
     protected boolean enoughAcceleration(float x, float y, float z) {
