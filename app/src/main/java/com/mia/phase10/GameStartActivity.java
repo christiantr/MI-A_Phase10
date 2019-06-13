@@ -1,5 +1,8 @@
 package com.mia.phase10;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -10,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
@@ -31,6 +37,8 @@ import java.net.UnknownHostException;
 
 public class GameStartActivity extends AppCompatActivity {
     private final String TAG = "GameStartActivity";
+    protected static String TAG2 = "";
+
     public static final String USERNAME = "username";
     public static final String FIRST_PLAYER = "player_1";
     public static final String SECOND_PLAYER = "player_2";
@@ -48,6 +56,7 @@ public class GameStartActivity extends AppCompatActivity {
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
+    AsyncTask server;
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
     private ConnectionDetailsList connectionDetailsList;
@@ -60,6 +69,8 @@ public class GameStartActivity extends AppCompatActivity {
 //        StrictMode.setThreadPolicy(policy);
 
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         numberOfConnections = 0;
         setContentView(R.layout.activity_gamestart);
         hostGame = (Button) findViewById(R.id.button_hostGame);
@@ -136,6 +147,57 @@ public class GameStartActivity extends AppCompatActivity {
 
         username.setVisibility(View.GONE);
 
+
+    }
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
+            ((Client) client).sendObject(object);
+        } else if (this.findViewById(R.id.button_connectToHost).getVisibility() == View.VISIBLE) {
+            joinGame.setVisibility(View.VISIBLE);
+            hostGame.setVisibility(View.VISIBLE);
+            connecToHost.setVisibility(View.GONE);
+            ip.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+    public void showAlert() {
+        Log.i(TAG, "ReturnButton GameStartActivity.");
+        AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
+        alertShuttingDown.setCancelable(false);
+        alertShuttingDown.setTitle("Ein Spieler hat die Verbindung unterbrochen!\nSpiel wird beendet!");
+        alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitApp();
+            }
+        });
+        alertShuttingDown.setIcon(android.R.drawable.ic_dialog_info);
+        alertShuttingDown.show();
+    }
+
+
+    protected void exitApp() {
+        Log.i(TAG, "Close GameStartActivity.");
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(object);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        overridePendingTransition(0, 0);
+        finish();
     }
 
 
@@ -178,7 +240,7 @@ public class GameStartActivity extends AppCompatActivity {
         Log.i("TAG", "Starting game as host.");
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
-        AsyncTask server = new Host(this);
+        server = new Host(this);
         server.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         showIpAddress();
 
@@ -218,8 +280,9 @@ public class GameStartActivity extends AppCompatActivity {
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
 //        intent.putExtra(USERNAME, username.getText().toString());
         intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
-
-        // intent.putExtra("Client",client);
+        GameActivity.client = client;
+        //intent.putExtra("Client",client);
+        finish();
         startActivity(intent);
 
     }
@@ -258,7 +321,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
         if (connectionDetails.getUserID().getUserId() == 2) {
@@ -266,7 +328,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection2.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -275,7 +336,6 @@ public class GameStartActivity extends AppCompatActivity {
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection3.setVisibility(View.VISIBLE);
-//            GameLogicHandler.getInstance().addPlayer(new Player(connectionDetails.getUserDisplayName().getName()));
 
         }
 
@@ -297,25 +357,6 @@ public class GameStartActivity extends AppCompatActivity {
     public static void runOnUI(Runnable runnable) {
         UIHandler.post(runnable);
     }
-
-
-//    @Override
-//    protected void onStop() {
-//        Log.i(TAG, "Close Gamestart Activity");
-//        if (client != null) {
-//            TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
-//            ((Client) client).sendObject(obj);
-//        }
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        super.onStop();
-//        System.exit(0);
-//
-//
-//    }
 
 
 }

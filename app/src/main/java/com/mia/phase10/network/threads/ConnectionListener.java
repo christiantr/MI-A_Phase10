@@ -56,8 +56,12 @@ public class ConnectionListener {
             case CLOSECONNECTIONS:
                 connections.sendObjectToAllAndCloseAll(obj);
                 break;
+            case ALERTUSERS:
+                connections.sendObjectToAll(obj);
+                break;
             case STARTGAME:
                 connections.sendObjectToAll(obj);
+                break;
         }
 
 

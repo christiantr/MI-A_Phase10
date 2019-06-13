@@ -3,6 +3,7 @@ package com.mia.phase10.network;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mia.phase10.GameActivity;
 import com.mia.phase10.GameStartActivity;
@@ -128,9 +129,6 @@ public class Client extends AsyncTask {
         }
 
 
-
-
-
     }
 
     private void handleGamedata(TransportObject received) {
@@ -161,6 +159,12 @@ public class Client extends AsyncTask {
                     ((GameStartActivity) activity).startGame();            }
             });
         }
+        if(controlObject.getControlCommand().equals(ControlCommand.ALERTUSERS)){
+            GameStartActivity.runOnUI(new Runnable() {
+                public void run() {
+                    ((GameStartActivity) activity).showAlert();            }
+            });
+        }
 
 
     }
@@ -187,8 +191,6 @@ public class Client extends AsyncTask {
             Log.e(TAG, e.toString());
         }
         Log.i(TAG, "Connection to Host closed!\n");
-        activity.finish();
-
-
+        System.exit(0);
     }
 }
