@@ -147,6 +147,57 @@ public class GameStartActivity extends AppCompatActivity {
 
         username.setVisibility(View.GONE);
 
+
+    }
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
+            ((Client) client).sendObject(object);
+        } else if (this.findViewById(R.id.button_connectToHost).getVisibility() == View.VISIBLE) {
+            joinGame.setVisibility(View.VISIBLE);
+            hostGame.setVisibility(View.VISIBLE);
+            connecToHost.setVisibility(View.GONE);
+            ip.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+    public void showAlert() {
+        Log.i(TAG, "ReturnButton GameStartActivity.");
+        AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
+        alertShuttingDown.setCancelable(false);
+        alertShuttingDown.setTitle("Ein Spieler hat die Verbindung unterbrochen!\nSpiel wird beendet!");
+        alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitApp();
+            }
+        });
+        alertShuttingDown.setIcon(android.R.drawable.ic_dialog_info);
+        alertShuttingDown.show();
+    }
+
+
+    protected void exitApp() {
+        Log.i(TAG, "Close GameStartActivity.");
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(object);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        overridePendingTransition(0, 0);
+        finish();
     }
 
 
