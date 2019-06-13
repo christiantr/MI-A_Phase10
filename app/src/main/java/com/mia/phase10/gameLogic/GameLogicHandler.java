@@ -533,12 +533,9 @@ public class GameLogicHandler {
         Card c = this.gameData.getLayOffStack().drawLastCard();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getHand().addCard(c);
         boolean b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-        Toast.makeText(this.gameActivity, this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).getId(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
         if (!this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed()) {
             this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).setExposed(true);
             b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-            Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
             layoffCard(this.gameData.getActivePlayerId(), id);
         } else {
             this.gameActivity.visualize();
