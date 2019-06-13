@@ -129,9 +129,6 @@ public class Client extends AsyncTask {
         }
 
 
-
-
-
     }
 
     private void handleGamedata(TransportObject received) {
@@ -160,6 +157,12 @@ public class Client extends AsyncTask {
             GameStartActivity.runOnUI(new Runnable() {
                 public void run() {
                     ((GameStartActivity) activity).startGame();            }
+            });
+        }
+        if(controlObject.getControlCommand().equals(ControlCommand.ALERTUSERS)){
+            GameStartActivity.runOnUI(new Runnable() {
+                public void run() {
+                    ((GameStartActivity) activity).showAlert();            }
             });
         }
 

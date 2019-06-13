@@ -79,9 +79,9 @@ public class ShufflingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        /*super.onBackPressed();
         Intent i=new Intent(this,ShufflingActivity.class);
-        startActivity(i);
+        startActivity(i);*/
     }
 
     protected boolean enoughAcceleration(float x, float y, float z) {

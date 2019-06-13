@@ -52,7 +52,6 @@ public class GameStartActivity extends AppCompatActivity {
     private Button connecToHost;
     private Button start;
     private EditText username;
-    ProgressDialog progressDialog;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "192.168.43.124";
     AsyncTask client;
@@ -156,12 +155,28 @@ public class GameStartActivity extends AppCompatActivity {
 
     }*/
 
+
     @Override
     public void onBackPressed() {
+      if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
+            ((Client) client).sendObject(object);
+        }
+       else if (this.findViewById(R.id.button_connectToHost).getVisibility()==View.VISIBLE){
+           joinGame.setVisibility(View.VISIBLE);
+           hostGame.setVisibility(View.VISIBLE);
+           connecToHost.setVisibility(View.GONE);
+           ip.setVisibility(View.GONE);
+       }
+       else {super.onBackPressed();}
+
+    }
+
+    public void showAlert(){
         Log.i(TAG, "ReturnButton GameStartActivity.");
         AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
         alertShuttingDown.setCancelable(false);
-        alertShuttingDown.setTitle("Ein Spieler hat das Spiel verlassen!\nSpiel wird beendet!");
+        alertShuttingDown.setTitle("Ein Spieler hat die Verbindung unterbrochen!\nSpiel wird beendet!");
         alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -172,7 +187,8 @@ public class GameStartActivity extends AppCompatActivity {
         alertShuttingDown.show();
     }
 
-    protected void exitApp() {
+
+    protected void exitApp(){
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
             TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
@@ -183,10 +199,10 @@ public class GameStartActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        super.onStop();
         overridePendingTransition(0, 0);
         finish();
     }
+    
 
     private void changeUserName(View view) {
         Log.i(TAG, client.toString());

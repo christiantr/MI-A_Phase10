@@ -662,7 +662,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             case END_TURN_PHASE:
                 break;
             case START_PHASE:
-                startShufflingActivity();
                 break;
         }
     }
