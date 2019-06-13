@@ -93,11 +93,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         initializeListeners();
         setPlayers();
         //preparing gameData
-
-
         GameLogicHandler.getInstance().setGameActivity(this);
         visualize();
-
     }
 
 
@@ -152,7 +149,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     private void initializeListeners() {
-
         myDragEventListener = new MyDragEventListener();
         myDrag = new MyDragEventListenerTwo();
 
@@ -271,62 +267,66 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     //Visualizing Data from GameData (GUI drawing ONLY here)
     public void visualize() {
-        if( GameLogicHandler.getInstance().getGameData().isExit()){
+      if( GameLogicHandler.getInstance().getGameData().isExit()){
             showAlert();
         }
-        moveBackgroundToTheBack();
-        makePlaystationLayoutVisible();
-        player1.setText(player1ID);
-        player2.setText(player2ID);
-        player1.invalidate();
-        player2.invalidate();
-        player1.requestLayout();
-        player2.requestLayout();
-        View mainView = findViewById(R.id.drawerLayout);
-        mainView.invalidate();
-        LinearLayout phaseLinearLayout = (LinearLayout) this.phases.getChildAt(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().ordinal());
-        TextView phaseTextView = (TextView) phaseLinearLayout.getChildAt(1);
-        phaseTextView.setTextColor(Color.parseColor("#CDDC39"));
-        this.score.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() + "");
-        visualizePhase();
+      
+      if (GameLogicHandler.getInstance().getGameData().isGameClosed()) {
+            startGameEndActivity();
 
-        this.getPlaystationP1Layout().removeAllViews();
-        this.getPlaystationP1LayoutL().removeAllViews();
-        this.getPlaystationP1LayoutR().removeAllViews();
-        this.getPlaystationP2Layout().removeAllViews();
-        this.getPlaystationP2LayoutL().removeAllViews();
-        this.getPlaystationP2LayoutR().removeAllViews();
-        this.getDeck().removeAllViews();
-        this.getDiscardPileLayout().removeAllViews();
-
-        //Visualizing cards of active player
-        showHandCards();
-        showPlaystation1Cards();
-        showPlaystation1RCards();
-        showPlaystation2Cards();
-        showPlaystation2RCards();
-        showLayOffStack();
-        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
-            try {
-                progressDialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if(GameLogicHandler.getInstance().getGameData().getPhase()==GamePhase.START_PHASE){
-                startShufflingActivity();
-            }
         } else {
-            moveBackgroundToFront();
+            moveBackgroundToTheBack();
+            makePlaystationLayoutVisible();
+            player1.setText(player1ID);
+            player2.setText(player2ID);
+            player1.invalidate();
+            player2.invalidate();
+            player1.requestLayout();
+            player2.requestLayout();
+            View mainView = findViewById(R.id.drawerLayout);
+            mainView.invalidate();
+            LinearLayout phaseLinearLayout = (LinearLayout) this.phases.getChildAt(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getCurrentPhase().ordinal());
+            TextView phaseTextView = (TextView) phaseLinearLayout.getChildAt(1);
+            phaseTextView.setTextColor(Color.parseColor("#CDDC39"));
+            this.score.setText(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() + "");
+            visualizePhase();
 
-            if (progressDialog == null) {
-                progressDialog = ProgressDialog.show(this, "Bitte warten",
-                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+            this.getPlaystationP1Layout().removeAllViews();
+            this.getPlaystationP1LayoutL().removeAllViews();
+            this.getPlaystationP1LayoutR().removeAllViews();
+            this.getPlaystationP2Layout().removeAllViews();
+            this.getPlaystationP2LayoutL().removeAllViews();
+            this.getPlaystationP2LayoutR().removeAllViews();
+            this.getDeck().removeAllViews();
+            this.getDiscardPileLayout().removeAllViews();
 
-            } else if (!progressDialog.isShowing()) {
-                progressDialog = ProgressDialog.show(this, "Bitte warten",
-                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+            //Visualizing cards of active player
+            showHandCards();
+            showPlaystation1Cards();
+            showPlaystation1RCards();
+            showPlaystation2Cards();
+            showPlaystation2RCards();
+            showLayOffStack();
+            if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
+                try {
+                    progressDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {
+                    startShufflingActivity();
+                }
+            } else {
+                moveBackgroundToFront();
+                if (progressDialog == null) {
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+
+                } else if (!progressDialog.isShowing()) {
+                    progressDialog = ProgressDialog.show(this, "Bitte warten",
+                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+                }
             }
-
         }
     }
 
@@ -554,6 +554,16 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     public void startGamerulesActivity() {
         Intent gameRulesActivity = new Intent(this, GameRulesActivity.class);
         startActivity(gameRulesActivity);
+    }
+
+    public void startGameEndActivity() {
+        Intent gameEndActivity = new Intent(this, GameEndActivity.class);
+        startActivity(gameEndActivity);
+    }
+
+    public void startStartActivity() {
+        Intent startActivity = new Intent(this, MainActivity.class);
+        startActivity(startActivity);
     }
 
     public void visualizePhase() {
