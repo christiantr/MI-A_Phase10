@@ -15,7 +15,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -86,6 +88,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Initialize View and set Listeners
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         findViewByIDObjects();
         initializeListeners();
         setPlayers();
@@ -96,6 +99,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         visualize();
 
     }
+
 
     @Override
     public void onBackPressed() {

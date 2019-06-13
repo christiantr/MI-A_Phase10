@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -67,112 +68,108 @@ public class GameStartActivity extends AppCompatActivity {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
 
-            super.onCreate(savedInstanceState);
-            numberOfConnections = 0;
-            setContentView(R.layout.activity_gamestart);
-            hostGame = (Button) findViewById(R.id.button_hostGame);
-            joinGame = (Button) findViewById(R.id.button_joinGame);
-            connecToHost = (Button) findViewById(R.id.button_connectToHost);
-            start = (Button) findViewById(R.id.button_start);
-            textConnection1 = (TextView) findViewById(R.id.textView_connection1);
-            textConnection2 = (TextView) findViewById(R.id.textView_connection2);
-            textConnection3 = (TextView) findViewById(R.id.textView_connection3);
-            username = (EditText) findViewById(R.id.editText_username);
+        super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-            connecToHost.setOnClickListener(new View.OnClickListener() {
-                //            @Override
-                public void onClick(View view) {
-                    clickJoinGameButton(view);
+        numberOfConnections = 0;
+        setContentView(R.layout.activity_gamestart);
+        hostGame = (Button) findViewById(R.id.button_hostGame);
+        joinGame = (Button) findViewById(R.id.button_joinGame);
+        connecToHost = (Button) findViewById(R.id.button_connectToHost);
+        start = (Button) findViewById(R.id.button_start);
+        textConnection1 = (TextView) findViewById(R.id.textView_connection1);
+        textConnection2 = (TextView) findViewById(R.id.textView_connection2);
+        textConnection3 = (TextView) findViewById(R.id.textView_connection3);
+        username = (EditText) findViewById(R.id.editText_username);
+
+        connecToHost.setOnClickListener(new View.OnClickListener() {
+            //            @Override
+            public void onClick(View view) {
+                clickJoinGameButton(view);
+            }
+        });
+
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Start Game.");
+
+                for (ConnectionDetails details : connectionDetailsList.getList()) {
+                    GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
+                    Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
                 }
-            });
-
-
-            start.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i(TAG, "Start Game.");
-
-                    for (ConnectionDetails details : connectionDetailsList.getList()) {
-                        GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
-                        Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
-                    }
-                    // setContentView(R.layout.activity_main);
-                    try {
-                        GameLogicHandler.getInstance().startRound();
-                    } catch (EmptyCardStackException e) {
-                        e.printStackTrace();
-                    }
-                    ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
-                    ((Client) client).sendObject(obj);
+                // setContentView(R.layout.activity_main);
+                try {
+                    GameLogicHandler.getInstance().startRound();
+                } catch (EmptyCardStackException e) {
+                    e.printStackTrace();
                 }
-            });
-
-
-            username.setOnKeyListener(new View.OnKeyListener() {
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // If the event is a key-down event on the "enter" button
-                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        // Perform action on key press
-                        changeUserName(v);
-                        return true;
-                    }
-                    return false;
+                ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
+                ((Client) client).sendObject(obj);
+            }
+        });
 
 
-            ip = (EditText) findViewById(R.id.input_Ip);
-            ip.setText(DEFAULT_IP);
-            port = (EditText) findViewById(R.id.input_port);
-            hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
-            ip.setVisibility(View.GONE);
-            port.setVisibility(View.GONE);
-            connecToHost.setVisibility(View.GONE);
-            hostPortIp.setVisibility(View.GONE);
-            start.setVisibility(View.GONE);
+        username.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    changeUserName(v);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        ip = (EditText) findViewById(R.id.input_Ip);
+        ip.setText(DEFAULT_IP);
+        port = (EditText) findViewById(R.id.input_port);
+        hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
+        ip.setVisibility(View.GONE);
+        port.setVisibility(View.GONE);
+        connecToHost.setVisibility(View.GONE);
+        hostPortIp.setVisibility(View.GONE);
+        start.setVisibility(View.GONE);
 //
-            textConnection1.setVisibility(View.GONE);
-            textConnection2.setVisibility(View.GONE);
-            textConnection3.setVisibility(View.GONE);
+        textConnection1.setVisibility(View.GONE);
+        textConnection2.setVisibility(View.GONE);
+        textConnection3.setVisibility(View.GONE);
 
-            username.setVisibility(View.GONE);
+        username.setVisibility(View.GONE);
 
 
     }
 
-    /*@Override
-    protected void onUserLeaveHint() {
-        Toast.makeText(this, "Home button pressed!",Toast.LENGTH_LONG).show();
-        super.onUserLeaveHint();
-        onStop(TAG2);
 
-    }*/
 
 
     @Override
     public void onBackPressed() {
-      if (client != null) {
+        if (client != null) {
             TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
             ((Client) client).sendObject(object);
+        } else if (this.findViewById(R.id.button_connectToHost).getVisibility() == View.VISIBLE) {
+            joinGame.setVisibility(View.VISIBLE);
+            hostGame.setVisibility(View.VISIBLE);
+            connecToHost.setVisibility(View.GONE);
+            ip.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
         }
-       else if (this.findViewById(R.id.button_connectToHost).getVisibility()==View.VISIBLE){
-           joinGame.setVisibility(View.VISIBLE);
-           hostGame.setVisibility(View.VISIBLE);
-           connecToHost.setVisibility(View.GONE);
-           ip.setVisibility(View.GONE);
-       }
-       else {super.onBackPressed();}
 
     }
 
-    public void showAlert(){
+    public void showAlert() {
         Log.i(TAG, "ReturnButton GameStartActivity.");
         AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
         alertShuttingDown.setCancelable(false);
@@ -188,7 +185,7 @@ public class GameStartActivity extends AppCompatActivity {
     }
 
 
-    protected void exitApp(){
+    protected void exitApp() {
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
             TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
@@ -202,7 +199,7 @@ public class GameStartActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         finish();
     }
-    
+
 
     private void changeUserName(View view) {
         Log.i(TAG, client.toString());
@@ -283,7 +280,7 @@ public class GameStartActivity extends AppCompatActivity {
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
 //        intent.putExtra(USERNAME, username.getText().toString());
         intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
-        GameActivity.client=client;
+        GameActivity.client = client;
         //intent.putExtra("Client",client);
         finish();
         startActivity(intent);
@@ -360,9 +357,6 @@ public class GameStartActivity extends AppCompatActivity {
     public static void runOnUI(Runnable runnable) {
         UIHandler.post(runnable);
     }
-
-
-
 
 
 }
