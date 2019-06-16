@@ -67,7 +67,6 @@ public class GameLogicHandler {
         this.gameData.getDrawStack().getCardList().clear();
         this.gameData.getDrawStack().generateCardStack();
         this.getGameData().getDrawStack().mixStack();
-        //this.gameActivity.startShufflingActivity();
         this.gameData.setRoundClosed(false);
         for (Player p : this.gameData.getPlayers().values()) {
             p.setCheated(false);
@@ -87,9 +86,7 @@ public class GameLogicHandler {
 
         this.gameData.setPhase(GamePhase.START_PHASE);
         this.gameData.nextPlayer();
-        //this.setPlayerNames();
         this.gameData.getLayOffStack().addCard(this.gameData.getDrawStack().drawCard());
-        // this.gameActivity.visualize();
     }
 
     public void layoffCard(String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
@@ -100,7 +97,6 @@ public class GameLogicHandler {
                 movePhaseCardsBackToHand();
             }
 
-            String currentP = this.gameData.getActivePlayerId();
             moveCardsBackToHand(LayOffCardsPhase.ACTIVE_PHASE);
             moveCardsBackToHand(LayOffCardsPhase.NEXTPLAYER_PHASE);
 
@@ -118,7 +114,6 @@ public class GameLogicHandler {
                 startRound();
             } else {
                 this.gameData.nextPlayer();
-                // this.setPlayerNames();
                 this.gameData.setPhase(GamePhase.DRAW_PHASE);
                 this.gameActivity.visualize();
             }
@@ -164,7 +159,7 @@ public class GameLogicHandler {
         }
     }
 
-    public void layoffPhase(PlaystationType t, String playerId, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
+    public void layoffPhase(PlaystationType t, int cardId) throws EmptyHandException, CardNotFoundException, PlayerNotFoundException {
         String currentP = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
         String next;
         if (currentP.equals(this.gameActivity.getPlayer1ID())) {
@@ -178,11 +173,11 @@ public class GameLogicHandler {
                 this.gameActivity.setVisibilityOfButtons2();
                 moveCardsBackToHand(LayOffCardsPhase.ACTIVE_PHASE);
                 moveCardsBackToHand(LayOffCardsPhase.NEXTPLAYER_PHASE);
-                Toast.makeText(this.getGameActivity(), "You must drop your last card onto the layoff stack in order to close the current round!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getGameActivity(), "You must drop your last card onto the layoff stack in order to close the current round!", Toast.LENGTH_LONG).show();
             } else {
                 Card c = gameData.getPlayers().get(currentP).getHand().removeCard(cardId);
                 if (c instanceof SimpleCard) {
-                    layOffSimpleCard(t, next, cardId, (SimpleCard) c);
+                    layOffSimpleCard(t, next,(SimpleCard) c);
                 } else if (((SpecialCard) c).getValue() == SpecialCardValue.JOKER) {
                     layOffJoker(t, next, cardId, (SpecialCard) c);
                 }
@@ -200,13 +195,13 @@ public class GameLogicHandler {
         chooseSide.setNegativeButton("Links", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                layOffJokerLeftOrRight(LayOffCardsPhase.LEFT, t, next, cardId, c);
+                layOffJokerLeftOrRight(LayOffCardsPhase.LEFT, t, next, c);
             }
         });
         chooseSide.setPositiveButton("Rechts", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                layOffJokerLeftOrRight(LayOffCardsPhase.RIGHT, t, next, cardId, c);
+                layOffJokerLeftOrRight(LayOffCardsPhase.RIGHT, t, next, c);
             }
         });
         chooseSide.setIcon(android.R.drawable.ic_dialog_info);
@@ -214,7 +209,7 @@ public class GameLogicHandler {
 
     }
 
-    private void layOffJokerLeftOrRight(LayOffCardsPhase side, PlaystationType t, String next, int cardId, SpecialCard c) {
+    private void layOffJokerLeftOrRight(LayOffCardsPhase side, PlaystationType t, String next, SpecialCard c) {
         if (t == PlaystationType.PLAYSTATION) {
             if (side == LayOffCardsPhase.LEFT) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(0, c);
@@ -255,7 +250,7 @@ public class GameLogicHandler {
         this.gameActivity.visualize();
     }
 
-    private void layOffSimpleCard(PlaystationType t, String next, int cardId, SimpleCard c) {
+    private void layOffSimpleCard(PlaystationType t, String next, SimpleCard c) {
         if (t == PlaystationType.PLAYSTATION) {
             if ((c.getNumber() <= getFirstNumberOfPhaseCards(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards()))) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(0, c);
@@ -473,14 +468,10 @@ public class GameLogicHandler {
             this.getGameData().getPlayers().get(playerID).getPhaseCards2Temp().clear();
             Toast.makeText(this.gameActivity, "The list is correct!", Toast.LENGTH_SHORT).show();
         } else {
-            if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
-            }
             moveCardsBackToHand(next);
             Toast.makeText(this.gameActivity, "The list is not correct!", Toast.LENGTH_SHORT).show();
         }
 
-        if (next == LayOffCardsPhase.NEXTPLAYER_PHASE) {
-        }
     }
 
     private boolean checkEqualNumbers(String playerID) {
@@ -533,12 +524,9 @@ public class GameLogicHandler {
         Card c = this.gameData.getLayOffStack().drawLastCard();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getHand().addCard(c);
         boolean b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-        Toast.makeText(this.gameActivity, this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).getId(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
         if (!this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed()) {
             this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).setExposed(true);
             b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
-            Toast.makeText(this.gameActivity, "" + b, Toast.LENGTH_SHORT).show();
             layoffCard(this.gameData.getActivePlayerId(), id);
         } else {
             this.gameActivity.visualize();
@@ -553,25 +541,4 @@ public class GameLogicHandler {
         this.gameData = gameData;
     }
 
-
-  /*  public void setPlayerNames() {
-        this.gameActivity.setPlayer1ID(this.gameData.getActivePlayerId());
-        String player2 = "";
-        for (Player p : gameData.getPlayers().values()) {
-            if (!p.getId().equals(gameData.getActivePlayerId())) {
-                player2 = p.getId();
-            }
-        }
-        this.gameActivity.setPlayer2ID(player2);
-
-
-        *//*this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.FIRST_PLAYER));
-        this.getGameActivity().setPlayer1ID(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
-        this.gameData.nextPlayer();
-        this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setCurrentName(intent.getStringExtra(MainActivity.SECOND_PLAYER));
-        this.getGameActivity().setPlayer2ID(this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getCurrentName());
-        this.gameData.nextPlayer();*//*
-
-
-    }*/
 }

@@ -48,7 +48,7 @@ public class Connection implements Runnable {
             Log.e(TAG, e.toString());
         }
         Log.i(TAG, String.format("Connection created for: %s", socket.getInetAddress().toString()));
-        ;
+
         return new Connection(socket, out, in, connectionListener,
                 ConnectionDetails.makeNext(),
                 true);
