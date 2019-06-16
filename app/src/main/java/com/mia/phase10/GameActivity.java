@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,11 +32,6 @@ import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;
 import com.mia.phase10.gameLogic.StackType;
-import com.mia.phase10.network.Client;
-import com.mia.phase10.network.transport.ControlObject;
-import com.mia.phase10.network.transport.TransportObject;
-
-import static com.mia.phase10.GameStartActivity.TAG2;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -121,16 +115,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
 
     protected void exitApp(){
-        Log.i(TAG, "Close GameStartActivity.");
-        if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
-            ((Client) client).sendObject(object);
-        }
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        GameLogicHandler.getInstance().closeConnections();
         overridePendingTransition(0, 0);
         finish();
     }
