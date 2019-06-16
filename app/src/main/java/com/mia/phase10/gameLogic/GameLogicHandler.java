@@ -2,6 +2,7 @@ package com.mia.phase10.gameLogic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.network.Client;
+import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
 
 import java.util.HashMap;
@@ -34,6 +36,7 @@ public class GameLogicHandler {
     private GameData gameData;
     private GameActivity gameActivity;
     private Client client;
+    private final static String TAG = "GAMELOGICHANDLDER";
 
     //private constructor.
     private GameLogicHandler() {
@@ -541,4 +544,16 @@ public class GameLogicHandler {
         this.gameData = gameData;
     }
 
+    public void closeConnections() {
+        Log.i(TAG, "Close GameStartActivity.");
+        if (client != null) {
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            ((Client) client).sendObject(object);
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
