@@ -147,10 +147,9 @@ public class CardEvaluator {
                 } else if (((SimpleCard) c).getColor() != col) {
                     return false;
                 }
-            } else if (c instanceof SpecialCard) {
-                if (((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
+            } else if ((c instanceof SpecialCard) && ((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
                     return false;
-                }
+
             }
         }
         return true;
@@ -173,10 +172,9 @@ public class CardEvaluator {
                 } else if (((SimpleCard) c).getNumber() != number) {
                     return false;
                 }
-            } else if (c instanceof SpecialCard) {
-                if (((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
+            } else if ((c instanceof SpecialCard)&&((SpecialCard) c).getValue() != SpecialCardValue.JOKER) {
                     return false;
-                }
+
             }
         }
         return true;

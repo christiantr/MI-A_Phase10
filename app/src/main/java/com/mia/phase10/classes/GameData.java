@@ -23,7 +23,9 @@ public class GameData implements Serializable {
     private GamePhase phase;
     private boolean roundClosed;
     private final String TAG = "GAMEDATA";
+    private boolean exit;
     private boolean gameClosed;
+
 
     public GameData() {
         this.layOffStack = new CardStack();
@@ -31,9 +33,8 @@ public class GameData implements Serializable {
         this.players = new HashMap<String, Player>();
         this.activePlayerId = "";
         this.previousPlayer = "";
+        this.exit=false;
     }
-
-    ;
 
     public GameData(CardStack layOffStack, CardStack drawStack, Map<String, Player> players, String activePlayerId) {
         this.layOffStack = layOffStack;
@@ -98,6 +99,14 @@ public class GameData implements Serializable {
         return roundClosed;
     }
 
+    public boolean isExit() {
+        return exit;
+    }
+
+    public void setExit(boolean exit) {
+        this.exit = exit;
+    }
+
     public void setRoundClosed(boolean roundClosed) {
         this.roundClosed = roundClosed;
     }
@@ -146,21 +155,6 @@ public class GameData implements Serializable {
             } while (this.getPlayers().get(activePlayerId).isExposed());
         }
         this.getPlayers().get(activePlayerId).setCheated(false);
-       /* Iterator<Player> iter = this.players.values().iterator();
-        int index =0;
 
-        if (activePlayerId ==""){
-            this.activePlayerId = this.players.values().iterator().next().getId();
-        }else {
-            while (iter.hasNext()) {
-                if (iter.next().getId() == activePlayerId) {
-                    if (this.players.size() - 2 > index) {
-                        this.activePlayerId = iter.next().getId();
-                    } else {
-                        this.activePlayerId = this.players.values().iterator().next().getId();
-                    }
-                }
-            }
-        }*/
     }
 }

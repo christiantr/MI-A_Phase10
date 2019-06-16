@@ -1,7 +1,6 @@
 package com.mia.phase10;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -45,6 +44,7 @@ public class ShufflingActivity extends AppCompatActivity {
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            //no need for this auto-generated methode because everything is handled in onSensorChanged()
         }
     };
 
@@ -74,6 +74,11 @@ public class ShufflingActivity extends AppCompatActivity {
     protected void onPause() {
         sManager.unregisterListener(listener);
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //you should not be able to skip shuffling by pressing return button
     }
 
     protected boolean enoughAcceleration(float x, float y, float z) {
@@ -110,7 +115,8 @@ public class ShufflingActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //nothing should happen if the animation is repeated
+                //thus no implementation of this abstract methode of superclass
             }
         });
     }

@@ -1,17 +1,22 @@
 package com.mia.phase10;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,6 +32,7 @@ import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;
 import com.mia.phase10.gameLogic.StackType;
+
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -58,22 +64,23 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private Button cheatExpose;
     private ImageButton checkTwo;
     private ImageButton cancelTwo;
-    // private ConstraintLayout phaseClosed;
     private String player1ID;
     private String player2ID;
 
     static final String DISCARD_PILE = "DISCARD PILE";
     static final String DRAWABLE = "drawable";
+    private final String TAG = "GameActivity";
 
     MyDragEventListener myDragEventListener;
     MyDragEventListenerTwo myDrag;
-    private LinearLayout.LayoutParams lp;
+    protected static AsyncTask client;
 
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Initialize View and set Listeners
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         findViewByIDObjects();
         initializeListeners();
         setPlayers();
@@ -82,11 +89,40 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         visualize();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        GameLogicHandler.getInstance().getGameData().setExit(true);
+        GameLogicHandler.getInstance().sendGameState();
+    }
+
+    protected void showAlert(){
+        Log.i(TAG, "ReturnButton GameStartActivity.");
+        AlertDialog.Builder alertShuttingDown = new AlertDialog.Builder(this);
+        alertShuttingDown.setCancelable(false);
+        alertShuttingDown.setTitle("Ein Spieler hat das Spiel verlassen!\nSpiel wird beendet!");
+        alertShuttingDown.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                exitApp();
+            }
+        });
+        alertShuttingDown.setIcon(android.R.drawable.ic_dialog_info);
+        alertShuttingDown.show();
+    }
+
+
+    protected void exitApp(){
+        GameLogicHandler.getInstance().closeConnections();
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+
     private void setPlayers() {
         Intent intent = getIntent();
         player1ID = intent.getStringExtra(USERNAME);
         //currently only two players!
-        //int count = 1;
         for (Player p : GameLogicHandler.getInstance().getGameData().getPlayers().values()) {
             if (!p.getId().equals(player1ID)) {
                 player2ID = p.getId();
@@ -148,7 +184,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
         cardImage.setId(card.getId());
         stack.setImageDrawable(c);
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
                 resetStackView();
@@ -208,13 +244,17 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancelTwo = findViewById(R.id.cross);
         cheat = findViewById(R.id.btnCheat);
         cheatExpose = findViewById(R.id.btnCheatExpose);
-        // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
     //Visualizing Data from GameData (GUI drawing ONLY here)
     public void visualize() {
-        if (GameLogicHandler.getInstance().getGameData().isGameClosed()) {
+      if( GameLogicHandler.getInstance().getGameData().isExit()){
+            showAlert();
+        }
+      
+      if (GameLogicHandler.getInstance().getGameData().isGameClosed()) {
             startGameEndActivity();
+
         } else {
             moveBackgroundToTheBack();
             makePlaystationLayoutVisible();
@@ -248,25 +288,31 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             showPlaystation2Cards();
             showPlaystation2RCards();
             showLayOffStack();
-            if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
-                try {
-                    progressDialog.dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {
-                    startShufflingActivity();
-                }
-            } else {
-                moveBackgroundToFront();
-                if (progressDialog == null) {
-                    progressDialog = ProgressDialog.show(this, "Bitte warten",
-                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
 
-                } else if (!progressDialog.isShowing()) {
-                    progressDialog = ProgressDialog.show(this, "Bitte warten",
-                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
-                }
+            seperateActiveInactivPlayer();
+
+        }
+    }
+
+    private void seperateActiveInactivPlayer(){
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
+            try {
+                progressDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {
+                startShufflingActivity();
+            }
+        } else {
+            moveBackgroundToFront();
+            if (progressDialog == null) {
+                progressDialog = ProgressDialog.show(this, "Bitte warten",
+                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+
+            } else if (!progressDialog.isShowing()) {
+                progressDialog = ProgressDialog.show(this, "Bitte warten",
+                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
             }
         }
     }
@@ -616,9 +662,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 break;
             case END_TURN_PHASE:
                 break;
-            /*case START_PHASE:
-                startShufflingActivity();
-                break;*/
+            case START_PHASE:
+                break;
         }
     }
 
@@ -632,7 +677,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         getPlaystationP2LayoutR().setOnDragListener(null);
         getStack().setOnClickListener(null);
         getDiscardPileLayoutButton().setOnClickListener(null);
-        playerImage.setBackgroundColor(Color.rgb(0, 255, 224));
+        playerImage.setBackgroundColor(Color.rgb(157, 71, 188));
         findViewById(R.id.ID_discard_layout).setBackgroundColor(Color.TRANSPARENT);
 
 

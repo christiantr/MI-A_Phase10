@@ -33,7 +33,6 @@ public class Connections {
         this.connections.add(connection);
         connection.sendObject(TransportObject.tellUserName(connection.getConnectionDetails()));
         Log.i(TAG, "Connection Added");
-//
         GameStartActivity.runOnUI(new Runnable() {
             public void run() {
                 ((GameStartActivity) activity).changeConnectionDetails(connection.getConnectionDetails());
@@ -51,8 +50,6 @@ public class Connections {
         for (Connection connection : connections) {
             connection.sendObject(obj);
         }
-
-
     }
 
     public void sendObjectToAllAndCloseAll(Serializable obj) {

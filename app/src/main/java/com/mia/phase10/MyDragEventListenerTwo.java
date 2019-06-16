@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mia.phase10.classes.Card;
+import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
@@ -18,9 +19,6 @@ import com.mia.phase10.gameLogic.PlaystationType;
 
 
 public class MyDragEventListenerTwo implements View.OnDragListener {
-
-    public MyDragEventListenerTwo() {
-    }
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
@@ -43,80 +41,70 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
                 return false;
 
             case DragEvent.ACTION_DRAG_ENTERED:
+            case DragEvent.ACTION_DRAG_EXITED:
+            case DragEvent.ACTION_DRAG_ENDED:
+                // Invalidates the view to force a redraw
                 v.invalidate();
+                // returns true; the value is ignored.
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
                 // Ignore the event
                 return true;
 
-            case DragEvent.ACTION_DRAG_EXITED:
-                v.invalidate();
-                return true;
+
 
             case DragEvent.ACTION_DROP:
                 // Gets the item containing the dragged data
                 ClipData.Item item = event.getClipData().getItemAt(0);
                 // Gets the text data from the item.
-                String dragData = item.getText().toString();
                 // Invalidates the view to force a redraw
                 v.invalidate();
                 ImageView vw = (ImageView) event.getLocalState();
-                ViewGroup owner = (ViewGroup) vw.getParent();
 
                 Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
                 if(c.getImagePath().equals("card_expose")){return false;}
 
-                String player = GameLogicHandler.getInstance().getGameData().getActivePlayerId();
 
                 if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()) {
                     GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                     GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                    try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION, player, vw.getId());
-                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    tryLayOffPhase(PlaystationType.PLAYSTATION, vw.getId());
+
                 } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()) {
                     GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
                     GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
-                    try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT, player, vw.getId());
-                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_RIGHT, vw.getId());
+
                 } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()) {
                     GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
                     GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
-                    try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO, player, vw.getId());
-                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_TWO, vw.getId());
+
                 } else {
                     GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
                     GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
-                    try {
-                        GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, player, vw.getId());
-                    } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, vw.getId());
                 }
 
 
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
 
-            case DragEvent.ACTION_DRAG_ENDED:
-                // Invalidates the view to force a redraw
-                v.invalidate();
-                // returns true; the value is ignored.
-                return true;
+
             // An unknown action type was received.
             default:
                 Log.e("DragDrop Example", "Unknown action type received by OnDragListener.");
                 break;
         }
         return false;
+    }
+
+    private void tryLayOffPhase(PlaystationType t, int id){
+        try {
+            GameLogicHandler.getInstance().layoffPhase(t, id);
+        } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -16,7 +16,7 @@ public class Host extends AsyncTask {
 
     private static final int SERVER_PORT = 9999;
     private ServerSocket serverSocket;
-    private static final int MAX_CLIENTS = 3;
+    private static final int MAX_CLIENTS = 2;
     private int numberOfConnectedClients;
 
     private final static String TAG = "HOST";
@@ -52,6 +52,8 @@ public class Host extends AsyncTask {
             Log.i(TAG, "");
         } catch (IOException e) {
             Log.e(TAG, e.toString());
+        } catch (RuntimeException re){
+            closeServer();
         }
 
     }
@@ -60,7 +62,6 @@ public class Host extends AsyncTask {
         active = false;
         try {
             serverSocket.close();
-
 
         } catch (IOException e) {
             Log.e(TAG, e.toString());
@@ -74,7 +75,6 @@ public class Host extends AsyncTask {
         return null;
 
     }
-
 
 }
 

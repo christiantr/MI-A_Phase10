@@ -21,6 +21,10 @@ public class ControlObject implements Serializable {
         return new ControlObject(ControlCommand.CLOSECONNECTIONS);
     }
 
+    public static ControlObject AlertUsers() {
+        return new ControlObject(ControlCommand.ALERTUSERS);
+    }
+
     public ControlCommand getControlCommand() {
         return controlCommand;
     }
