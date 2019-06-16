@@ -1,12 +1,12 @@
 package com.mia.phase10;
 
 import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.Colour;
 import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
-import com.mia.phase10.classes.SpecialCardValue;
+import com.mia.phase10.classes.enums.Colour;
+import com.mia.phase10.classes.enums.SpecialCardValue;
 import com.mia.phase10.gameLogic.CardEvaluator;
-import com.mia.phase10.gameLogic.Phase;
+import com.mia.phase10.gameLogic.enums.Phase;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +15,8 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CardEvaluatorTest {
     CardEvaluator evaluator;

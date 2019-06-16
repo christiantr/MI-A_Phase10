@@ -111,7 +111,7 @@ public class GameStartActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
                 ((Client) client).sendObject(obj);
             }
         });
@@ -170,7 +170,7 @@ public class GameStartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.alertUsers());
             ((Client) client).sendObject(object);
         } else if (this.findViewById(R.id.button_connectToHost).getVisibility() == View.VISIBLE) {
             joinGame.setVisibility(View.VISIBLE);
@@ -202,7 +202,7 @@ public class GameStartActivity extends AppCompatActivity {
     protected void exitApp() {
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.closeConnections());
             ((Client) client).sendObject(object);
         }
         try {
@@ -379,14 +379,14 @@ public class GameStartActivity extends AppCompatActivity {
     public void changeConnectionDetails(ConnectionDetails connectionDetails) {
         Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
         connectionDetailsList.update(connectionDetails);
-        if (connectionDetails.getUserID().getUserId() == 1) {
+        if (connectionDetails.getUserID().getIdentification() == 1) {
             Log.i(TAG, "First connection");
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
 
         }
-        if (connectionDetails.getUserID().getUserId() == 2) {
+        if (connectionDetails.getUserID().getIdentification() == 2) {
             Log.i(TAG, "Second connection");
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
@@ -394,7 +394,7 @@ public class GameStartActivity extends AppCompatActivity {
 
         }
 
-        if (connectionDetails.getUserID().getUserId() == 3) {
+        if (connectionDetails.getUserID().getIdentification() == 3) {
             Log.i(TAG, "Second connection");
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());

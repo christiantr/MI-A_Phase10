@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.Colour;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ public class PlayerTest {
         player = new Player("Tester");
         hand = new Hand();
         Map map = new HashMap<Integer, Card>();
-        map.put(1,new SimpleCard(1,Colour.BLUE,1,5));
+        map.put(1, new SimpleCard(1, Colour.BLUE, 1, 5));
         map.put(2,new SimpleCard(2,Colour.BLUE,2,5));
         map.put(3,new SimpleCard(3,Colour.BLUE,3,5));
         map.put(4,new SimpleCard(4,Colour.BLUE,4,5));

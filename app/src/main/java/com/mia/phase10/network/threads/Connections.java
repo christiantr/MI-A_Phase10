@@ -14,23 +14,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class Connections {
-    private List<Connection> connections;
-    private final static String TAG = "Connections";
+    private List<Connection> connectedClients;
+    private static final String TAG = "Connections";
     private final Host host;
     private static final String HOST_NOT_NULL = "Host must not be NULL";
     private static final String LIST_NOT_NULL = "List must not be NULL";
     private Activity activity;
 
-    private Connections(Host host, List<Connection> connections, Activity activity) {
+    private Connections(Host host, List<Connection> connectedClients, Activity activity) {
         Objects.requireNonNull(host, HOST_NOT_NULL);
-        Objects.requireNonNull(connections, LIST_NOT_NULL);
+        Objects.requireNonNull(connectedClients, LIST_NOT_NULL);
         this.host = host;
-        this.connections = connections;
+        this.connectedClients = connectedClients;
         this.activity = activity;
     }
 
     public void addConnection(final Connection connection) {
-        this.connections.add(connection);
+        this.connectedClients.add(connection);
         connection.sendObject(TransportObject.tellUserName(connection.getConnectionDetails()));
         Log.i(TAG, "Connection Added");
         GameStartActivity.runOnUI(new Runnable() {
@@ -47,23 +47,23 @@ public class Connections {
     }
 
     public void sendObjectToAll(Serializable obj) {
-        for (Connection connection : connections) {
+        for (Connection connection : connectedClients) {
             connection.sendObject(obj);
         }
     }
 
     public void sendObjectToAllAndCloseAll(Serializable obj) {
-        for (Connection connection : connections) {
+        for (Connection connection : connectedClients) {
             connection.sendObjectAndCloseConnection(obj);
         }
-        Log.i(TAG, "All connections closed.\n");
+        Log.i(TAG, "All connectedClients closed.\n");
         host.closeServer();
     }
 
     public Connection getConnectionById(UserID userID) {
-        Log.i(TAG, String.format("%d,\n", userID.getUserId()));
+        Log.i(TAG, String.format("%d,\n", userID.getIdentification()));
 
-        for (Connection connection : connections) {
+        for (Connection connection : connectedClients) {
             Log.i(TAG, String.format("%s\n", connection.getConnectionDetails().getUserID().toString()));
             if (connection.getConnectionDetails().getUserID().equals(userID)) {
                 Log.i(TAG, "Connection found");

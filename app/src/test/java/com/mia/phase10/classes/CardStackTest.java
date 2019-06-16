@@ -1,10 +1,11 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.Colour;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 public class CardStackTest {
@@ -16,7 +17,7 @@ public class CardStackTest {
         }
     @Test
     public void checkGenerate(){
-            Card c = new SimpleCard(1,Colour.BLUE,1,5);
+        Card c = new SimpleCard(1, Colour.BLUE, 1, 5);
 
             int size = stack.getCardList().size();
 

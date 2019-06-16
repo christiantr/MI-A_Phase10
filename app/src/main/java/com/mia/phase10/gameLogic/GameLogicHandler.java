@@ -550,7 +550,7 @@ public class GameLogicHandler {
     public void closeConnections() {
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.closeConnections());
             ((Client) client).sendObject(object);
         }
         try {

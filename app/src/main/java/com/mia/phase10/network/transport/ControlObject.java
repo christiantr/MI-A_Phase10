@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class ControlObject implements Serializable {
     private final ControlCommand controlCommand;
-    private final static String CONTROL_COMMAND_NOT_NULL = "Control Command must not be NULL";
+    private static final String CONTROL_COMMAND_NOT_NULL = "Control Command must not be NULL";
 
     private ControlObject(ControlCommand controlCommand) {
         Objects.requireNonNull(controlCommand, CONTROL_COMMAND_NOT_NULL);
@@ -13,15 +13,15 @@ public class ControlObject implements Serializable {
 
     }
 
-    public static ControlObject StartGame(){
+    public static ControlObject startGame() {
         return new ControlObject(ControlCommand.STARTGAME);
     }
 
-    public static ControlObject CloseConnections() {
+    public static ControlObject closeConnections() {
         return new ControlObject(ControlCommand.CLOSECONNECTIONS);
     }
 
-    public static ControlObject AlertUsers() {
+    public static ControlObject alertUsers() {
         return new ControlObject(ControlCommand.ALERTUSERS);
     }
 

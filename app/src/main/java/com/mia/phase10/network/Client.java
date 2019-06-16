@@ -105,7 +105,7 @@ public class Client extends AsyncTask {
         });
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         out.flush();
-        Log.i(TAG, String.format("I/O created"));
+        Log.i(TAG, "I/O created");
         active = true;
         in = new ObjectInputStream(
                 new BufferedInputStream(socket.getInputStream()));
@@ -113,7 +113,8 @@ public class Client extends AsyncTask {
 
         while (active) {
             try {
-                TransportObject received = (TransportObject) in.readObject();
+                Object rec = in.readObject();
+                TransportObject received = (TransportObject) rec;
                 ObjectContentType objectContentType = received.getObjectContentType();
 
                 if (objectContentType.equals(ObjectContentType.TEXT)) {

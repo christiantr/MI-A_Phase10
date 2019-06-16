@@ -13,7 +13,7 @@ public class ConnectionDetails implements Serializable {
 
     public static ConnectionDetails makeNext() {
         UserID userID = UserID.nextId();
-        UserDisplayName userDisplayName = new UserDisplayName(String.format("User %d", userID.getUserId()));
+        UserDisplayName userDisplayName = new UserDisplayName(String.format("User %d", userID.getIdentification()));
 
         return new ConnectionDetails(userID, userDisplayName);
     }

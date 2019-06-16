@@ -4,36 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionDetailsList {
-    private List<ConnectionDetails> connectionDetailsList;
+    private List<ConnectionDetails> connections;
 
 
     public static ConnectionDetailsList empty() {
         return new ConnectionDetailsList(new ArrayList<ConnectionDetails>());
     }
 
-    private ConnectionDetailsList(List<ConnectionDetails> connectionDetailsList) {
-        this.connectionDetailsList = connectionDetailsList;
+    private ConnectionDetailsList(List<ConnectionDetails> connections) {
+        this.connections = connections;
     }
 
     public void update(ConnectionDetails newDetails) {
         int indexReplace = -1;
-        for (int i = 0; i < connectionDetailsList.size(); i++) {
-            if (connectionDetailsList.get(i).getUserID().equals(newDetails.getUserID())) {
+        for (int i = 0; i < connections.size(); i++) {
+            if (connections.get(i).getUserID().equals(newDetails.getUserID())) {
                 indexReplace = i;
             }
 
         }
 
         if (indexReplace != -1) {
-            connectionDetailsList.set(indexReplace, newDetails);
+            connections.set(indexReplace, newDetails);
         } else {
-            connectionDetailsList.add(newDetails);
+            connections.add(newDetails);
         }
 
     }
 
     public List<ConnectionDetails> getList() {
-        return connectionDetailsList;
+        return connections;
     }
 }
 
