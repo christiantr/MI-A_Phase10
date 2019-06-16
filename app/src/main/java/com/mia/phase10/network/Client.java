@@ -3,12 +3,10 @@ package com.mia.phase10.network;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.mia.phase10.GameActivity;
 import com.mia.phase10.GameStartActivity;
 import com.mia.phase10.classes.GameData;
-import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;
 import com.mia.phase10.network.transport.ControlCommand;
@@ -40,7 +38,6 @@ public class Client extends AsyncTask {
 
 
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
-//        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.local = local;

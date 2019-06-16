@@ -1,7 +1,6 @@
 package com.mia.phase10;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,11 +16,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
-import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
@@ -60,7 +57,6 @@ public class GameStartActivity extends AppCompatActivity {
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
     private ConnectionDetailsList connectionDetailsList;
-    private boolean isHost = false;
 
 
     @Override
@@ -99,7 +95,6 @@ public class GameStartActivity extends AppCompatActivity {
                     GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
                     Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
                 }
-                // setContentView(R.layout.activity_main);
                 try {
                     GameLogicHandler.getInstance().startRound();
                 } catch (EmptyCardStackException e) {
@@ -123,7 +118,7 @@ public class GameStartActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    changeUserName(v);
+                    changeUserName();
                     return true;
                 }
                 return false;
@@ -140,7 +135,6 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
         start.setVisibility(View.GONE);
-//
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
         textConnection3.setVisibility(View.GONE);
@@ -197,7 +191,7 @@ public class GameStartActivity extends AppCompatActivity {
         finish();
     }
 
-    private void changeUserName(View view) {
+    private void changeUserName() {
         Log.i(TAG, client.toString());
         String newusername = username.getText().toString();
         Log.i(TAG, String.format("username manually set to %s \n", newusername));
@@ -219,10 +213,8 @@ public class GameStartActivity extends AppCompatActivity {
         client = Client.atAddress(hostIpAddress, SERVER_PORT, this);
         Log.i(TAG, client.toString());
         client.execute();
-//                testMessage.setVisibility(View.VISIBLE);
         connecToHost.setVisibility(View.GONE);
         ip.setVisibility(View.GONE);
-//        testMessage.setVisibility(View.VISIBLE);
         GameLogicHandler.getInstance().setClient((Client) client);
     }
 
@@ -230,7 +222,6 @@ public class GameStartActivity extends AppCompatActivity {
      * Called when the user uses the "Client Game" button
      */
     public void startHost(View view) {
-        isHost = true;
         connectionDetailsList = connectionDetailsList.empty();
         GameLogicHandler.getInstance().initializeGame();
         Log.i("TAG", "Starting game as host.");
@@ -256,9 +247,7 @@ public class GameStartActivity extends AppCompatActivity {
 
     public void startClient(View view) {
         Log.i("TAG", "Starting game as client.");
-//
         ip.setVisibility(View.VISIBLE);
-//        port.setVisibility(View.VISIBLE);
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
         connecToHost.setVisibility(View.VISIBLE);
@@ -274,10 +263,8 @@ public class GameStartActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         EditText firstPlayer = (EditText) findViewById(R.id.ID_first_player);
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
-//        intent.putExtra(USERNAME, username.getText().toString());
         intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
         GameActivity.client = client;
-        //intent.putExtra("Client",client);
         finish();
         startActivity(intent);
 

@@ -4,16 +4,14 @@ import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Hand implements Serializable {
     private Map<Integer,Card> cardList;
 
     public Hand() {
-        cardList = new HashMap<Integer,Card>();
+        cardList = new HashMap<>();
     }
 
     public void addCard(Card c){

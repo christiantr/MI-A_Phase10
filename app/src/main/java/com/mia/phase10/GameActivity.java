@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -36,8 +35,6 @@ import com.mia.phase10.gameLogic.StackType;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
-
-import static com.mia.phase10.GameStartActivity.TAG2;
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
 
@@ -69,7 +66,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private Button cheatExpose;
     private ImageButton checkTwo;
     private ImageButton cancelTwo;
-    // private ConstraintLayout phaseClosed;
     private String player1ID;
     private String player2ID;
 
@@ -79,8 +75,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     MyDragEventListener myDragEventListener;
     MyDragEventListenerTwo myDrag;
-    private LinearLayout.LayoutParams lp;
-
     protected static AsyncTask client;
 
     @SuppressLint("CutPasteId")
@@ -140,7 +134,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         Intent intent = getIntent();
         player1ID = intent.getStringExtra(USERNAME);
         //currently only two players!
-        //int count = 1;
         for (Player p : GameLogicHandler.getInstance().getGameData().getPlayers().values()) {
             if (!p.getId().equals(player1ID)) {
                 player2ID = p.getId();
@@ -202,7 +195,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cardImage.setOnLongClickListener(GameLogicHandler.getInstance().getGameActivity());
         cardImage.setId(card.getId());
         stack.setImageDrawable(c);
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
                 resetStackView();
@@ -262,7 +255,6 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         cancelTwo = findViewById(R.id.cross);
         cheat = findViewById(R.id.btnCheat);
         cheatExpose = findViewById(R.id.btnCheatExpose);
-        // phaseClosed = findViewById(R.id.ID_phase_closed);
     }
 
     //Visualizing Data from GameData (GUI drawing ONLY here)
@@ -307,25 +299,31 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
             showPlaystation2Cards();
             showPlaystation2RCards();
             showLayOffStack();
-            if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
-                try {
-                    progressDialog.dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {
-                    startShufflingActivity();
-                }
-            } else {
-                moveBackgroundToFront();
-                if (progressDialog == null) {
-                    progressDialog = ProgressDialog.show(this, "Bitte warten",
-                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
 
-                } else if (!progressDialog.isShowing()) {
-                    progressDialog = ProgressDialog.show(this, "Bitte warten",
-                            "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
-                }
+            seperateActiveInactivPlayer();
+
+        }
+    }
+
+    private void seperateActiveInactivPlayer(){
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
+            try {
+                progressDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {
+                startShufflingActivity();
+            }
+        } else {
+            moveBackgroundToFront();
+            if (progressDialog == null) {
+                progressDialog = ProgressDialog.show(this, "Bitte warten",
+                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
+
+            } else if (!progressDialog.isShowing()) {
+                progressDialog = ProgressDialog.show(this, "Bitte warten",
+                        "Spieler " + GameLogicHandler.getInstance().getGameData().getActivePlayerId() + " ist am Zug!", true);
             }
         }
     }
