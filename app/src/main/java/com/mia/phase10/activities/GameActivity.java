@@ -29,11 +29,11 @@ import com.mia.phase10.R;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
-import com.mia.phase10.gameFlow.GamePhase;
-import com.mia.phase10.gameFlow.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
-import com.mia.phase10.gameLogic.Phase;
-import com.mia.phase10.gameLogic.StackType;
+import com.mia.phase10.gameLogic.enums.GamePhase;
+import com.mia.phase10.gameLogic.enums.LayOffCardsPhase;
+import com.mia.phase10.gameLogic.enums.Phase;
+import com.mia.phase10.gameLogic.enums.StackType;
 
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {

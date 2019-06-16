@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.Colour;
+
 import java.io.Serializable;
 
 public class SimpleCard extends Card implements Serializable {

@@ -13,7 +13,7 @@ import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
-import com.mia.phase10.gameLogic.PlaystationType;
+import com.mia.phase10.gameLogic.enums.PlaystationType;
 
 
 public class MyDragEventListenerTwo implements View.OnDragListener {

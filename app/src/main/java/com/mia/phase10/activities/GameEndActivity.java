@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.mia.phase10.R;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.gameLogic.GameLogicHandler;
-import com.mia.phase10.gameLogic.Phase;
+import com.mia.phase10.gameLogic.enums.Phase;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.mia.phase10.classes;
+package com.mia.phase10.classes.enums;
 
 import java.io.Serializable;
 

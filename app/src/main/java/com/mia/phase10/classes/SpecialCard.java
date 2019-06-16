@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.SpecialCardValue;
+
 import java.io.Serializable;
 
 public class SpecialCard extends Card implements Serializable {

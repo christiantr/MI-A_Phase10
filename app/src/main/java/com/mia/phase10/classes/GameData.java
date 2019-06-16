@@ -4,7 +4,7 @@ package com.mia.phase10.classes;
 import android.os.Build;
 import android.util.Log;
 
-import com.mia.phase10.gameFlow.GamePhase;
+import com.mia.phase10.gameLogic.enums.GamePhase;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.mia.phase10.R;
-import com.mia.phase10.gameFlow.GamePhase;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.enums.GamePhase;
 
 public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;
