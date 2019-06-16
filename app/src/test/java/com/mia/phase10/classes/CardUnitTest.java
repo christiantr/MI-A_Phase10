@@ -1,14 +1,10 @@
 package com.mia.phase10.classes;
 
-import com.mia.phase10.classes.Colour;
-import com.mia.phase10.classes.SimpleCard;
-import com.mia.phase10.classes.SpecialCard;
-import com.mia.phase10.classes.SpecialCardValue;
+import com.mia.phase10.classes.enums.Colour;
+import com.mia.phase10.classes.enums.SpecialCardValue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.assertEquals;
 

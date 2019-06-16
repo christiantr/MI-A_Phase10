@@ -1,7 +1,6 @@
 package com.mia.phase10.network.transport;
 
 
-import com.mia.phase10.classes.GameData;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.ConnectionDetails;
 
@@ -11,9 +10,9 @@ import java.util.Objects;
 public class TransportObject implements Serializable {
     private final BroadcastType broadcastType;
     private final ObjectContentType objectContentType;
-    private final static String BROADCAST_TYPE_NOT_NULL = "Broadcast type must not be NULL";
-    private final static String CONTENT_TYPE_NOT_NULL = "Content type must not be NULL";
-    private final static String PAYLOAD_NOT_NULL = "Payload must not be NULL";
+    private static final String BROADCAST_TYPE_NOT_NULL = "Broadcast type must not be NULL";
+    private static final String CONTENT_TYPE_NOT_NULL = "Content type must not be NULL";
+    private static final String PAYLOAD_NOT_NULL = "Payload must not be NULL";
 
     private final Serializable payload;
 

@@ -15,7 +15,7 @@ public class IpAddressGet {
     public String wifiIpAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-        Log.i("ip", String.format("%d\n", ipAddress)
+        Log.i("ip", String.format("%d%n", ipAddress)
         );
 
         // Convert little-endian to big-endianif needed
