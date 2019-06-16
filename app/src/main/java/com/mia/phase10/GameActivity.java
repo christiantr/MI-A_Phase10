@@ -296,7 +296,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private void seperateActiveInactivPlayer(){
         if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
             try {
-                progressDialog.dismiss();
+                if (progressDialog != null) {
+                progressDialog.dismiss();}
             } catch (Exception e) {
                 e.printStackTrace();
             }
