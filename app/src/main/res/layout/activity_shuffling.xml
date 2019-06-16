@@ -43,7 +43,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Zum Mischen der Karten bitte Handy schütteln!"
-        android:textColor="#00E3FF"
+        android:textColor="#C727E6"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/stack"
         app:layout_constraintEnd_toEndOf="parent"

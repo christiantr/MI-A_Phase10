@@ -1,30 +1,21 @@
 package com.mia.phase10;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.GameData;
-import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 
-import java.util.Map;
 
 public class MyDragEventListener implements View.OnDragListener {
-
-    public MyDragEventListener() {
-    }
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
@@ -45,28 +36,27 @@ public class MyDragEventListener implements View.OnDragListener {
                 return false;
 
             case DragEvent.ACTION_DRAG_ENTERED:
+            case DragEvent.ACTION_DRAG_EXITED:
+            case DragEvent.ACTION_DRAG_ENDED:
+                // Invalidates the view to force a redraw
                 v.invalidate();
+                // returns true; the value is ignored.
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
                 // Ignore the event
                 return true;
 
-            case DragEvent.ACTION_DRAG_EXITED:
-                v.invalidate();
-                return true;
-
             case DragEvent.ACTION_DROP:
                 // Gets the item containing the dragged data
                 ClipData.Item item = event.getClipData().getItemAt(0);
                 // Gets the text data from the item.
-                String dragData = item.getText().toString();
                 // Invalidates the view to force a redraw
                 v.invalidate();
 
                 ImageView vw = (ImageView) event.getLocalState();
-                ViewGroup owner = (ViewGroup) vw.getParent();
                 Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+
                 if(c.getImagePath().equals("card_expose")){
                     try {
                         if(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().size()==1){
@@ -88,11 +78,7 @@ public class MyDragEventListener implements View.OnDragListener {
                 // Returns true. DragEvent.getResult() will return true.
                 return true;
 
-            case DragEvent.ACTION_DRAG_ENDED:
-                // Invalidates the view to force a redraw
-                v.invalidate();
-                // returns true; the value is ignored.
-                return true;
+
             // An unknown action type was received.
             default:
                 Log.e("DragDrop Example", "Unknown action type received by OnDragListener.");

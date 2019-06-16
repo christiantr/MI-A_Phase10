@@ -39,7 +39,6 @@ public class Client extends AsyncTask {
 
 
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
-//        this.mHandler = mHandler;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.local = local;
