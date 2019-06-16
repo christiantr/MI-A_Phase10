@@ -3,7 +3,7 @@ package com.mia.phase10.network.threads;
 import android.app.Activity;
 import android.util.Log;
 
-import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.activities.GameStartActivity;
 import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.transport.BroadcastType;
 import com.mia.phase10.network.transport.ControlObject;

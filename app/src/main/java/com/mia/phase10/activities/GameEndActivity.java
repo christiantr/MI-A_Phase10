@@ -1,4 +1,4 @@
-package com.mia.phase10;
+package com.mia.phase10.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mia.phase10.R;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.Phase;

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.mia.phase10.GameActivity;
-import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.activities.GameActivity;
+import com.mia.phase10.activities.GameStartActivity;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;

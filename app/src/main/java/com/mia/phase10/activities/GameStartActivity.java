@@ -1,4 +1,4 @@
-package com.mia.phase10;
+package com.mia.phase10.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mia.phase10.R;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
