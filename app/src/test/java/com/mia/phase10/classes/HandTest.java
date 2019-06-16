@@ -1,5 +1,6 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.Colour;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 
@@ -10,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class HandTest {
@@ -22,7 +22,7 @@ public class HandTest {
     public void before(){
      hand = new Hand();
      map = new HashMap<Integer, Card>();
-        map.put(1,new SimpleCard(1,Colour.BLUE,1,5));
+        map.put(1, new SimpleCard(1, Colour.BLUE, 1, 5));
         map.put(2,new SimpleCard(2,Colour.BLUE,2,5));
         map.put(3,new SimpleCard(3,Colour.BLUE,3,5));
         map.put(4,new SimpleCard(4,Colour.BLUE,4,5));

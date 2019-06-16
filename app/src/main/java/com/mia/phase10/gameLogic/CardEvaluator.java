@@ -1,10 +1,11 @@
 package com.mia.phase10.gameLogic;
 
 import com.mia.phase10.classes.Card;
-import com.mia.phase10.classes.Colour;
 import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
-import com.mia.phase10.classes.SpecialCardValue;
+import com.mia.phase10.classes.enums.Colour;
+import com.mia.phase10.classes.enums.SpecialCardValue;
+import com.mia.phase10.gameLogic.enums.Phase;
 
 import java.util.List;
 

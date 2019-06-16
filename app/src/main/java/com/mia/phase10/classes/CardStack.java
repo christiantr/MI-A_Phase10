@@ -1,5 +1,7 @@
 package com.mia.phase10.classes;
 
+import com.mia.phase10.classes.enums.Colour;
+import com.mia.phase10.classes.enums.SpecialCardValue;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 
 import java.io.Serializable;

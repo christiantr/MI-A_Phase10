@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GameActivity"
+            android:name=".activities.GameActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="landscape">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -22,16 +22,16 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".ShufflingActivity"
+            android:name=".activities.ShufflingActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".GameStartActivity"
+            android:name=".activities.GameStartActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GameRulesActivity"
+            android:name=".activities.GameRulesActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".GameEndActivity"
+            android:name=".activities.GameEndActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>

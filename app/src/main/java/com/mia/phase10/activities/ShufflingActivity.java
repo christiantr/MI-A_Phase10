@@ -1,20 +1,21 @@
-package com.mia.phase10;
+package com.mia.phase10.activities;
 
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mia.phase10.gameFlow.GamePhase;
+import com.mia.phase10.R;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.enums.GamePhase;
 
 public class ShufflingActivity extends AppCompatActivity {
     private SensorManager sManager;

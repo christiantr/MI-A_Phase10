@@ -1,4 +1,4 @@
-package com.mia.phase10.gameLogic;
+package com.mia.phase10.gameLogic.enums;
 
 public enum Phase {
     PHASE_1,

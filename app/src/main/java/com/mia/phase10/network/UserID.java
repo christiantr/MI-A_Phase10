@@ -5,15 +5,15 @@ import java.util.Objects;
 
 public class UserID implements Serializable {
     private static int count = 0;
-    private final int userId;
+    private final int identification;
 
-    private UserID(int userId) {
-        this.userId = userId;
+    private UserID(int identification) {
+        this.identification = identification;
     }
 
 
-    public int getUserId() {
-        return userId;
+    public int getIdentification() {
+        return identification;
     }
 
 
@@ -28,15 +28,15 @@ public class UserID implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserID userID = (UserID) o;
-        return userId == userID.userId;
+        return identification == userID.identification;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId);
+        return Objects.hash(identification);
     }
 
     public int compare(UserID other) {
-        return Integer.compare(other.userId, this.userId);
+        return Integer.compare(other.identification, this.identification);
     }
 }

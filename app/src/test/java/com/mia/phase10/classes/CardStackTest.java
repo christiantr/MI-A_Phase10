@@ -1,13 +1,13 @@
 package com.mia.phase10.classes;
 
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.classes.enums.Colour;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 public class CardStackTest {
@@ -43,6 +43,7 @@ public class CardStackTest {
             fail();
         }
     }
+
 
     @Test
     public void testDrawCardIfEmpty(){

@@ -8,21 +8,24 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.mia.phase10.GameActivity;
 import com.mia.phase10.R;
+import com.mia.phase10.activities.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
-import com.mia.phase10.classes.SpecialCardValue;
+import com.mia.phase10.classes.enums.SpecialCardValue;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
-import com.mia.phase10.gameFlow.GamePhase;
-import com.mia.phase10.gameFlow.LayOffCardsPhase;
+import com.mia.phase10.gameLogic.enums.GamePhase;
+import com.mia.phase10.gameLogic.enums.LayOffCardsPhase;
+import com.mia.phase10.gameLogic.enums.Phase;
+import com.mia.phase10.gameLogic.enums.PlaystationType;
+import com.mia.phase10.gameLogic.enums.StackType;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
@@ -549,7 +552,7 @@ public class GameLogicHandler {
     public void closeConnections() {
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.closeConnections());
             ((Client) client).sendObject(object);
         }
         try {

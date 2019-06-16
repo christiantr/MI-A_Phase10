@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="horizontal"
-    tools:context=".GameEndActivity">
+    tools:context=".activities.GameEndActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"

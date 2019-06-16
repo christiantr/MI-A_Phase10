@@ -3,7 +3,7 @@ package com.mia.phase10.network.threads;
 import android.app.Activity;
 import android.util.Log;
 
-import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.activities.GameStartActivity;
 import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.transport.BroadcastType;
 import com.mia.phase10.network.transport.ControlObject;
@@ -62,6 +62,8 @@ public class ConnectionListener {
             case STARTGAME:
                 connections.sendObjectToAll(obj);
                 break;
+            default:
+                break;
         }
 
 
@@ -69,7 +71,7 @@ public class ConnectionListener {
 
     private void handleUsernameChange(TransportObject obj) {
         final ConnectionDetails connectionDetails = (ConnectionDetails) obj.getPayload();
-        Log.i(TAG, String.format("new details: id %d  name %s \n", connectionDetails.getUserID().getUserId(),
+        Log.i(TAG, String.format("new details: id %d  name %s \n", connectionDetails.getUserID().getIdentification(),
                 connectionDetails.getUserDisplayName().getName()));
 
 
@@ -79,7 +81,7 @@ public class ConnectionListener {
             connection.setConnectionDetails(connectionDetails);
 
             connection.sendObject(TransportObject.tellUserName(connectionDetails));
-            Log.i(TAG, String.format("User &d informed about new name", connection.getConnectionDetails().getUserID().getUserId()));
+            Log.i(TAG, String.format("User &d informed about new name", connection.getConnectionDetails().getUserID().getIdentification()));
         }
 
         GameStartActivity.runOnUI(new Runnable() {

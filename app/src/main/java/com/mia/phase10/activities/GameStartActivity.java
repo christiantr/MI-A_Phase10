@@ -1,4 +1,4 @@
-package com.mia.phase10;
+package com.mia.phase10.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mia.phase10.R;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
@@ -28,6 +29,8 @@ import com.mia.phase10.network.IpAddressGet;
 import com.mia.phase10.network.UserDisplayName;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
+
+import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -51,12 +54,13 @@ public class GameStartActivity extends AppCompatActivity {
     private Button start;
     private EditText username;
     private static final int SERVER_PORT = 9999;
-    private static final String DEFAULT_IP = "192.168.43.124";
+    private static final String DEFAULT_IP = "10.0.0.5";
     AsyncTask client;
     AsyncTask server;
     private int numberOfConnections;
     private ConnectionDetails connectionDetails;
     private ConnectionDetailsList connectionDetailsList;
+    private boolean isHost = false;
 
 
     @Override
@@ -95,6 +99,7 @@ public class GameStartActivity extends AppCompatActivity {
                     GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
                     Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
                 }
+                // setContentView(R.layout.activity_main);
                 try {
                     GameLogicHandler.getInstance().startRound();
                 } catch (EmptyCardStackException e) {
@@ -106,7 +111,7 @@ public class GameStartActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.StartGame());
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
                 ((Client) client).sendObject(obj);
             }
         });
@@ -118,7 +123,7 @@ public class GameStartActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    changeUserName();
+                    changeUserName(v);
                     return true;
                 }
                 return false;
@@ -127,7 +132,23 @@ public class GameStartActivity extends AppCompatActivity {
 
 
         ip = (EditText) findViewById(R.id.input_Ip);
+
+
         ip.setText(DEFAULT_IP);
+
+        ip.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    enterNewIp(v);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         port = (EditText) findViewById(R.id.input_port);
         hostPortIp = (TextView) findViewById(R.id.textView_IpAndPort);
         ip.setVisibility(View.GONE);
@@ -135,6 +156,7 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
         start.setVisibility(View.GONE);
+//
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
         textConnection3.setVisibility(View.GONE);
@@ -144,10 +166,11 @@ public class GameStartActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onBackPressed() {
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.AlertUsers());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.alertUsers());
             ((Client) client).sendObject(object);
         } else if (this.findViewById(R.id.button_connectToHost).getVisibility() == View.VISIBLE) {
             joinGame.setVisibility(View.VISIBLE);
@@ -179,7 +202,7 @@ public class GameStartActivity extends AppCompatActivity {
     protected void exitApp() {
         Log.i(TAG, "Close GameStartActivity.");
         if (client != null) {
-            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.CloseConnections());
+            TransportObject object = TransportObject.ofControlObjectToAll(ControlObject.closeConnections());
             ((Client) client).sendObject(object);
         }
         try {
@@ -191,7 +214,23 @@ public class GameStartActivity extends AppCompatActivity {
         finish();
     }
 
-    private void changeUserName() {
+
+    private boolean enterNewIp(View view) {
+        Log.i(TAG, "New Ip entered!");
+        String enteredIp = ip.getText().toString();
+        InetAddressValidator validator = InetAddressValidator.getInstance();
+        if (!validator.isValid(enteredIp)) {
+            ip.setText("Invalid Ip Entered");
+            return false;
+
+        }
+
+        return true;
+
+
+    }
+
+    private void changeUserName(View view) {
         Log.i(TAG, client.toString());
         String newusername = username.getText().toString();
         Log.i(TAG, String.format("username manually set to %s \n", newusername));
@@ -203,25 +242,45 @@ public class GameStartActivity extends AppCompatActivity {
 
     private void clickJoinGameButton(View view) {
         Log.i("TAG", "Connect button clicked");
-        InetAddress hostIpAddress = null;
-        try {
-            hostIpAddress = InetAddress.getByName(ip.getText().toString());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
-        client = Client.atAddress(hostIpAddress, SERVER_PORT, this);
-        Log.i(TAG, client.toString());
-        client.execute();
-        connecToHost.setVisibility(View.GONE);
-        ip.setVisibility(View.GONE);
-        GameLogicHandler.getInstance().setClient((Client) client);
+        boolean validIp = enterNewIp(view);
+
+        boolean hostKnown = true;
+        if (validIp) {
+            Log.i(TAG, "connecting");
+            InetAddress hostIpAddress = null;
+            try {
+                hostIpAddress = InetAddress.getByName(ip.getText().toString());
+            } catch (UnknownHostException e) {
+                Log.e(TAG, "Unknown Host");
+                ip.setText("Unknown Host");
+                hostKnown = false;
+            }
+            if (hostKnown) {
+                client = Client.atAddress(hostIpAddress, SERVER_PORT, this);
+                Log.i(TAG, client.toString());
+                try {
+                    ip.setEnabled(false);
+                    client.execute();
+//                    clientConnected();
+
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                    Log.i(TAG, "Cant connect to host");
+                    this.cantConnectClient();
+                }
+
+
+//
+            }
+        }
     }
 
     /**
      * Called when the user uses the "Client Game" button
      */
     public void startHost(View view) {
+        isHost = true;
         connectionDetailsList = connectionDetailsList.empty();
         GameLogicHandler.getInstance().initializeGame();
         Log.i("TAG", "Starting game as host.");
@@ -247,7 +306,9 @@ public class GameStartActivity extends AppCompatActivity {
 
     public void startClient(View view) {
         Log.i("TAG", "Starting game as client.");
+//
         ip.setVisibility(View.VISIBLE);
+//        port.setVisibility(View.VISIBLE);
         joinGame.setVisibility(View.GONE);
         hostGame.setVisibility(View.GONE);
         connecToHost.setVisibility(View.VISIBLE);
@@ -263,8 +324,10 @@ public class GameStartActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         EditText firstPlayer = (EditText) findViewById(R.id.ID_first_player);
         EditText secondPlayer = (EditText) findViewById(R.id.ID_second_player);
+//        intent.putExtra(USERNAME, username.getText().toString());
         intent.putExtra(USERNAME, connectionDetails.getUserDisplayName().getName());
         GameActivity.client = client;
+        //intent.putExtra("Client",client);
         finish();
         startActivity(intent);
 
@@ -295,18 +358,35 @@ public class GameStartActivity extends AppCompatActivity {
         this.username.setVisibility(View.VISIBLE);
     }
 
+    public void cantConnectClient() {
+        Log.i(TAG, "Notfied that Client could not be started");
+        ip.setText("Could not connect to Host!");
+        ip.setVisibility(View.VISIBLE);
+        connecToHost.setVisibility(View.VISIBLE);
+        ip.setEnabled(true);
+
+
+    }
+
+    public void clientConnected() {
+        Log.i(TAG, "Notified that client succesfull connected");
+        connecToHost.setVisibility(View.GONE);
+        ip.setVisibility(View.GONE);
+        GameLogicHandler.getInstance().setClient((Client) client);
+
+    }
 
     public void changeConnectionDetails(ConnectionDetails connectionDetails) {
         Log.i(TAG, String.format("new connection, currently %d\n", numberOfConnections));
         connectionDetailsList.update(connectionDetails);
-        if (connectionDetails.getUserID().getUserId() == 1) {
+        if (connectionDetails.getUserID().getIdentification() == 1) {
             Log.i(TAG, "First connection");
 
             this.textConnection1.setText(connectionDetails.getUserDisplayName().getName());
             this.textConnection1.setVisibility(View.VISIBLE);
 
         }
-        if (connectionDetails.getUserID().getUserId() == 2) {
+        if (connectionDetails.getUserID().getIdentification() == 2) {
             Log.i(TAG, "Second connection");
 
             this.textConnection2.setText(connectionDetails.getUserDisplayName().getName());
@@ -314,7 +394,7 @@ public class GameStartActivity extends AppCompatActivity {
 
         }
 
-        if (connectionDetails.getUserID().getUserId() == 3) {
+        if (connectionDetails.getUserID().getIdentification() == 3) {
             Log.i(TAG, "Second connection");
 
             this.textConnection3.setText(connectionDetails.getUserDisplayName().getName());

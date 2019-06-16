@@ -1,6 +1,6 @@
 package com.mia.phase10.classes;
 
-import com.mia.phase10.gameLogic.Phase;
+import com.mia.phase10.gameLogic.enums.Phase;
 
 import java.io.Serializable;
 import java.util.ArrayList;

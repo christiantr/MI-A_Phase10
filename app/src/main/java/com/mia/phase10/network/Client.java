@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.mia.phase10.GameActivity;
-import com.mia.phase10.GameStartActivity;
+import com.mia.phase10.activities.GameActivity;
+import com.mia.phase10.activities.GameStartActivity;
 import com.mia.phase10.classes.GameData;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.network.threads.SentObjectThread;
@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.NoRouteToHostException;
 import java.net.Socket;
 
 public class Client extends AsyncTask {
@@ -34,7 +36,6 @@ public class Client extends AsyncTask {
     private boolean active;
     private final boolean local;
     private final Activity activity;
-
 
 
     private Client(InetAddress serverIp, int serverPort, boolean local, Activity activity) {
@@ -69,27 +70,42 @@ public class Client extends AsyncTask {
 
     public void run() throws IOException {
         Log.i(TAG, "run");
-        if (!local) {
-            Log.i(TAG, String.format("Client connecting to %s at %d", serverIp.toString(), serverPort));
-            socket = new Socket(serverIp, serverPort);
-        }
-        if (local) {
-            Log.i(TAG, "Try locahost");
-
-            InetAddress localhost = InetAddress.getByName(null);
-
-            if (localhost != null) {
-                Log.i(TAG, localhost.toString());
-            } else {
-                Log.i(TAG, "Localhost not found");
+        try {
+            if (!local) {
+                Log.i(TAG, String.format("Client connecting to %s at %d", serverIp.toString(), serverPort));
+                socket = new Socket(serverIp, serverPort);
             }
-            socket = new Socket(localhost, serverPort);
+            if (local) {
+                Log.i(TAG, "Try locahost");
+
+                InetAddress localhost = InetAddress.getByName(null);
+
+                if (localhost != null) {
+                    Log.i(TAG, localhost.toString());
+                } else {
+                    Log.i(TAG, "Localhost not found");
+                }
+                socket = new Socket(localhost, serverPort);
+            }
+        } catch (NoRouteToHostException nr) {
+            Log.e(TAG, nr.toString());
+            handleConnectionFailure();
+            return;
+        } catch (ConnectException cx) {
+            Log.e(TAG, cx.toString());
+            handleConnectionFailure();
+            return;
+
         }
 
-
+        GameStartActivity.runOnUI(new Runnable() {
+            public void run() {
+                ((GameStartActivity) activity).clientConnected();
+            }
+        });
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         out.flush();
-        Log.i(TAG, String.format("I/O created"));
+        Log.i(TAG, "I/O created");
         active = true;
         in = new ObjectInputStream(
                 new BufferedInputStream(socket.getInputStream()));
@@ -97,7 +113,8 @@ public class Client extends AsyncTask {
 
         while (active) {
             try {
-                TransportObject received = (TransportObject) in.readObject();
+                Object rec = in.readObject();
+                TransportObject received = (TransportObject) rec;
                 ObjectContentType objectContentType = received.getObjectContentType();
 
                 if (objectContentType.equals(ObjectContentType.TEXT)) {
@@ -112,9 +129,8 @@ public class Client extends AsyncTask {
                     handleUsernameObject(received);
                 }
 
-                if(objectContentType.equals(ObjectContentType.GAMEDATA)){
+                if (objectContentType.equals(ObjectContentType.GAMEDATA)) {
                     handleGamedata(received);
-
 
 
                 }
@@ -131,11 +147,12 @@ public class Client extends AsyncTask {
     private void handleGamedata(TransportObject received) {
         GameLogicHandler.getInstance().setGameData((GameData) received.getPayload());
         GameActivity gameActivity = GameLogicHandler.getInstance().getGameActivity();
-        if (gameActivity!=null) {
+        if (gameActivity != null) {
             gameActivity.runOnUiThread(new Runnable() {
                 public void run() {
-                    GameLogicHandler.getInstance().getGameActivity().visualize();            }
-            } );
+                    GameLogicHandler.getInstance().getGameActivity().visualize();
+                }
+            });
         }
     }
 
@@ -150,16 +167,18 @@ public class Client extends AsyncTask {
         if (controlObject.getControlCommand().equals(ControlCommand.CLOSECONNECTIONS)) {
             closeConnection();
         }
-        if(controlObject.getControlCommand().equals(ControlCommand.STARTGAME)){
+        if (controlObject.getControlCommand().equals(ControlCommand.STARTGAME)) {
             GameStartActivity.runOnUI(new Runnable() {
                 public void run() {
-                    ((GameStartActivity) activity).startGame();            }
+                    ((GameStartActivity) activity).startGame();
+                }
             });
         }
-        if(controlObject.getControlCommand().equals(ControlCommand.ALERTUSERS)){
+        if (controlObject.getControlCommand().equals(ControlCommand.ALERTUSERS)) {
             GameStartActivity.runOnUI(new Runnable() {
                 public void run() {
-                    ((GameStartActivity) activity).showAlert();            }
+                    ((GameStartActivity) activity).showAlert();
+                }
             });
         }
 
@@ -171,7 +190,8 @@ public class Client extends AsyncTask {
         Log.i(TAG, String.format("Username %s \n", connectionDetails.getUserDisplayName().getName()));
         GameStartActivity.runOnUI(new Runnable() {
             public void run() {
-                ((GameStartActivity) activity).setUsername(connectionDetails);            }
+                ((GameStartActivity) activity).setUsername(connectionDetails);
+            }
         });
 
     }
@@ -189,5 +209,13 @@ public class Client extends AsyncTask {
         }
         Log.i(TAG, "Connection to Host closed!\n");
         System.exit(0);
+    }
+
+    private void handleConnectionFailure() {
+        GameStartActivity.runOnUI(new Runnable() {
+            public void run() {
+                ((GameStartActivity) activity).cantConnectClient();
+            }
+        });
     }
 }

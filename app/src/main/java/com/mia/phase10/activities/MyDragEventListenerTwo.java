@@ -1,4 +1,4 @@
-package com.mia.phase10;
+package com.mia.phase10.activities;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -13,15 +13,18 @@ import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.enums.PlaystationType;
 
 
-public class MyDragEventListener implements View.OnDragListener {
+public class MyDragEventListenerTwo implements View.OnDragListener {
 
     // This is the method that the system calls when it dispatches a drag event to the listener.
     @Override
     public boolean onDrag(View v, DragEvent event) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
         lp.setMargins(0, 0, 0, 0);
+        lp.height = 200;
+
         // Defines a variable to store the action type for the incoming event
         int action = event.getAction();
         // Handles each of the expected events
@@ -47,31 +50,39 @@ public class MyDragEventListener implements View.OnDragListener {
                 // Ignore the event
                 return true;
 
+
+
             case DragEvent.ACTION_DROP:
                 // Gets the item containing the dragged data
                 ClipData.Item item = event.getClipData().getItemAt(0);
                 // Gets the text data from the item.
                 // Invalidates the view to force a redraw
                 v.invalidate();
-
                 ImageView vw = (ImageView) event.getLocalState();
+
                 Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
+                if(c.getImagePath().equals("card_expose")){return false;}
 
-                if(c.getImagePath().equals("card_expose")){
-                    try {
-                        if(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().size()==1){
-                            GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());
-                        }
-                        else {GameLogicHandler.getInstance().exposePlayer(vw.getId());}
-                    }catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    return true;}
 
-                try {
-                    GameLogicHandler.getInstance().layoffCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), vw.getId());
-                } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
-                    e.printStackTrace();
+                if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
+                    tryLayOffPhase(PlaystationType.PLAYSTATION, vw.getId());
+
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP1LayoutR()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheck().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancel().setVisibility(View.VISIBLE);
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_RIGHT, vw.getId());
+
+                } else if (v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2Layout() || v == GameLogicHandler.getInstance().getGameActivity().getPlaystationP2LayoutL()) {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_TWO, vw.getId());
+
+                } else {
+                    GameLogicHandler.getInstance().getGameActivity().getCheckTwo().setVisibility(View.VISIBLE);
+                    GameLogicHandler.getInstance().getGameActivity().getCancelTwo().setVisibility(View.VISIBLE);
+                    tryLayOffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, vw.getId());
                 }
 
 
@@ -85,5 +96,13 @@ public class MyDragEventListener implements View.OnDragListener {
                 break;
         }
         return false;
+    }
+
+    private void tryLayOffPhase(PlaystationType t, int id){
+        try {
+            GameLogicHandler.getInstance().layoffPhase(t, id);
+        } catch (EmptyHandException | CardNotFoundException | PlayerNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
