@@ -26,6 +26,7 @@ import com.mia.phase10.gameLogic.enums.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.enums.Phase;
 import com.mia.phase10.gameLogic.enums.PlaystationType;
 import com.mia.phase10.gameLogic.enums.StackType;
+import com.mia.phase10.gameLogic.enums.ToastMessages;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.transport.ControlObject;
 import com.mia.phase10.network.transport.TransportObject;
@@ -179,11 +180,11 @@ public class GameLogicHandler {
                 this.gameActivity.setVisibilityOfButtons2();
                 moveCardsBackToHand(LayOffCardsPhase.ACTIVE_PHASE);
                 moveCardsBackToHand(LayOffCardsPhase.NEXTPLAYER_PHASE);
-                Toast.makeText(this.getGameActivity(), "You must drop your last card onto the layoff stack in order to close the current round!", Toast.LENGTH_LONG).show();
+                this.gameActivity.showToasts(ToastMessages.LAST_CARD);
             } else {
                 Card c = gameData.getPlayers().get(currentP).getHand().removeCard(cardId);
                 if (c instanceof SimpleCard) {
-                    layOffSimpleCard(t, next,(SimpleCard) c);
+                    layOffSimpleCard(t, next, (SimpleCard) c);
                 } else if (((SpecialCard) c).getValue() == SpecialCardValue.JOKER) {
                     layOffJoker(t, next, cardId, (SpecialCard) c);
                 }
@@ -414,10 +415,10 @@ public class GameLogicHandler {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(gameData.getActivePlayerId()).getPhaseCards())) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 this.gameActivity.visualize();
-                Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
+                this.gameActivity.showToasts(ToastMessages.PHASE_CORRECT);
             } else {
                 movePhaseCardsBackToHand();
-                Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
+                this.gameActivity.showToasts(ToastMessages.PHASE_INCORRECT);
             }
         } else {
             if (CardEvaluator.getInstance().checkPhase(this.gameData.getPlayers().get(gameData.getActivePlayerId()).getCurrentPhase(), this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards(),
@@ -425,11 +426,12 @@ public class GameLogicHandler {
 
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).setPhaseAchieved(true);
                 this.gameActivity.visualize();
-                Toast.makeText(this.getGameActivity(), "The phase is correct!", Toast.LENGTH_SHORT).show();
+                this.gameActivity.showToasts(ToastMessages.PHASE_CORRECT);
 
             } else {
                 movePhaseCardsBackToHand();
-                Toast.makeText(this.gameActivity, "The phase is not correct!", Toast.LENGTH_SHORT).show();
+                this.gameActivity.showToasts(ToastMessages.PHASE_INCORRECT);
+
             }
 
         }
@@ -472,10 +474,11 @@ public class GameLogicHandler {
         if (result) {
             this.getGameData().getPlayers().get(playerID).getPhaseCardsTemp().clear();
             this.getGameData().getPlayers().get(playerID).getPhaseCards2Temp().clear();
-            Toast.makeText(this.gameActivity, "The list is correct!", Toast.LENGTH_SHORT).show();
+            this.gameActivity.showToasts(ToastMessages.LIST_CORRECT);
+
         } else {
             moveCardsBackToHand(next);
-            Toast.makeText(this.gameActivity, "The list is not correct!", Toast.LENGTH_SHORT).show();
+            this.gameActivity.showToasts(ToastMessages.LIST_INCORRECT);
         }
 
     }
@@ -508,25 +511,11 @@ public class GameLogicHandler {
         this.gameData.getLayOffStack().addCard(c);
         this.gameActivity.visualize();
         this.gameActivity.visualizeExposingPlayer();
+        this.gameActivity.setListenerForExposingPlayer(cardID);
 
-        ImageView playerImage = this.gameActivity.findViewById(R.id.p2);
-        playerImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    choosePlayerToExpose(cardID);
-                } catch (CardNotFoundException e) {
-                    e.printStackTrace();
-                } catch (PlayerNotFoundException e) {
-                    e.printStackTrace();
-                } catch (EmptyHandException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
-    private void choosePlayerToExpose(int id) throws CardNotFoundException, PlayerNotFoundException, EmptyHandException {
+    public void choosePlayerToExpose(int id) throws CardNotFoundException, PlayerNotFoundException, EmptyHandException {
         Card c = this.gameData.getLayOffStack().drawLastCard();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getHand().addCard(c);
         boolean b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();

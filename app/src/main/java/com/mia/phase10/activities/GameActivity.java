@@ -27,12 +27,18 @@ import com.mia.phase10.MainActivity;
 import com.mia.phase10.R;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.Player;
+import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
+import com.mia.phase10.exceptionClasses.EmptyHandException;
+import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
 import com.mia.phase10.gameLogic.enums.GamePhase;
 import com.mia.phase10.gameLogic.enums.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.enums.Phase;
 import com.mia.phase10.gameLogic.enums.StackType;
+import com.mia.phase10.gameLogic.enums.ToastMessages;
+
+import static com.mia.phase10.gameLogic.enums.ToastMessages.*;
 
 
 public class GameActivity extends AppCompatActivity implements View.OnLongClickListener {
@@ -705,6 +711,42 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         return true;
     }
 
+    public void showToasts(ToastMessages m){
+        String s;
+        switch (m){
+        case PHASE_CORRECT: s="The phase is correct!";
+            break;
+        case PHASE_INCORRECT: s="The phase is not correct!";
+            break;
+        case LAST_CARD: s="You must drop your last card onto the layoff stack in order to close the current round!";
+            break;
+        case LIST_CORRECT: s="The list is correct!";
+            break;
+        case LIST_INCORRECT: s="The list is not correct!";
+            break;
+        default: s=""; break;
+        }
+
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setListenerForExposingPlayer(final int cardID){
+        ImageView playerImage = this.findViewById(R.id.p2);
+        playerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    GameLogicHandler.getInstance().choosePlayerToExpose(cardID);
+                } catch (CardNotFoundException e) {
+                    e.printStackTrace();
+                } catch (PlayerNotFoundException e) {
+                    e.printStackTrace();
+                } catch (EmptyHandException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void switchPlayerName(TextView p, TextView q) {
         p.setText(player1ID);
