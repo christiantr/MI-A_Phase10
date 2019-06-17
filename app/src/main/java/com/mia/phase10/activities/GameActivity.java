@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -220,26 +219,26 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
 
     public void findViewByIDObjects() {
         setContentView(R.layout.activity_game);
-        stack = findViewById(R.id.ID_stack);
-        deck = findViewById(R.id.ID_deck);
-        discardPileLayout = findViewById(R.id.ID_discard_layout);
-        discardPileLayoutButton = findViewById(R.id.ID_discard_layout_button);
-        player1 = findViewById(R.id.ID_player_1);
-        player2 = findViewById(R.id.ID_player_2);
-        score = findViewById(R.id.ID_score);
-        phases = findViewById(R.id.ID_phases);
-        more = findViewById(R.id.ID_more);
-        playerImage = findViewById(R.id.ID_p2);
-        playstationP1Image = findViewById(R.id.ID_p1_playstation);
-        playstationP2Image = findViewById(R.id.ID_p2_playstation);
-        playstationP1ImageSeperated = findViewById(R.id.ID_p1_playstation_two);
-        playstationP2ImageSeperated = findViewById(R.id.ID_p2_playstation_two);
-        playstationP1Layout = findViewById(R.id.ID_p1_playstation_layout);
-        playstationP2Layout = findViewById(R.id.ID_p2_playstation_layout);
-        playstationP1LayoutL = findViewById(R.id.ID_p1_playstation_two_layout_left);
-        playstationP1LayoutR = findViewById(R.id.ID_p1_playstation_two_layout_right);
-        playstationP2LayoutL = findViewById(R.id.ID_p2_playstation_layout_left);
-        playstationP2LayoutR = findViewById(R.id.ID_p2_playstation_layout_right);
+        stack = findViewById(R.id.stack);
+        deck = findViewById(R.id.deck);
+        discardPileLayout = findViewById(R.id.discard_layout);
+        discardPileLayoutButton = findViewById(R.id.discard_layout_button);
+        player1 = findViewById(R.id.player_1);
+        player2 = findViewById(R.id.player_2);
+        score = findViewById(R.id.score);
+        phases = findViewById(R.id.phases);
+        more = findViewById(R.id.more);
+        playerImage = findViewById(R.id.p2);
+        playstationP1Image = findViewById(R.id.p1_playstation);
+        playstationP2Image = findViewById(R.id.p2_playstation);
+        playstationP1ImageSeperated = findViewById(R.id.p1_playstation_two);
+        playstationP2ImageSeperated = findViewById(R.id.p2_playstation_two);
+        playstationP1Layout = findViewById(R.id.p1_playstation_layout);
+        playstationP2Layout = findViewById(R.id.p2_playstation_layout);
+        playstationP1LayoutL = findViewById(R.id.p1_playstation_two_layout_left);
+        playstationP1LayoutR = findViewById(R.id.p1_playstation_two_layout_right);
+        playstationP2LayoutL = findViewById(R.id.p2_playstation_layout_left);
+        playstationP2LayoutR = findViewById(R.id.p2_playstation_layout_right);
         check = findViewById(R.id.checkPhase);
         cancel = findViewById(R.id.Cancel);
         checkTwo = findViewById(R.id.check);
@@ -299,7 +298,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     private void seperateActiveInactivPlayer(){
         if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(player1ID)) {
             try {
-                progressDialog.dismiss();
+                if (progressDialog != null) {
+                progressDialog.dismiss();}
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -325,10 +325,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         discardPileLayout.setVisibility(View.VISIBLE);
         discardPileLayoutButton.setVisibility(View.VISIBLE);
 
-        this.findViewById(R.id.ID_avatar).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.p1).setVisibility(View.VISIBLE);
         playerImage.setVisibility(View.VISIBLE);
-        this.findViewById(R.id.ID_player_1).setVisibility(View.VISIBLE);
-        this.findViewById(R.id.ID_player_2).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.player_1).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.player_2).setVisibility(View.VISIBLE);
 
         playstationP1Image.setVisibility(View.VISIBLE);
         playstationP2Image.setVisibility(View.VISIBLE);
@@ -354,10 +354,10 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         discardPileLayout.setVisibility(View.INVISIBLE);
         discardPileLayoutButton.setVisibility(View.INVISIBLE);
 
-        this.findViewById(R.id.ID_avatar).setVisibility(View.INVISIBLE);
+        this.findViewById(R.id.p1).setVisibility(View.INVISIBLE);
         playerImage.setVisibility(View.INVISIBLE);
-        this.findViewById(R.id.ID_player_1).setVisibility(View.INVISIBLE);
-        this.findViewById(R.id.ID_player_2).setVisibility(View.INVISIBLE);
+        this.findViewById(R.id.player_1).setVisibility(View.INVISIBLE);
+        this.findViewById(R.id.player_2).setVisibility(View.INVISIBLE);
 
         playstationP1Image.setVisibility(View.INVISIBLE);
         playstationP2Image.setVisibility(View.INVISIBLE);
@@ -556,8 +556,8 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     public void visualizePhase() {
-        ImageView drawStack = findViewById(R.id.ID_stack);
-        LinearLayout layoffStack = findViewById(R.id.ID_discard_layout);
+        ImageView drawStack = findViewById(R.id.stack);
+        LinearLayout layoffStack = findViewById(R.id.discard_layout);
 
         switch (GameLogicHandler.getInstance().getGameData().getPhase()) {
 
@@ -680,7 +680,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         getStack().setOnClickListener(null);
         getDiscardPileLayoutButton().setOnClickListener(null);
         playerImage.setBackgroundColor(Color.rgb(157, 71, 188));
-        findViewById(R.id.ID_discard_layout).setBackgroundColor(Color.TRANSPARENT);
+        findViewById(R.id.discard_layout).setBackgroundColor(Color.TRANSPARENT);
 
 
     }
@@ -811,13 +811,4 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
         Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public static Handler UIHandler;
-
-    static {
-        UIHandler = new Handler(Looper.getMainLooper());
-    }
-
-    public static void runOnUI(Runnable runnable) {
-        UIHandler.post(runnable);
-    }
 }

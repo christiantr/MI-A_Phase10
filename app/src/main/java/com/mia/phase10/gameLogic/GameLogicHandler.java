@@ -109,6 +109,7 @@ public class GameLogicHandler {
             Card c = this.gameData.getPlayers().get(playerId).getHand().removeCard(cardId);
             this.gameData.getLayOffStack().addCard(c);
 
+
             if (this.gameData.getPlayers().get(playerId).getHand().getCardList().isEmpty() && this.gameData.getPlayers().get(playerId).getCurrentPhase() == Phase.PHASE_10) {
                 this.gameData.setGameClosed(true);
                 this.setNewPhaseForPlayer(playerId);
@@ -136,8 +137,6 @@ public class GameLogicHandler {
     }
 
     public int getFirstNumberOfPhaseCards(List<Card> list) {
-        int number = 0;
-        boolean firstNumber = false;
         for (Card c : list) {
             if (c instanceof SimpleCard) {
                 return ((SimpleCard) c).getNumber();
@@ -161,6 +160,7 @@ public class GameLogicHandler {
                 //player did not cheat
                 this.gameData.getPlayers().get(gameData.getActivePlayerId()).setPoints(5);
                 this.gameActivity.showMessage("OOOHH: player didn't cheat --> 5 points for you");
+                this.gameActivity.visualize();
             }
         }
     }
@@ -509,7 +509,7 @@ public class GameLogicHandler {
         this.gameActivity.visualize();
         this.gameActivity.visualizeExposingPlayer();
 
-        ImageView playerImage = this.gameActivity.findViewById(R.id.ID_p2);
+        ImageView playerImage = this.gameActivity.findViewById(R.id.p2);
         playerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

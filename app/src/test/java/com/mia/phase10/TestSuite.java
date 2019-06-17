@@ -1,5 +1,6 @@
 package com.mia.phase10;
 
+import com.mia.phase10.activities.ShufflingActivityTest;
 import com.mia.phase10.classes.CardStackTest;
 import com.mia.phase10.classes.CardUnitTest;
 import com.mia.phase10.classes.GameDataTest;
@@ -13,12 +14,14 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
+        CardEvaluatorTest.class,
+        ShufflingActivityTest.class,
         CardStackTest.class,
         CardUnitTest.class,
         HandTest.class,
         PlayerTest.class,
         GameDataTest.class,
-        //GameLogicHandlerTest.class
+        GameLogicHandlerTest.class
 })
 
 

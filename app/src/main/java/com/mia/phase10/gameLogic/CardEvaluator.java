@@ -10,7 +10,7 @@ import com.mia.phase10.gameLogic.enums.Phase;
 import java.util.List;
 
 public class CardEvaluator {
-    private static volatile CardEvaluator evaluatorInstance = new CardEvaluator();
+    private static CardEvaluator evaluatorInstance = new CardEvaluator();
 
     private CardEvaluator() {
     }
@@ -191,8 +191,6 @@ public class CardEvaluator {
                     if (number < ((SimpleCard) c).getNumber()) {
                         number = ((SimpleCard) c).getNumber();
                         firstNumber=true;
-                    } else {
-                        return false;
                     }
                 }else{
                     if ((number + 1 )== ((SimpleCard) c).getNumber()) {
@@ -208,8 +206,6 @@ public class CardEvaluator {
                     return false;
                 }
 
-            } else {
-                return false;
             }
         }
         return true;

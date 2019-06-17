@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class CardEvaluatorTest {
     CardEvaluator evaluator;
     List list1, list2;
-    Card b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, j1, j2, j3;
+    Card b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, j1, j2, j3, e1;
 
 
     @Before
@@ -43,9 +43,11 @@ public class CardEvaluatorTest {
         b11 = new SimpleCard(11, Colour.BLUE, 11, 10);
         b12 = new SimpleCard(12, Colour.BLUE, 12, 10);
 
-        j1 = new SpecialCard(1, SpecialCardValue.JOKER);
-        j2 = new SpecialCard(2, SpecialCardValue.JOKER);
-        j3 = new SpecialCard(3, SpecialCardValue.JOKER);
+        j1 = new SpecialCard(13, SpecialCardValue.JOKER);
+        j2 = new SpecialCard(14, SpecialCardValue.JOKER);
+        j3 = new SpecialCard(15, SpecialCardValue.JOKER);
+
+        e1 = new SpecialCard(16, SpecialCardValue.EXPOSE);
 
     }
 
@@ -123,9 +125,17 @@ public class CardEvaluatorTest {
     }
 
     @Test
-    public void checkPhase2False() {
+    public void checkPhase2TripletFalse() {
         assertFalse(evaluator.checkPhase(Phase.PHASE_2, list2, list1));
     }
+    @Test
+    public void checkPhase2ForInARowFalse() {
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
+        assertFalse(evaluator.checkPhase(Phase.PHASE_2, list1, list2));
+    }
+
 
     @Test
     public void checkPhase3TrueLeftExpression() {
@@ -233,7 +243,8 @@ public class CardEvaluatorTest {
 
     @Test
     public void checkPhase7False() {
-        assertFalse(evaluator.checkPhase(Phase.PHASE_7, list1));
+
+        assertFalse(evaluator.checkPhase(Phase.PHASE_7, list1,list2));
     }
 
     @Test
@@ -287,6 +298,16 @@ public class CardEvaluatorTest {
     }
 
     @Test
+    public void checkPhase8NotAJoker() {
+        list1.add(b1);
+        list1.add(b12);
+        list1.add(e1);
+
+
+        assertFalse(evaluator.checkPhase(Phase.PHASE_8, list1));
+    }
+
+    @Test
     public void checkPhase9TrueLeftExpression() {
         list1.add(b1);
         list1.add(b1);
@@ -315,7 +336,17 @@ public class CardEvaluatorTest {
     }
 
     @Test
+    public void checkPhase9AmountFalse() {
+        assertFalse(evaluator.checkPhase(Phase.PHASE_9, list1, list2));
+    }
+
+    @Test
     public void checkPhase9False() {
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
         assertFalse(evaluator.checkPhase(Phase.PHASE_9, list1, list2));
     }
 
@@ -416,6 +447,14 @@ public class CardEvaluatorTest {
     }
 
     @Test
+    public void testCheckIfInARowWithExpose() {
+        list1.add(b1);
+        list1.add(e1);
+        list1.add(b3);
+        assertFalse(evaluator.checkIfInARow(list1));
+    }
+
+    @Test
     public void testCheckForEqualNumbersOnlySimpleCardsTrue() {
         list1.add(b1);
         list1.add(b1);
@@ -443,5 +482,15 @@ public class CardEvaluatorTest {
         list1.add(j3);
 
         assertTrue(evaluator.checkForEqualNumbers(list1));
+    }
+
+    @Test
+    public void testCheckForEqualNumbersWithExpose() {
+        list1.add(b1);
+        list1.add(b12);
+        list1.add(e1);
+
+
+        assertFalse(evaluator.checkForEqualNumbers(list1));
     }
 }
