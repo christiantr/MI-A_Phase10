@@ -21,6 +21,7 @@ import com.mia.phase10.R;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.gameLogic.GameLogicHandler;
+import com.mia.phase10.gameLogic.enums.Phase;
 import com.mia.phase10.network.Client;
 import com.mia.phase10.network.ConnectionDetails;
 import com.mia.phase10.network.ConnectionDetailsList;
@@ -34,6 +35,7 @@ import org.apache.commons.validator.routines.InetAddressValidator;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 public class GameStartActivity extends AppCompatActivity {
     private static final String TAG = "GameStartActivity";
@@ -49,6 +51,7 @@ public class GameStartActivity extends AppCompatActivity {
     private Button hostGame;
     private Button connecToHost;
     private Button start;
+    private Button startPhase10;
     private EditText username;
     private static final int SERVER_PORT = 9999;
     private static final String DEFAULT_IP = "10.0.0.5";
@@ -71,6 +74,7 @@ public class GameStartActivity extends AppCompatActivity {
         joinGame = (Button) findViewById(R.id.button_joinGame);
         connecToHost = (Button) findViewById(R.id.button_connectToHost);
         start = (Button) findViewById(R.id.button_start);
+        startPhase10 = (Button) findViewById(R.id.button_start_phase_10);
         textConnection1 = (TextView) findViewById(R.id.textView_connection1);
         textConnection2 = (TextView) findViewById(R.id.textView_connection2);
         textConnection3 = (TextView) findViewById(R.id.textView_connection3);
@@ -124,6 +128,37 @@ public class GameStartActivity extends AppCompatActivity {
             }
         });
 
+        startPhase10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Start Game.");
+
+                for (ConnectionDetails details : connectionDetailsList.getList()) {
+                    GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
+                    Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
+                }
+                // setContentView(R.layout.activity_main);
+                try {
+                    GameLogicHandler.getInstance().startRound();
+                    Map<String, Player> players =  GameLogicHandler.getInstance().getGameData().getPlayers();
+                    for (Player player : players.values()) {
+                        player.setCurrentPhase(Phase.PHASE_10);
+                    }
+                } catch (EmptyCardStackException e) {
+                    e.printStackTrace();
+                }
+
+                ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
+                ((Client) client).sendObject(obj);
+            }
+        });
+
 
         username.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -162,6 +197,7 @@ public class GameStartActivity extends AppCompatActivity {
         connecToHost.setVisibility(View.GONE);
         hostPortIp.setVisibility(View.GONE);
         start.setVisibility(View.GONE);
+        startPhase10.setVisibility(View.GONE);
 //
         textConnection1.setVisibility(View.GONE);
         textConnection2.setVisibility(View.GONE);
@@ -407,6 +443,7 @@ public class GameStartActivity extends AppCompatActivity {
         Log.i(TAG, String.format("Number of connections: %d %n", numberOfConnections));
         if (numberOfConnections >= 2) {
             start.setVisibility(View.VISIBLE);
+            startPhase10.setVisibility(View.VISIBLE);
         }
 
     }
