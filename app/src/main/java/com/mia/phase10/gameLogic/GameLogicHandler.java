@@ -137,8 +137,6 @@ public class GameLogicHandler {
     }
 
     public int getFirstNumberOfPhaseCards(List<Card> list) {
-        int number = 0;
-        boolean firstNumber = false;
         for (Card c : list) {
             if (c instanceof SimpleCard) {
                 return ((SimpleCard) c).getNumber();

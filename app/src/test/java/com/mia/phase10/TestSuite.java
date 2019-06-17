@@ -1,5 +1,6 @@
 package com.mia.phase10;
 
+import com.mia.phase10.activities.ShufflingActivityTest;
 import com.mia.phase10.classes.CardStackTest;
 import com.mia.phase10.classes.CardUnitTest;
 import com.mia.phase10.classes.GameDataTest;
