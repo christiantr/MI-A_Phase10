@@ -524,9 +524,14 @@ public class GameLogicHandlerTest {
 }
 
 
-    //Albin
     @Test
     public void countCards() {
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
     }
 
     @Test
