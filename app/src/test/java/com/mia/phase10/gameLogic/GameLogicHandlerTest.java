@@ -109,11 +109,49 @@ public class GameLogicHandlerTest {
 
     @Test
     public void cheat() {
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().cheat();
+        assertEquals(true,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).hasCheated());
+
     }
 
     @Test
-    public void exposeCheat() {
+    public void exposeCheatTrue() {
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().cheat();
+        int points = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints();
+        GameLogicHandler.getInstance().getGameData().nextPlayer();
+        GameLogicHandler.getInstance().exposeCheat();
+        assertEquals(true,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
+        assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).getPoints() );
+        }
+
+    @Test
+    public void exposeCheatFalse(){
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().nextPlayer();
+        int points = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints();
+
+        GameLogicHandler.getInstance().exposeCheat();
+        assertEquals(false,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
+        assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() );
+
     }
+
 
     //Franziska
     @Test
