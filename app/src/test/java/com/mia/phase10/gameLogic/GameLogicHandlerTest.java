@@ -5,7 +5,6 @@ import android.widget.Toast;
 import com.mia.phase10.activities.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
-import com.mia.phase10.classes.Hand;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
@@ -26,7 +25,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
