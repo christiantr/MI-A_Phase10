@@ -10,27 +10,21 @@ import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
 import com.mia.phase10.classes.enums.Colour;
 import com.mia.phase10.classes.enums.SpecialCardValue;
-import com.mia.phase10.classes.enums.SpecialCardValue;
 import com.mia.phase10.exceptionClasses.CardNotFoundException;
 import com.mia.phase10.exceptionClasses.EmptyCardStackException;
 import com.mia.phase10.exceptionClasses.EmptyHandException;
 import com.mia.phase10.exceptionClasses.PlayerNotFoundException;
+import com.mia.phase10.gameLogic.enums.GamePhase;
+import com.mia.phase10.gameLogic.enums.LayOffCardsPhase;
 import com.mia.phase10.gameLogic.enums.Phase;
 import com.mia.phase10.gameLogic.enums.StackType;
 import com.mia.phase10.network.Client;
-import com.mia.phase10.network.transport.TransportObject;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -47,7 +41,7 @@ public class GameLogicHandlerTest {
     private Toast toast;
 
     ArrayList list1, list2;
-    Card b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, j1, j2, j3, e1;
+    Card b1, b2, b3, b4, b5, b6, b7, j1, j2, j3, e1, e2;
 
     //Franziska
     @Before
@@ -57,6 +51,7 @@ public class GameLogicHandlerTest {
         client = Mockito.mock(Client.class);
         toast=Mockito.mock(Toast.class);
         GameLogicHandler.getInstance().setClient(client);
+        gameActivity.setPlayer2ID("Player2");
         GameLogicHandler.getInstance().setGameActivity(gameActivity);
         doNothing().when(GameLogicHandler.getInstance().getGameActivity()).visualize();
         GameLogicHandler.getInstance().addPlayer(new Player("Player1"));
@@ -73,17 +68,15 @@ public class GameLogicHandlerTest {
         b5 = new SimpleCard(5, Colour.BLUE, 5, 5);
         b6 = new SimpleCard(6, Colour.BLUE, 6, 10);
         b7 = new SimpleCard(7, Colour.BLUE, 7, 10);
-        b8 = new SimpleCard(8, Colour.BLUE, 8, 10);
-        b9 = new SimpleCard(9, Colour.BLUE, 9, 10);
-        b10 = new SimpleCard(10, Colour.BLUE, 10, 10);
-        b11 = new SimpleCard(11, Colour.BLUE, 11, 10);
-        b12 = new SimpleCard(12, Colour.BLUE, 12, 10);
 
         j1 = new SpecialCard(13, SpecialCardValue.JOKER);
         j2 = new SpecialCard(14, SpecialCardValue.JOKER);
         j3 = new SpecialCard(15, SpecialCardValue.JOKER);
 
         e1 = new SpecialCard(16, SpecialCardValue.EXPOSE);
+        e2 = new SpecialCard(17, SpecialCardValue.EXPOSE);
+        e1.setImagePath("card_expose");
+        e2.setImagePath("card_expose");
     }
 
     //Alexander
@@ -132,11 +125,9 @@ public class GameLogicHandlerTest {
     public void checkLayoffCard() {
         try {
             GameLogicHandler.getInstance().startRound();
-            System.out.println("83");
             SpecialCard c = new SpecialCard(120, SpecialCardValue.JOKER);
             GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(c);
             GameLogicHandler.getInstance().layoffCard("Player1", c.getId());
-            System.out.println("85");
             assertEquals(c.getId(), GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard().getId());
 
         } catch (EmptyCardStackException e) {
@@ -175,19 +166,134 @@ public class GameLogicHandlerTest {
     }
 
     @Test
-    public void layoffPhase() {
-    }
-
-    @Test
     public void testMovePhaseCardsBackToHand() {
+        list1.add(b1);
+        list1.add(b2);
+        list1.add(b1);
+
+        list2.add(b2);
+        list2.add(b3);
+        list2.add(b2);
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards(list1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards2(list2);
+
+        GameLogicHandler.getInstance().movePhaseCardsBackToHand();
+
+        verify(gameActivity, times(1)).setVisibilityOfButtons1();
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().isEmpty());
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().isEmpty());
+
+
     }
 
     @Test
     public void testMoveCardsBackToHand() {
+        list1.add(b1);
+        list1.add(b2);
+        list1.add(b1);
+
+        list2.add(b2);
+        list2.add(b3);
+        list2.add(b2);
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCardsTemp(list1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards2Temp(list2);
+
+        GameLogicHandler.getInstance().moveCardsBackToHand(LayOffCardsPhase.ACTIVE_PHASE);
+
+        verify(gameActivity, times(1)).setVisibilityOfButtons1();
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().isEmpty());
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().isEmpty());
+
+
     }
 
     @Test
-    public void testDrawCard() {
+    public void testDrawCardDrawStack() {
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        list1.add(e1);
+        list1.add(e2);
+        CardStack stack=new CardStack(list1);
+        GameLogicHandler.getInstance().getGameData().setDrawStack(stack);
+
+
+        try {
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.DRAW_STACK);
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        verify(gameActivity, times(1)).visualize();
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().containsKey(e1.getId()));
+        assertEquals(GamePhase.LAYOFF_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+
+    }
+
+    @Test
+    public void testDrawCardLayOffStack() {
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        list1.add(b1);
+        list1.add(b2);
+        CardStack stack=new CardStack(list1);
+        GameLogicHandler.getInstance().getGameData().setLayOffStack(stack);
+
+        try {
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.LAYOFF_STACK);
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        verify(gameActivity, times(1)).visualize();
+        assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().containsKey(b2.getId()));
+        assertEquals(GamePhase.LAYOFF_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+
+    }
+
+    @Test
+    public void testDrawCardLayOffStackExpose() {
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        list1.add(e1);
+        list1.add(e2);
+        CardStack stack=new CardStack(list1);
+        GameLogicHandler.getInstance().getGameData().setLayOffStack(stack);
+
+        try {
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.LAYOFF_STACK);
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        verify(gameActivity, times(1)).visualize();
+        assertTrue(GameLogicHandler.getInstance().getGameData().getLayOffStack().getCardList().contains(e2));
+        assertEquals(GamePhase.DRAW_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+
     }
 
     @Test
@@ -278,7 +384,59 @@ public class GameLogicHandlerTest {
     }
 
     @Test
-    public void testCheckNewCardList() {
+    public void testCheckNewCardListActivePhase() {
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
+
+        list2.add(b2);
+        list2.add(b2);
+        list2.add(b2);
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards(list1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards2(list2);
+
+        list1.add(b1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCardsTemp(list1);
+
+        GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.ACTIVE_PHASE);
+
+        verify(gameActivity, times(1)).setVisibilityOfButtons1();
+        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+    }
+
+    @Test
+    public void testCheckNewCardListNextPlayerPhase() {
+        list1.add(b1);
+        list1.add(b1);
+        list1.add(b1);
+
+        list2.add(b2);
+        list2.add(b2);
+        list2.add(b2);
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards(list1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseCards2(list2);
+
+        list1.add(b1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(gameActivity.getPlayer2ID()).setPhaseCards(list1);
+
+        GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.NEXTPLAYER_PHASE);
+        verify(gameActivity, times(1)).setVisibilityOfButtons2();
+        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(gameActivity.getPlayer2ID()).getPhaseCards());
+
     }
 
     @Test
@@ -306,7 +464,26 @@ public class GameLogicHandlerTest {
 
     @Test
     public void testChoosePlayerToExpose() {
-         }
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(e1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getHand().addCard(e1);
+
+        try {
+            GameLogicHandler.getInstance().choosePlayerToExpose(e1.getId());
+        } catch (CardNotFoundException e) {
+            fail();
+        } catch (PlayerNotFoundException e) {
+            fail();
+        } catch (EmptyHandException e) {
+            fail();
+        }
+        verify(gameActivity,times(3)).visualize();
+        assertEquals(e1,GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard());
+}
 
 
     //Albin
