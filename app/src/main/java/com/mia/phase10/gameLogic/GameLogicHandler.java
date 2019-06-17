@@ -3,12 +3,8 @@ package com.mia.phase10.gameLogic;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.mia.phase10.R;
 import com.mia.phase10.activities.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
