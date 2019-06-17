@@ -376,9 +376,9 @@ public class GameLogicHandler {
     public void countCards() {
         for (Player p : gameData.getPlayers().values()) {
             Map<Integer, Card> cards = p.getHand().getCardList();
-            int points = p.getPoints();
-            for (Map.Entry<Integer, Card> item : cards.entrySet()) {
-                points = points + item.getValue().getcountCard();
+            int points = 0;
+            for (Card item : cards.values()) {
+                points = points + item.getcountCard();
             }
             p.setPoints(points);
         }

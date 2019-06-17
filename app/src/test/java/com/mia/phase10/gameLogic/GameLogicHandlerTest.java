@@ -747,13 +747,40 @@ public class GameLogicHandlerTest {
 }
 
 
-    //Albin
     @Test
     public void countCards() {
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b3);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getHand().addCard(b7);
+
+        GameLogicHandler.getInstance().countCards();
+
+        assertEquals(10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints());
+        assertEquals(10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints());
     }
 
     @Test
     public void setNewPhaseForPlayer() {
-    }
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
 
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").setCurrentPhase(Phase.PHASE_2);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").setPhaseAchieved(true);
+        GameLogicHandler.getInstance().setNewPhaseForPlayer("Player1");
+
+        assertEquals(Phase.PHASE_3, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getCurrentPhase());
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").setCurrentPhase(Phase.PHASE_10);
+        GameLogicHandler.getInstance().setNewPhaseForPlayer("Player1");
+
+        assertEquals(Phase.WIN, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getCurrentPhase());
+
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").setCurrentPhase(Phase.WIN);
+        GameLogicHandler.getInstance().setNewPhaseForPlayer("Player1");
+
+        assertEquals(null, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getCurrentPhase());
+    }
 }
