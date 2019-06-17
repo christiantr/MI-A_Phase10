@@ -67,15 +67,6 @@
             android:text="0.0.0.0"
             tools:visibility="invisible" />
 
-        <EditText
-            android:id="@+id/input_port"
-            style="@android:style/Widget.AutoCompleteTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            tools:visibility="invisible" />
-
         <Button
             android:id="@+id/button_start"
             style="@style/Widget.MaterialComponents.Button"
