@@ -116,6 +116,15 @@ public class GameLogicHandlerTest {
 
     @Test
     public void cheat() {
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().cheat();
+        assertEquals(true,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).hasCheated());
+
     }
 
     @Test
