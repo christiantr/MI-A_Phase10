@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.mia.phase10.activities.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
+import com.mia.phase10.classes.Hand;
 import com.mia.phase10.classes.Player;
 import com.mia.phase10.classes.SimpleCard;
 import com.mia.phase10.classes.SpecialCard;
@@ -25,6 +26,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -532,6 +534,15 @@ public class GameLogicHandlerTest {
             fail();
         }
 
+        GameLogicHandler.getInstance().countCards();
+        int pointsPlayer1 = GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints();
+        int pointsPlayer2 = GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints();
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getHand().addCard(b7);
+        GameLogicHandler.getInstance().countCards();
+
+        assertEquals(pointsPlayer1 + 5, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints()- pointsPlayer1);
+        assertEquals(pointsPlayer2 + 10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints()- pointsPlayer2);
     }
 
     @Test

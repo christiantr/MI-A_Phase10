@@ -380,7 +380,7 @@ public class GameLogicHandler {
     public void countCards() {
         for (Player p : gameData.getPlayers().values()) {
             Map<Integer, Card> cards = p.getHand().getCardList();
-            int points = p.getPoints();
+            int points = 0;
             for (Map.Entry<Integer, Card> item : cards.entrySet()) {
                 points = points + item.getValue().getcountCard();
             }
