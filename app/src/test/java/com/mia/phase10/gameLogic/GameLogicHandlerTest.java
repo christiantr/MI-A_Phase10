@@ -42,7 +42,7 @@ public class GameLogicHandlerTest {
     private Toast toast;
 
     ArrayList list1, list2;
-    Card b1, b2, b3, b4, b5, b6, b7,b8, j1, j2, j3, e1, e2;
+    Card b1, b2, b3, b4, b5, b6, b7, b8, j1, j2, j3, e1, e2;
 
     //Franziska
     @Before
@@ -50,7 +50,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().initializeGame();
         gameActivity = Mockito.mock(GameActivity.class);
         client = Mockito.mock(Client.class);
-        toast=Mockito.mock(Toast.class);
+        toast = Mockito.mock(Toast.class);
         GameLogicHandler.getInstance().setClient(client);
         gameActivity.setPlayer2ID("Player2");
         GameLogicHandler.getInstance().setGameActivity(gameActivity);
@@ -118,7 +118,7 @@ public class GameLogicHandlerTest {
         }
 
         GameLogicHandler.getInstance().cheat();
-        assertEquals(true,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).hasCheated());
+        assertEquals(true, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).hasCheated());
 
     }
 
@@ -133,12 +133,12 @@ public class GameLogicHandlerTest {
         int points = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints();
         GameLogicHandler.getInstance().getGameData().nextPlayer();
         GameLogicHandler.getInstance().exposeCheat();
-        assertEquals(true,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
-        assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).getPoints() );
-        }
+        assertEquals(true, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
+        assertEquals(points + 5, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).getPoints());
+    }
 
     @Test
-    public void exposeCheatFalse(){
+    public void exposeCheatFalse() {
         try {
             GameLogicHandler.getInstance().startRound();
         } catch (EmptyCardStackException e) {
@@ -149,8 +149,8 @@ public class GameLogicHandlerTest {
         int points = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints();
 
         GameLogicHandler.getInstance().exposeCheat();
-        assertEquals(false,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
-        assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() );
+        assertEquals(false, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
+        assertEquals(points + 5, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints());
 
     }
 
@@ -188,7 +188,7 @@ public class GameLogicHandlerTest {
             GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().getCardList().clear();
             GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b1);
             GameLogicHandler.getInstance().layoffCard("Player1", b1.getId());
-            assertEquals(GamePhase.START_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+            assertEquals(GamePhase.START_PHASE, GameLogicHandler.getInstance().getGameData().getPhase());
 
         } catch (EmptyCardStackException e) {
             fail();
@@ -314,18 +314,18 @@ public class GameLogicHandlerTest {
 
         list1.add(e1);
         list1.add(e2);
-        CardStack stack=new CardStack(list1);
+        CardStack stack = new CardStack(list1);
         GameLogicHandler.getInstance().getGameData().setDrawStack(stack);
 
 
         try {
-            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.DRAW_STACK);
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.DRAW_STACK);
         } catch (EmptyCardStackException e) {
             fail();
         }
         verify(gameActivity, times(1)).visualize();
         assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().containsKey(e1.getId()));
-        assertEquals(GamePhase.LAYOFF_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+        assertEquals(GamePhase.LAYOFF_PHASE, GameLogicHandler.getInstance().getGameData().getPhase());
 
     }
 
@@ -339,17 +339,17 @@ public class GameLogicHandlerTest {
 
         list1.add(b1);
         list1.add(b2);
-        CardStack stack=new CardStack(list1);
+        CardStack stack = new CardStack(list1);
         GameLogicHandler.getInstance().getGameData().setLayOffStack(stack);
 
         try {
-            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.LAYOFF_STACK);
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.LAYOFF_STACK);
         } catch (EmptyCardStackException e) {
             fail();
         }
         verify(gameActivity, times(1)).visualize();
         assertTrue(GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().containsKey(b2.getId()));
-        assertEquals(GamePhase.LAYOFF_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+        assertEquals(GamePhase.LAYOFF_PHASE, GameLogicHandler.getInstance().getGameData().getPhase());
 
     }
 
@@ -364,17 +364,17 @@ public class GameLogicHandlerTest {
 
         list1.add(e1);
         list1.add(e2);
-        CardStack stack=new CardStack(list1);
+        CardStack stack = new CardStack(list1);
         GameLogicHandler.getInstance().getGameData().setLayOffStack(stack);
 
         try {
-            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(),StackType.LAYOFF_STACK);
+            GameLogicHandler.getInstance().drawCard(GameLogicHandler.getInstance().getGameData().getActivePlayerId(), StackType.LAYOFF_STACK);
         } catch (EmptyCardStackException e) {
             fail();
         }
         verify(gameActivity, times(1)).visualize();
         assertTrue(GameLogicHandler.getInstance().getGameData().getLayOffStack().getCardList().contains(e2));
-        assertEquals(GamePhase.DRAW_PHASE,GameLogicHandler.getInstance().getGameData().getPhase());
+        assertEquals(GamePhase.DRAW_PHASE, GameLogicHandler.getInstance().getGameData().getPhase());
 
     }
 
@@ -466,7 +466,7 @@ public class GameLogicHandlerTest {
     }
 
     @Test
-    public void testLayOffPhaseSimpleCardPlaystation(){
+    public void testLayOffPhaseSimpleCardPlaystation() {
         list1.add(b1);
 
         try {
@@ -477,7 +477,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(b1);
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseAchieved(true);
         try {
-            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION,b1.getId());
+            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION, b1.getId());
         } catch (EmptyHandException e) {
             e.printStackTrace();
         } catch (CardNotFoundException e) {
@@ -485,12 +485,12 @@ public class GameLogicHandlerTest {
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
         }
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().get(0));
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().get(0));
     }
 
     @Test
-    public void testLayOffPhaseSimpleCardPlaystationRight(){
+    public void testLayOffPhaseSimpleCardPlaystationRight() {
         list1.add(b1);
 
         try {
@@ -502,7 +502,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseAchieved(true);
 
         try {
-            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT,b1.getId());
+            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_RIGHT, b1.getId());
         } catch (EmptyHandException e) {
             e.printStackTrace();
         } catch (CardNotFoundException e) {
@@ -510,12 +510,12 @@ public class GameLogicHandlerTest {
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
         }
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().get(0));
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().get(0));
     }
 
     @Test
-    public void testLayOffPhaseSimpleCardPlaystationTwo(){
+    public void testLayOffPhaseSimpleCardPlaystationTwo() {
         list1.add(b1);
 
         String next;
@@ -534,7 +534,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().getGameData().getPlayers().get(next).setPhaseAchieved(true);
 
         try {
-            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO,b1.getId());
+            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO, b1.getId());
         } catch (EmptyHandException e) {
             e.printStackTrace();
         } catch (CardNotFoundException e) {
@@ -543,13 +543,13 @@ public class GameLogicHandlerTest {
             e.printStackTrace();
         }
 
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards().get(0));
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCardsTemp().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCardsTemp().get(0));
 
     }
 
     @Test
-    public void testLayOffPhaseSimpleCardPlaystationTwoRight(){
+    public void testLayOffPhaseSimpleCardPlaystationTwoRight() {
         list1.add(b1);
 
         String next;
@@ -568,7 +568,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().getGameData().getPlayers().get(next).setPhaseAchieved(true);
 
         try {
-            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT,b1.getId());
+            GameLogicHandler.getInstance().layoffPhase(PlaystationType.PLAYSTATION_TWO_RIGHT, b1.getId());
         } catch (EmptyHandException e) {
             e.printStackTrace();
         } catch (CardNotFoundException e) {
@@ -577,10 +577,117 @@ public class GameLogicHandlerTest {
             e.printStackTrace();
         }
 
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2().get(0));
-        assertEquals(b1,GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2Temp().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2().get(0));
+        assertEquals(b1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2Temp().get(0));
 
     }
+    //
+
+    @Test
+    public void testLayOffJokerLeftOrRightPlaystation() {
+        list1.add(j1);
+
+        String next;
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(this.gameActivity.getPlayer1ID())) {
+            next = this.gameActivity.getPlayer2ID();
+        } else {
+            next = this.gameActivity.getPlayer1ID();
+        }
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(j1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseAchieved(true);
+
+        GameLogicHandler.getInstance().layOffJokerLeftOrRight(LayOffCardsPhase.LEFT,PlaystationType.PLAYSTATION,next,(SpecialCard)j1);
+
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards().get(0));
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCardsTemp().get(0));
+    }
+
+    @Test
+    public void testLayOffJokerLeftOrRightPlaystationRight() {
+        list1.add(j1);
+
+        String next;
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(this.gameActivity.getPlayer1ID())) {
+            next = this.gameActivity.getPlayer2ID();
+        } else {
+            next = this.gameActivity.getPlayer1ID();
+        }
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(j1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).setPhaseAchieved(true);
+
+        GameLogicHandler.getInstance().layOffJokerLeftOrRight(LayOffCardsPhase.RIGHT,PlaystationType.PLAYSTATION_RIGHT,next,(SpecialCard)j1);
+
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2().get(0));
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards2Temp().get(0));
+    }
+
+    @Test
+    public void testLayOffJokerLeftOrRightPlaystationTwo() {
+        list1.add(j1);
+
+        String next;
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(this.gameActivity.getPlayer1ID())) {
+            next = this.gameActivity.getPlayer2ID();
+        } else {
+            next = this.gameActivity.getPlayer1ID();
+        }
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(j1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(next).setPhaseAchieved(true);
+
+        GameLogicHandler.getInstance().layOffJokerLeftOrRight(LayOffCardsPhase.LEFT,PlaystationType.PLAYSTATION_TWO,next,(SpecialCard)j1);
+
+
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards().get(0));
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCardsTemp().get(0));
+
+    }
+
+    @Test
+    public void testLayOffJokerLeftOrRightPlaystationTwoRight() {
+        list1.add(j1);
+
+        String next;
+        if (GameLogicHandler.getInstance().getGameData().getActivePlayerId().equals(this.gameActivity.getPlayer1ID())) {
+            next = this.gameActivity.getPlayer2ID();
+        } else {
+            next = this.gameActivity.getPlayer1ID();
+        }
+
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(j1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get(next).setPhaseAchieved(true);
+
+        GameLogicHandler.getInstance().layOffJokerLeftOrRight(LayOffCardsPhase.RIGHT,PlaystationType.PLAYSTATION_TWO_RIGHT,next,(SpecialCard)j1);
+
+
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2().get(0));
+        assertEquals(j1, GameLogicHandler.getInstance().getGameData().getPlayers().get(next).getPhaseCards2Temp().get(0));
+
+    }
+
+
 
     @Test
     public void testCheckNewCardListActivePhase() {
@@ -607,7 +714,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.ACTIVE_PHASE);
 
         verify(gameActivity, times(1)).setVisibilityOfButtons1();
-        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+        assertEquals(list1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
     }
 
     @Test
@@ -639,7 +746,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.ACTIVE_PHASE);
 
         verify(gameActivity, times(1)).setVisibilityOfButtons1();
-        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+        assertEquals(list1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
     }
 
     @Test
@@ -668,7 +775,7 @@ public class GameLogicHandlerTest {
         GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.ACTIVE_PHASE);
 
         verify(gameActivity, times(1)).setVisibilityOfButtons1();
-        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
+        assertEquals(list1, GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPhaseCards());
     }
 
 
@@ -696,7 +803,7 @@ public class GameLogicHandlerTest {
 
         GameLogicHandler.getInstance().checkNewCardList(LayOffCardsPhase.NEXTPLAYER_PHASE);
         verify(gameActivity, times(1)).setVisibilityOfButtons2();
-        assertEquals(list1,GameLogicHandler.getInstance().getGameData().getPlayers().get(gameActivity.getPlayer2ID()).getPhaseCards());
+        assertEquals(list1, GameLogicHandler.getInstance().getGameData().getPlayers().get(gameActivity.getPlayer2ID()).getPhaseCards());
 
     }
 
@@ -708,19 +815,19 @@ public class GameLogicHandlerTest {
         } catch (EmptyCardStackException e) {
             fail();
         }
-        Player p= GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId());
+        Player p = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId());
         GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().addCard(e1);
         try {
             GameLogicHandler.getInstance().exposePlayer(e1.getId());
         } catch (EmptyHandException e) {
             fail();
-        }catch (CardNotFoundException e) {
+        } catch (CardNotFoundException e) {
             fail();
         }
-        verify(gameActivity,times(3)).visualize();
+        verify(gameActivity, times(3)).visualize();
         verify(gameActivity).visualizeExposingPlayer();
         verify(gameActivity).setListenerForExposingPlayer(e1.getId());
-        assertEquals(e1,GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard());
+        assertEquals(e1, GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard());
     }
 
     @Test
@@ -742,11 +849,11 @@ public class GameLogicHandlerTest {
         } catch (EmptyHandException e) {
             fail();
         }
-        verify(gameActivity,times(3)).visualize();
-        assertEquals(e1,GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard());
-}
+        verify(gameActivity, times(3)).visualize();
+        assertEquals(e1, GameLogicHandler.getInstance().getGameData().getLayOffStack().getLastCard());
+    }
 
-
+    //Albin
     @Test
     public void countCards() {
         GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b1);

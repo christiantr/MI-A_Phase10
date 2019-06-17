@@ -212,7 +212,7 @@ public class GameLogicHandler {
 
     }
 
-    private void layOffJokerLeftOrRight(LayOffCardsPhase side, PlaystationType t, String next, SpecialCard c) {
+    public void layOffJokerLeftOrRight(LayOffCardsPhase side, PlaystationType t, String next, SpecialCard c) {
         if (t == PlaystationType.PLAYSTATION) {
             if (side == LayOffCardsPhase.LEFT) {
                 this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getPhaseCards().add(0, c);
