@@ -526,21 +526,14 @@ public class GameLogicHandlerTest {
 
     @Test
     public void countCards() {
-        try {
-            GameLogicHandler.getInstance().startRound();
-        } catch (EmptyCardStackException e) {
-            fail();
-        }
-
-        GameLogicHandler.getInstance().countCards();
-        int pointsPlayer1 = GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints();
-        int pointsPlayer2 = GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints();
         GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b1);
+        GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getHand().addCard(b3);
         GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getHand().addCard(b7);
+
         GameLogicHandler.getInstance().countCards();
 
-        assertEquals(pointsPlayer1 + 5, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints() - pointsPlayer1);
-        assertEquals(pointsPlayer2 + 10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints() - pointsPlayer2);
+        assertEquals(10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player1").getPoints());
+        assertEquals(10, GameLogicHandler.getInstance().getGameData().getPlayers().get("Player2").getPoints());
     }
 
     @Test
