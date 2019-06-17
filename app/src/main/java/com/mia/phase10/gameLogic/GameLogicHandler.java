@@ -3,12 +3,8 @@ package com.mia.phase10.gameLogic;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.mia.phase10.R;
 import com.mia.phase10.activities.GameActivity;
 import com.mia.phase10.classes.Card;
 import com.mia.phase10.classes.CardStack;
@@ -380,9 +376,9 @@ public class GameLogicHandler {
     public void countCards() {
         for (Player p : gameData.getPlayers().values()) {
             Map<Integer, Card> cards = p.getHand().getCardList();
-            int points = p.getPoints();
-            for (Map.Entry<Integer, Card> item : cards.entrySet()) {
-                points = points + item.getValue().getcountCard();
+            int points = 0;
+            for (Card item : cards.values()) {
+                points = points + item.getcountCard();
             }
             p.setPoints(points);
         }
