@@ -142,6 +142,22 @@ public class GameLogicHandlerTest {
         assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).getPoints() );
         }
 
+    @Test
+    public void exposeCheatFalse(){
+        try {
+            GameLogicHandler.getInstance().startRound();
+        } catch (EmptyCardStackException e) {
+            fail();
+        }
+
+        GameLogicHandler.getInstance().getGameData().nextPlayer();
+        int points = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints();
+
+        GameLogicHandler.getInstance().exposeCheat();
+        assertEquals(false,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getPreviousPlayer()).isCheatUncovered());
+        assertEquals(points +5,GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getPoints() );
+
+    }
 
 
     //Franziska
