@@ -18,7 +18,7 @@ public class Connection implements Runnable {
     private final Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private final static String TAG = "CONNECTION";
+    private static final String TAG = "CONNECTION";
     private ConnectionListener connectionListener;
     private boolean active;
     private ConnectionDetails connectionDetails;
@@ -29,7 +29,7 @@ public class Connection implements Runnable {
 
     ) {
         numbering++;
-        Log.i(TAG, String.format("Establish connection with %s\n", socket.getInetAddress().toString()));
+        Log.i(TAG, String.format("Establish connection with %s%n", socket.getInetAddress().toString()));
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         try {
@@ -103,12 +103,13 @@ public class Connection implements Runnable {
             sent.join();
         } catch (InterruptedException e1) {
             Log.e(TAG, e1.toString());
+            Thread.currentThread().interrupt();
         }
         try {
             in.close();
             out.close();
             socket.close();
-            Log.i(TAG, String.format("Connection to: %s closed.\n", socket.getInetAddress().toString()));
+            Log.i(TAG, String.format("Connection to: %s closed.%n", socket.getInetAddress().toString()));
 
         } catch (IOException e) {
             Log.e(TAG, e.toString());
