@@ -18,7 +18,6 @@ public class GameEndActivity extends AppCompatActivity {
     private TextView winnerPoints;
     private TextView loserName;
     private TextView loserPoints;
-    private Button newGame;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +26,6 @@ public class GameEndActivity extends AppCompatActivity {
         winnerPoints = findViewById(R.id.ID_winner_points);
         loserName = findViewById(R.id.ID_loser_name);
         loserPoints = findViewById(R.id.ID_loser_points);
-        newGame = findViewById(R.id.ID_back_to_start);
 
         Map<String, Player> players = GameLogicHandler.getInstance().getGameData().getPlayers();
         for (Map.Entry<String, Player> entry : players.entrySet()) {
@@ -41,19 +39,6 @@ public class GameEndActivity extends AppCompatActivity {
                 loserPoints.setText(points);
             }
         }
-
-        newGame.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            public void onClick(View v) {
-                exitApp();
-            }
-        });
-    }
-
-    protected void exitApp() {
-        GameLogicHandler.getInstance().closeConnections();
-        overridePendingTransition(0, 0);
-        finish();
     }
 
 }

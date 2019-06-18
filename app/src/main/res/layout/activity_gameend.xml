@@ -134,21 +134,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/ID_back_to_start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginRight="0dp"
-                android:gravity="center"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="320dp"
-                tools:text="neues Spiel starten" />
-
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
