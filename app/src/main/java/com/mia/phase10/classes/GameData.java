@@ -2,7 +2,6 @@ package com.mia.phase10.classes;
 //this class contains all game data needed for displaying the current status to clients.
 
 import android.os.Build;
-import android.util.Log;
 
 import com.mia.phase10.gameLogic.enums.GamePhase;
 
@@ -22,7 +21,6 @@ public class GameData implements Serializable {
     private String previousPlayer;
     private GamePhase phase;
     private boolean roundClosed;
-    private final String TAG = "GAMEDATA";
     private boolean exit;
     private boolean gameClosed;
 

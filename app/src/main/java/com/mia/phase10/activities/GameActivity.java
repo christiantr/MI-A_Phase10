@@ -307,6 +307,7 @@ public class GameActivity extends AppCompatActivity implements View.OnLongClickL
                 if (progressDialog != null) {
                 progressDialog.dismiss();}
             } catch (Exception e) {
+                Log.e(TAG,e.toString());
                 e.printStackTrace();
             }
             if (GameLogicHandler.getInstance().getGameData().getPhase() == GamePhase.START_PHASE) {

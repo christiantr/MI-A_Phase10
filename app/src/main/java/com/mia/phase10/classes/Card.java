@@ -51,6 +51,11 @@ public abstract class Card implements Serializable {
         return Integer.compare(this.id, ((Card) o).getId())==0;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();}
+
+
     public String toString(){
         return "ID: "+this.id+";";
     }

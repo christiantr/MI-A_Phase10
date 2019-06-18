@@ -30,6 +30,7 @@ import com.mia.phase10.network.transport.TransportObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class GameLogicHandler {
     private static volatile GameLogicHandler glhInstance = new GameLogicHandler();
@@ -182,7 +183,7 @@ public class GameLogicHandler {
                 if (c instanceof SimpleCard) {
                     layOffSimpleCard(t, next, (SimpleCard) c);
                 } else if (((SpecialCard) c).getValue() == SpecialCardValue.JOKER) {
-                    layOffJoker(t, next, cardId, (SpecialCard) c);
+                    layOffJoker(t, next, (SpecialCard) c);
                 }
             }
 
@@ -191,7 +192,7 @@ public class GameLogicHandler {
         }
     }
 
-    private void layOffJoker(final PlaystationType t, final String next, final int cardId, final SpecialCard c) {
+    private void layOffJoker(final PlaystationType t, final String next, final SpecialCard c) {
         AlertDialog.Builder chooseSide = new AlertDialog.Builder(this.gameActivity);
         chooseSide.setCancelable(false);
         chooseSide.setTitle("Wollen sie den Joker links oder rechts von der bereits abgelegten Karte ablegen?");
@@ -514,10 +515,8 @@ public class GameLogicHandler {
     public void choosePlayerToExpose(int id) throws CardNotFoundException, PlayerNotFoundException, EmptyHandException {
         Card c = this.gameData.getLayOffStack().drawLastCard();
         this.gameData.getPlayers().get(this.gameData.getActivePlayerId()).getHand().addCard(c);
-        boolean b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
         if (!this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed()) {
             this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).setExposed(true);
-            b = this.gameData.getPlayers().get(this.gameActivity.getPlayer2ID()).isExposed();
             layoffCard(this.gameData.getActivePlayerId(), id);
         } else {
             this.gameActivity.visualize();
@@ -541,7 +540,9 @@ public class GameLogicHandler {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.toString());
+            //Restore interrupted state...
+            Thread.currentThread().interrupt();
         }
     }
 }
