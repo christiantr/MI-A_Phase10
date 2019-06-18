@@ -54,7 +54,7 @@ public class GameStartActivity extends AppCompatActivity {
     private Button startPhase10;
     private EditText username;
     private static final int SERVER_PORT = 9999;
-    private static final String DEFAULT_IP = "10.0.0.5";
+    private static final String DEFAULT_IP = "192.168.43.204";
     AsyncTask client;
     AsyncTask server;
     private int numberOfConnections;
@@ -101,7 +101,6 @@ public class GameStartActivity extends AppCompatActivity {
                     username.setText(usrName + "(1)");
                     changeUserName();
                     allowed = false;
-
                 }
 
                 if (allowed) {
@@ -132,15 +131,26 @@ public class GameStartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Start Game.");
+                boolean allowed = true;
+                ConnectionDetails u1 = connectionDetailsList.getList().get(0);
+                ConnectionDetails u2 = connectionDetailsList.getList().get(1);
+                if (u1.getUserDisplayName().getName().equals(u2.getUserDisplayName().getName())) {
+                    Log.i(TAG, "Same username");
+                    String usrName = username.getText().toString();
+                    username.setText(usrName + "(1)");
+                    changeUserName();
+                    allowed = false;
+                }
 
-                for (ConnectionDetails details : connectionDetailsList.getList()) {
+                if (allowed){
+                    for (ConnectionDetails details : connectionDetailsList.getList()) {
                     GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
                     Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
                 }
                 // setContentView(R.layout.activity_main);
                 try {
                     GameLogicHandler.getInstance().startRound();
-                    Map<String, Player> players =  GameLogicHandler.getInstance().getGameData().getPlayers();
+                    Map<String, Player> players = GameLogicHandler.getInstance().getGameData().getPlayers();
                     for (Player player : players.values()) {
                         player.setCurrentPhase(Phase.PHASE_10);
                     }
@@ -157,6 +167,7 @@ public class GameStartActivity extends AppCompatActivity {
                 TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
                 ((Client) client).sendObject(obj);
             }
+        }
         });
 
 
