@@ -88,26 +88,39 @@ public class GameStartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Start Game.");
+                boolean allowed = true;
+                ConnectionDetails u1 = connectionDetailsList.getList().get(0);
+                ConnectionDetails u2 = connectionDetailsList.getList().get(1);
+                if (u1.getUserDisplayName().getName().equals(u2.getUserDisplayName().getName())) {
+                    Log.i(TAG, "Same username");
+                    String usrName = username.getText().toString();
+                    username.setText(usrName + "(1)");
+                    changeUserName();
+                    allowed = false;
 
-                for (ConnectionDetails details : connectionDetailsList.getList()) {
-                    GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
-                    Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
                 }
-                // setContentView(R.layout.activity_main);
-                try {
-                    GameLogicHandler.getInstance().startRound();
-                } catch (EmptyCardStackException e) {
-                    Log.e(TAG, e.toString());
+
+                if (allowed) {
+                    for (ConnectionDetails details : connectionDetailsList.getList()) {
+                        GameLogicHandler.getInstance().addPlayer(new Player(details.getUserDisplayName().getName()));
+                        Log.i(TAG, String.format("Player %s added.\n", details.getUserDisplayName().getName()));
+                    }
+                    // setContentView(R.layout.activity_main);
+                    try {
+                        GameLogicHandler.getInstance().startRound();
+                    } catch (EmptyCardStackException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, e.toString());
+                        Thread.currentThread().interrupt();
+                    }
+                    TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
+                    ((Client) client).sendObject(obj);
                 }
-                ((Client) client).sendObject(TransportObject.makeGameDataTransportObject());
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Log.e(TAG, e.toString());
-                    Thread.currentThread().interrupt();
-                }
-                TransportObject obj = TransportObject.ofControlObjectToAll(ControlObject.startGame());
-                ((Client) client).sendObject(obj);
             }
         });
 
