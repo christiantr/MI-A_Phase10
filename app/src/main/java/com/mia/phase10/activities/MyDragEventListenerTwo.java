@@ -53,13 +53,11 @@ public class MyDragEventListenerTwo implements View.OnDragListener {
 
 
             case DragEvent.ACTION_DROP:
-                // Gets the item containing the dragged data
-                ClipData.Item item = event.getClipData().getItemAt(0);
-                // Gets the text data from the item.
+
                 // Invalidates the view to force a redraw
                 v.invalidate();
-                ImageView vw = (ImageView) event.getLocalState();
 
+                ImageView vw = (ImageView) event.getLocalState();
                 Card c = GameLogicHandler.getInstance().getGameData().getPlayers().get(GameLogicHandler.getInstance().getGameData().getActivePlayerId()).getHand().getCardList().get(vw.getId());
                 if(c.getImagePath().equals("card_expose")){return false;}
 

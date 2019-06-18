@@ -48,9 +48,6 @@ public class MyDragEventListener implements View.OnDragListener {
                 return true;
 
             case DragEvent.ACTION_DROP:
-                // Gets the item containing the dragged data
-                ClipData.Item item = event.getClipData().getItemAt(0);
-                // Gets the text data from the item.
                 // Invalidates the view to force a redraw
                 v.invalidate();
 
